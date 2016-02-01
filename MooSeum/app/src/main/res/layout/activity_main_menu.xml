@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
         android:weightSum="1">
 
         <TextView
@@ -26,7 +25,8 @@
             android:text="@string/play_btn_txt"
             android:textSize="30sp"
             android:id="@+id/play_button"
-            android:layout_weight="0.33" />
+            android:layout_weight="0.33"
+            android:onClick="playButtonClick"/>
 
         <Button
             android:layout_width="match_parent"
@@ -34,7 +34,8 @@
             android:text="@string/connect_btn_txt"
             android:textSize="30sp"
             android:id="@+id/connect_button"
-            android:layout_weight="0.33" />
+            android:layout_weight="0.33"
+            android:onClick="connectButtonClick"/>
 
         <Button
             android:layout_width="match_parent"
@@ -42,7 +43,8 @@
             android:text="@string/scan_btn_txt"
             android:textSize="30sp"
             android:id="@+id/scan_button"
-            android:layout_weight="0.33" />
+            android:layout_weight="0.33"
+            android:onClick="scanButtonClick"/>
     </LinearLayout>
 
 
