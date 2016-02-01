@@ -17,28 +17,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/play_btn_txt"
-            android:textSize="30sp"
             android:id="@+id/play_button"
-            android:layout_weight="0.33"
-            android:onClick="playButtonClick"/>
+            android:textSize="30sp"
+            android:layout_weight="0.33"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/connect_btn_txt"
-            android:textSize="30sp"
             android:id="@+id/connect_button"
-            android:layout_weight="0.33"
-            android:onClick="connectButtonClick"/>
+            android:textSize="30sp"
+            android:layout_weight="0.33"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/scan_btn_txt"
-            android:textSize="30sp"
             android:id="@+id/scan_button"
-            android:layout_weight="0.33"
-            android:onClick="scanButtonClick"/>
+            android:textSize="30sp"
+            android:layout_weight="0.33"/>
     </LinearLayout>
 
 

@@ -1,21 +1,24 @@
 package baldeeps.mooseum;
 
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * Created by skb12156 on 01/02/2016.
+ * A basic listener for the main menu, on creation it asks for a string which should be either
+ * play, scan, or connect as this is what's used to change the view
  */
 public class MainMenuButtonListener implements View.OnClickListener {
 
     String message;
 
     public MainMenuButtonListener(String msg){
-        this.message = message;
+        this.message = msg;
     }
     @Override
     public void onClick(View v) {
-        Toast.makeText(v.getContext(), message, Toast.LENGTH_SHORT);
+        Toast.makeText(v.getContext(), message, Toast.LENGTH_SHORT).show();
+
+        if(message.equals("play")){
+              }
     }
 }
