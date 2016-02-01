@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">MooSeum</string>
+
+    <string name="default_text">Press a button! :D</string>
+
+
     <string name="play_btn_txt">Play</string>
     <string name="scan_btn_txt">Scan</string>
     <string name="connect_btn_txt">Connect</string>
