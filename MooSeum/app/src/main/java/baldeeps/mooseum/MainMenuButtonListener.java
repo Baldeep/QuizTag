@@ -19,6 +19,7 @@ public class MainMenuButtonListener implements View.OnClickListener {
         Toast.makeText(v.getContext(), message, Toast.LENGTH_SHORT).show();
 
         if(message.equals("play")){
-              }
+
+        }
     }
 }

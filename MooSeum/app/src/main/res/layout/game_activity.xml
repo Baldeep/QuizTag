@@ -47,15 +47,17 @@
             android:text="Hint"
             android:id="@+id/hint_text"
             android:layout_below="@id/hint_image"
-            android:layout_toLeftOf="@id/skip_text"/>
+            android:layout_toLeftOf="@id/skip_text"
+            android:paddingRight="45dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Coins"
             android:id="@+id/coins_text"
-            android:layout_below="@id/coins_image"
-            android:layout_toRightOf="@id/hint_text"/>
+            android:layout_toRightOf="@+id/skip_text"
+            android:paddingLeft="45dp"
+            android:layout_below="@+id/coins_image"/>
 
 
     </RelativeLayout>
