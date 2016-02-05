@@ -20,7 +20,8 @@
         </activity>
 
         <activity android:name=".Game_Menu"
-            android:label="Game Menu"/>
+            android:label="Game Menu"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
