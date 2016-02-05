@@ -1,4 +1,3 @@
-package baldeeps.mooseum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,8 @@ public class Question {
     String question;
     List<String> hints;
     String answer;
-
+    Random r = new Random();
+    
     public Question(String question, List<String> hints, String answer){
 
         this.question = question;
@@ -89,6 +89,50 @@ public class Question {
     }
 
     public List<String> getHints(){
+    	// if there's more than 4 hints available
+    	if(hints.size() > 4){
+    		// pick 3 random hints
+    		List<String> newHints = new ArrayList<String>();
+    		newHints.add(answer);
+    		
+    		int limiter = 0; // this is basically a "regulator" in case there 
+    		// are a lot of repeated answers and the array is never filled
+    		while(newHints.size() < 4 || limiter < 20)
+    		{    			
+    			String random = hints.get(r.nextInt(hints.size()));
+    			
+    			if(!newHints.contains(random)){
+    				newHints.add(random);
+    			}
+    			limiter++;
+    		}
+    		
+    		// If we filled the array successfully, return it other wise just
+    		// pick every fourth answer and return it
+    		if(newHints.size() == 4){
+    			return newHints;
+    		} else {
+    			int sizeReached = newHints.size(); // Save for stats later
+    			
+    			newHints.clear(); // refresh array
+    			newHints.add(answer);
+    			
+    			int fourth = hints.size()/4;
+    			for(int i = fourth; i < hints.size(); i += fourth){
+    				newHints.add(hints.get(i));
+    			}
+    			
+    			System.out.println("Hints are every fourth hint from list "
+    					+ "provided as the random selection hint was hit, please"
+    					+ " adjust the list of hints for a better selection");
+    			System.out.println("Hints available: " + hints.size());
+    			System.out.println("Hints found before limit: " + sizeReached);
+    			System.out.println("Hints returned: " + newHints.size());
+    			
+    			return newHints;
+    		}  		
+    	}
+    	
         return hints;
     }
 

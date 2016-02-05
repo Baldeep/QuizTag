@@ -1,0 +1,32 @@
+{
+	"quiz": [
+		"question" : {
+			"question" : "Are you happy?", 
+			"hints" : [
+				"hint" : "yes", 
+				"hint" : "no", 
+				"hint" : "maybe"
+				],
+			"answer" : "yes"
+			}, 
+		"question" : {
+			"question" : "Will I need to use JSON?", 
+			"hints" : [
+				"hint" : "definitely not", 
+				"hint" : "no", 
+				"hint" : "probably not"
+				],
+			"answer" : "only for the demo"
+			}, 
+		"question" : {
+			"question" : "Do I like Mass Effect dialogue wheels?", 
+			"hints" : [
+				"hint" : "definitely yes", 
+				"hint" : "[Enthusiastically] yes", 
+				"hint" : "yes",
+				"hint" : "indeed I do!"
+				],
+			"answer" : "definitely yes"
+			},  
+		],
+}
