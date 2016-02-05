@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:padding="10dp"
+            android:src="@drawable/skip_arrow"
+            android:id="@+id/skip_image"
+            android:layout_centerHorizontal="true"/>
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:padding="10dp"
+            android:src="@drawable/hint_icon"
+            android:id="@+id/hint_image"
+            android:layout_toLeftOf="@id/skip_image"/>
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:padding="10dp"
+            android:src="@drawable/coins"
+            android:id="@+id/coins_image"
+            android:layout_toRightOf="@id/skip_image"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Skip"
+            android:id="@+id/skip_text"
+            android:layout_below="@id/skip_image"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hint"
+            android:id="@+id/hint_text"
+            android:layout_below="@id/hint_image"
+            android:layout_toLeftOf="@id/skip_text"
+            android:paddingRight="45dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Coins"
+            android:id="@+id/coins_text"
+            android:layout_toRightOf="@+id/skip_text"
+            android:paddingLeft="45dp"
+            android:layout_below="@+id/coins_image"/>
+
+
+    </RelativeLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start Quiz"
+        android:id="@+id/button"
+        android:textSize="30sp"
+        android:layout_weight="0.33"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Scan Quiz Tag"
+        android:id="@+id/button2"
+        android:textSize="30sp"
+        android:layout_weight="0.33"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Points Store"
+        android:id="@+id/button3"
+        android:textSize="30sp"
+        android:layout_weight="0.33"/>
+</LinearLayout>
