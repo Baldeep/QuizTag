@@ -20,9 +20,9 @@ public class Main_Menu extends AppCompatActivity {
         Button connect_button = (Button) findViewById(R.id.connect_button);
         Button scan_button = (Button) findViewById(R.id.scan_button);
 
-        play_button.setOnClickListener(new MainMenuButtonListener("play"));
-        connect_button.setOnClickListener(new MainMenuButtonListener("connect"));
-        scan_button.setOnClickListener(new MainMenuButtonListener("scan"));
+        play_button.setOnClickListener(new MainMenuButtonListener(this, "play"));
+        connect_button.setOnClickListener(new MainMenuButtonListener(this, "connect"));
+        scan_button.setOnClickListener(new MainMenuButtonListener(this, "scan"));
     }
 
     @Override
@@ -38,7 +38,6 @@ public class Main_Menu extends AppCompatActivity {
             finish();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
