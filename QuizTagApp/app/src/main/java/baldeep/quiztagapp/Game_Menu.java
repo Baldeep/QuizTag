@@ -23,7 +23,7 @@ public class Game_Menu extends Activity{
 
         Intent previousActivity = getIntent();
         String previous = previousActivity.getExtras().getString("playMessage");
-        
+
         Toast.makeText(this, previous, Toast.LENGTH_SHORT).show();
 
     }

@@ -28,7 +28,6 @@ public class MainMenuButtonListener implements View.OnClickListener {
             Intent gameScreen = new Intent(v.getContext(), Game_Menu.class);
             gameScreen.putExtra("playMessage", "play was pressed");
 
-            gameScreen.putExtra("array", s);
             v.getContext().startActivity(gameScreen);
         }
     }
