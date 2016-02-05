@@ -1,33 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:theme="@style/AppTheme"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".GameMenu">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_weight="0.33"
+            android:text="@string/skips_text"
+            android:id="@+id/skips_count_img"
+            android:src="@drawable/skip_icon"
+            android:padding="10dp"
+            android:contentDescription="@string/skip_icon_description" />
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_weight="0.33"
+            android:text="@string/hints_text"
+            android:id="@+id/hints_count_img"
+            android:src="@drawable/hint_icon"
+            android:padding="10dp"
+            android:contentDescription="@string/hint_icon_description" />
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_weight="0.33"
+            android:text="@string/coins_text"
+            android:id="@+id/coins_count_img"
+            android:src="@drawable/coins_icon"
+            android:padding="10dp"
+            android:contentDescription="@string/coin_icon_description" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="0.33"
             android:text="@string/skips_text"
-            android:id="@+id/skips_count_text"/>
+            android:id="@+id/skips_count_text"
+            android:gravity="center"
+            android:padding="10dp"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="0.33"
             android:text="@string/hints_text"
-            android:id="@+id/hints_count_text"/>
+            android:id="@+id/hints_count_text"
+            android:gravity="center"
+            android:padding="10dp"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="0.33"
             android:text="@string/coins_text"
-            android:id="@+id/coins_count_text"/>
-
+            android:id="@+id/coins_count_text"
+            android:gravity="center"
+            android:padding="10dp"/>
     </LinearLayout>
 
 
