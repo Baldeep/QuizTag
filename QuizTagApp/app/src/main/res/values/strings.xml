@@ -14,8 +14,9 @@
     <string name="skips_text">Skip:</string>
     <string name="coins_text">Coins:</string>
     <string name="hints_text">Hints:</string>
-    <string name="skip_icon_description">Skip</string>
-    <string name="hint_icon_description">Hint</string>
+    <string name="skip_icon_description">Skips</string>
+    <string name="hint_icon_description">Hints</string>
     <string name="coin_icon_description">Coins</string>
     <string name="tool_bar_back_button_text">Back</string>
+    <string name="question_screen_title">Question</string>
 </resources>

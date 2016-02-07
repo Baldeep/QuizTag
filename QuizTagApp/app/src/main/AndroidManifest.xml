@@ -5,13 +5,17 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="19" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".Main_Menu" android:label="Main Menu">
+        <activity android:name=".Main_Menu" android:label="MooSeum">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,6 +26,10 @@
         <activity android:name=".Game_Menu"
             android:label="Quiz Menu"
             android:theme="@style/AppTheme"/>
+
+        <activity android:name=".Question_Screen"
+            android:label="@string/question_screen_title"
+            />
     </application>
 
 </manifest>

@@ -16,6 +16,7 @@ public class ConnectDialogListener implements DialogInterface.OnClickListener {
     public ConnectDialogListener(Context context, String message){
         this.origin = context;
         this.message = message;
+        System.out.println("making listener" + message);
     }
 
     @Override

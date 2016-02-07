@@ -3,10 +3,9 @@ package baldeep.quiztagapp;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.os.Bundle;
 
-public class ConnectDialogue extends DialogFragment {
+public class ConnectDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -21,7 +20,8 @@ public class ConnectDialogue extends DialogFragment {
         connectDialog.setNegativeButton("CANCEL",
                 new ConnectDialogListener(this.getActivity(), "cancel"));
 
+            System.out.println("making dialog");
 
-        return super.onCreateDialog(savedInstanceState);
+        return connectDialog.create();
     }
 }

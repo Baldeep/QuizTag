@@ -11,12 +11,11 @@ import java.util.List;
 public class FileParser {
 
     public static void main(String[] args){
-        String data = loadSavedData("QuizTag.play");
-        List<Question> questions = extractQuestions("Questions.txt");
+        //List<Question> questions = extractQuestions("Questions.txt");
     }
 
 
-    public static List<Question> extractQuestions(String fileName) {
+    public List<Question> extractQuestions(String fileName) {
         String input = parseFile(fileName);
 
         List<Question> qs = new ArrayList<Question>();
@@ -71,12 +70,6 @@ public class FileParser {
 		*/
     }
 
-    public static String loadSavedData(String inputFile){
-        String data = parseFile(inputFile);
-        System.out.println(data);
-
-        return data;
-    }
 
     public static String parseFile(String fileName){
         String line;
