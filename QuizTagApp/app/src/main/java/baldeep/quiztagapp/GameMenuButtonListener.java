@@ -2,6 +2,7 @@ package baldeep.quiztagapp;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.Toast;
 
 import baldeep.quiztagapp.backend.QuizMaster;
 
@@ -13,19 +14,19 @@ public class GameMenuButtonListener implements View.OnClickListener {
     String message;
     QuizMaster quizMaster;
 
-    public GameMenuButtonListener(String msg, QuizMaster quizMaster){
+    public GameMenuButtonListener(String msg){
         this.message = msg;
-        this.quizMaster = quizMaster;
+        //this.quizMaster = quizMaster;
     }
 
 
     @Override
     public void onClick(View v) {
-        //Toast.makeText(v.getContext(), message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(v.getContext(), message, Toast.LENGTH_SHORT).show();
 
         if(message.equals("start")){
             Intent guestionScreen = new Intent(v.getContext(), Question_Screen.class);
-            guestionScreen.putExtra("quizMaster", quizMaster);
+            //guestionScreen.putExtra("quizMaster", quizMaster);
 
             v.getContext().startActivity(guestionScreen);
         }

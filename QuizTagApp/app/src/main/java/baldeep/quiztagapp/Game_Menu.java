@@ -27,19 +27,19 @@ public class Game_Menu extends AppCompatActivity {
         setContentView(R.layout.game_menu_activity);
 
         // will load this from file in actual
-        QuizMaster qm = new QuizMaster("Example Quiz", "Quiz.txt");
+       // QuizMaster qm = new QuizMaster("Example Quiz", "Quiz.txt");
 
         start_button = (Button) findViewById(R.id.start_button);
-        start_button.setOnClickListener(new GameMenuButtonListener("start", qm));
+        start_button.setOnClickListener(new GameMenuButtonListener("start"));
 
         hints = (TextView) findViewById(R.id.hints_count_text);
         skips = (TextView) findViewById(R.id.skips_count_text);
         coins = (TextView) findViewById(R.id.coins_count_text);
 
         // use observer pattern for these here
-        hints.setText(qm.getHintCount());
+       /* hints.setText(qm.getHintCount());
         skips.setText(qm.getSkipCount());
-        coins.setText(qm.getPoints());
+        coins.setText(qm.getPoints());*/
 
     }
 

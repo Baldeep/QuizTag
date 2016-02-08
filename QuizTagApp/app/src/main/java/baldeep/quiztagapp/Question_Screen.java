@@ -27,7 +27,7 @@ public class Question_Screen extends AppCompatActivity {
         setContentView(R.layout.question_screen_activity);
 
         // Set up QuizMaster
-        Intent previousActivity = getIntent();
+        //Intent previousActivity = getIntent();
         //QuizMaster qm = (QuizMaster) previousActivity.getSerializableExtra("quizMaster");
         QuizMaster qm = new QuizMaster("Example Quiz", "Quiz.txt");
         questionField = (TextView) findViewById(R.id.question_field);
