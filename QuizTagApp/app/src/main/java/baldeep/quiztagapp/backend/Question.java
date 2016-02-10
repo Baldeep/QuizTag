@@ -1,5 +1,6 @@
 package baldeep.quiztagapp.backend;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,7 +12,7 @@ import java.util.Random;
  * @hints An array holding multiple string values which are possible answers to the question
  * @answer The correct answer to the question, if this is not in the hints array, it will be added
  */
-public class Question {
+public class Question implements Serializable {
     String question;
     List<String> hints;
     String answer;

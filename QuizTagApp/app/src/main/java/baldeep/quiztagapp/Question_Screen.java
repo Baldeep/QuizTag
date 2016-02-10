@@ -3,6 +3,7 @@ package baldeep.quiztagapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ public class Question_Screen extends AppCompatActivity {
         Intent previousActivity = getIntent();
         //QuizMaster qm = (QuizMaster) previousActivity.getSerializableExtra("quizMaster");
         QuizMaster qm = new QuizMaster("Example Quiz", "Quiz.txt");
+
         questionField = (TextView) findViewById(R.id.question_field);
         hintsField = (TextView) findViewById(R.id.hints_field);
 
@@ -37,16 +39,20 @@ public class Question_Screen extends AppCompatActivity {
         skips = (TextView) findViewById(R.id.skips_count_text);
         coins = (TextView) findViewById(R.id.coins_count_text);
 
+        System.out.println("Made things ****************************************************");
         // get the question
         qm.setNextQuestion();
+        System.out.println("Set Question ****************************************************");
         setTitle("Question " + qm.getCurrentQuestionNumber());
+
+        System.out.println("Setting title ****************************************************");
 
         // use observer pattern for these here
         questionField.setText("Question " + qm.getCurrentQuestionNumber() + ": " +
                 qm.getQuestionString());
-        hints.setText(qm.getHintCount());
-        skips.setText(qm.getSkipCount());
-        coins.setText(qm.getPoints());
+        hints.setText(qm.getHintCount() + "");
+        skips.setText(qm.getSkipCount() + "");
+        coins.setText(qm.getPoints() + "");
     }
 
     @Override

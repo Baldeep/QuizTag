@@ -37,9 +37,9 @@ public class Game_Menu extends AppCompatActivity {
         coins = (TextView) findViewById(R.id.coins_count_text);
 
         // use observer pattern for these here
-        hints.setText(qm.getHintCount());
-        skips.setText(qm.getSkipCount());
-        coins.setText(qm.getPoints());
+        hints.setText(qm.getHintCount() + "");
+        skips.setText(qm.getSkipCount() + "");
+        coins.setText(qm.getPoints() + "");
 
     }
 
