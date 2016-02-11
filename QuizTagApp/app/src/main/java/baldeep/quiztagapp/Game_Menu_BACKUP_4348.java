@@ -21,20 +21,16 @@ public class Game_Menu extends AppCompatActivity {
 
     Button start_button;
 
-    QuizMaster qm;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_menu_activity);
 
         // will load this from file in actual
-        qm = new QuizMaster("Example Quiz", "Quiz.txt");
+       // QuizMaster qm = new QuizMaster("Example Quiz", "Quiz.txt");
 
         start_button = (Button) findViewById(R.id.start_button);
-        start_button.setOnClickListener(new GameMenuButtonListener("start", qm, this));
+        start_button.setOnClickListener(new GameMenuButtonListener("start"));
 
         hints = (TextView) findViewById(R.id.hints_count_text);
         skips = (TextView) findViewById(R.id.skips_count_text);
