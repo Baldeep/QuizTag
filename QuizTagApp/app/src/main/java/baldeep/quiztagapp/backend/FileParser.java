@@ -12,12 +12,14 @@ import java.util.List;
 public class FileParser implements Serializable{
 
     public static void main(String[] args){
-        //List<Question> questions = extractQuestions("Questions.txt");
+        List<String> yolo = new ArrayList<String>();
+        if(yolo.get(0) == null){
+            System.out.println("null found");
+        }
     }
 
-
     public List<Question> extractQuestions(String fileName) {
-        String input = parseFile(fileName);
+        //String input = parseFile(fileName);
 
         List<Question> qs = new ArrayList<Question>();
 
@@ -39,9 +41,11 @@ public class FileParser implements Serializable{
         hints.add("3");
         hints.add("4");
 
-        qs.add(new Question("Do I still need to parse questions in properly?", hints, "yes"));
+        qs.add(new Question("Is the development for this going well?", hints, "yes"));
         qs.add(new Question("Is this going to be the best game ever?", hints2, "yes"));
         qs.add(new Question("How many days in a week?", hints3, "7"));
+        qs.add(new Question("How many fingers on your hand?", hints3, "5"));
+
 
         return qs;
 

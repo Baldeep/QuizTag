@@ -14,6 +14,7 @@ import java.util.Random;
 public class Question implements Serializable{
 	String question;
 	List<String> hints;
+	List<String> fourHints;
 	String answer;
 	Random r = new Random();
 
@@ -26,6 +27,7 @@ public class Question implements Serializable{
 			hints.add(answer);
 		}
 
+		fourHints = setHints();
 		// no need to test hints as it can only be null if answer is also null
 		assert(question != null && answer != null);
 	}
@@ -91,7 +93,7 @@ public class Question implements Serializable{
 		return question;
 	}
 
-	public List<String> getHints(){
+	private List<String> setHints(){
 		// if there's more than 4 hints available
 		if(hints.size() > 4){
 			// pick 3 random hints
@@ -137,6 +139,14 @@ public class Question implements Serializable{
 		}
 
 		return hints;
+	}
+
+	public List<String> getHints(){
+		return fourHints;
+	}
+	public List<String> resetHints(){
+		fourHints = setHints();
+		return fourHints;
 	}
 
 	public String getAnswer(){

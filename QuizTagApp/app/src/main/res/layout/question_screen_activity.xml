@@ -17,8 +17,9 @@
             android:layout_height="60dp"
             android:layout_weight="0.33"
             android:text="@string/skips_text"
-            android:id="@+id/skips_count_img"
+            android:id="@+id/skips_btn"
             android:src="@drawable/skip_icon"
+            android:backgroundTint="@android:color/transparent"
             android:scaleType="fitCenter"
             android:contentDescription="@string/skip_icon_description" />
 
@@ -27,8 +28,9 @@
             android:layout_height="60dp"
             android:layout_weight="0.33"
             android:text="@string/hints_text"
-            android:id="@+id/hints_count_img"
+            android:id="@+id/hints_btn"
             android:src="@drawable/hint_icon"
+            android:backgroundTint="@android:color/transparent"
             android:scaleType="fitCenter"
             android:contentDescription="@string/hint_icon_description" />
 
@@ -36,8 +38,9 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_weight="0.33"
+            android:backgroundTint="@android:color/transparent"
             android:text="@string/coins_text"
-            android:id="@+id/coins_count_img"
+            android:id="@+id/coins_btn"
             android:src="@drawable/coins_icon"
             android:scaleType="fitCenter"
             android:contentDescription="@string/coin_icon_description" />
@@ -93,6 +96,42 @@
         android:background="@android:color/darker_gray"
         />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/hint1"
+        android:layout_weight="0.1"
+        android:backgroundTint="@android:color/transparent"
+        android:visibility="invisible"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/hint2"
+        android:layout_weight="0.1"
+        android:backgroundTint="@android:color/transparent"
+        android:visibility="invisible"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/hint3"
+        android:layout_weight="0.1"
+        android:backgroundTint="@android:color/transparent"
+        android:visibility="invisible"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/hint4"
+        android:layout_weight="0.1"
+        android:backgroundTint="@android:color/transparent"
+        android:visibility="invisible"
+        />
+<!--
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -100,5 +139,5 @@
         android:textSize="15sp"
         android:layout_weight="0.5"
         android:layout_marginTop="2dp" />
-
+-->
 </LinearLayout>

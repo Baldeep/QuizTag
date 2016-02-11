@@ -34,21 +34,27 @@ public class QuestionPool implements Serializable{
 
     public Question getQuestion(){
         // make sure it's not empty
-        if(questionPool.isEmpty())
+        if(questionPool.isEmpty()) {
+            System.out.println("Questionpool empty");
+            questionPool.addAll(questionsAsked);
+            questionsAsked.clear();
             return null;
+        }
 
         // Pick a random question
-        int randomNo = new Random().nextInt(questionPool.size());
+        int randomNo = new Random().nextInt(questionPool.size()-1);
         Question q =  questionPool.get(randomNo);
 
         // has it been asked before? pick another one!
-        while(!questionsAsked.contains(q)){
-            randomNo = new Random().nextInt(questionPool.size());
+        while(questionsAsked.contains(q)){
+            randomNo = new Random().nextInt(questionPool.size()-1);
+            System.out.println("Looking for another question " + randomNo);
             q =  questionPool.get(randomNo);
         }
 
         // mark it as asked
         questionsAsked.add(q);
+        questionPool.remove(q);
 
         return q;
     }

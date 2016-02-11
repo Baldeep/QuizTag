@@ -25,8 +25,6 @@ public class Game_Menu extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_menu_activity);
 
@@ -34,22 +32,17 @@ public class Game_Menu extends AppCompatActivity {
         qm = new QuizMaster("Example Quiz", "Quiz.txt");
 
         start_button = (Button) findViewById(R.id.start_button);
-        start_button.setOnClickListener(new GameMenuButtonListener("start", qm, this));
+        start_button.setOnClickListener(new GameMenuButtonListener(this, "start", qm));
 
         hints = (TextView) findViewById(R.id.hints_count_text);
         skips = (TextView) findViewById(R.id.skips_count_text);
         coins = (TextView) findViewById(R.id.coins_count_text);
 
         // use observer pattern for these here
-<<<<<<< HEAD
         hints.setText(qm.getHintCount() + "");
         skips.setText(qm.getSkipCount() + "");
         coins.setText(qm.getPoints() + "");
-=======
-       /* hints.setText(qm.getHintCount());
-        skips.setText(qm.getSkipCount());
-        coins.setText(qm.getPoints());*/
->>>>>>> a8ff7fa67209bb630062aaef37e29ef31cbc98f4
+
 
     }
 

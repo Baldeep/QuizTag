@@ -16,7 +16,7 @@ public class GameMenuButtonListener implements View.OnClickListener {
     QuizMaster quizMaster;
     Game_Menu menu;
 
-    public GameMenuButtonListener(String msg, QuizMaster qm, Game_Menu menu){
+    public GameMenuButtonListener(Game_Menu menu, String msg, QuizMaster qm){
         this.message = msg;
         this.quizMaster = qm;
         this.menu = menu;

@@ -27,9 +27,10 @@ public class QuizMaster implements Serializable{
         skips = 200;
         currentQuestionNumber = 0;
         qp = new QuestionPool(quizName, new FileParser().extractQuestions(fileName));
+        setNextQuestion();
     }
 
-    public void setQuiz(){
+    public void setNewQuiz(){
         qp = new QuestionPool(quizName, new FileParser().extractQuestions(fileName));
     }
 
