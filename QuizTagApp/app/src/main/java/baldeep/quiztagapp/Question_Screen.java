@@ -21,15 +21,19 @@ public class Question_Screen extends AppCompatActivity {
     TextView skips;
     TextView coins;
 
+    QuizMaster qm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.question_screen_activity);
 
         // Set up QuizMaster
-        //Intent previousActivity = getIntent();
-        //QuizMaster qm = (QuizMaster) previousActivity.getSerializableExtra("quizMaster");
-        QuizMaster qm = new QuizMaster("Example Quiz", "Quiz.txt");
+        Intent previousActivity = getIntent();
+
+        qm = (QuizMaster) previousActivity.getSerializableExtra("quizMaster");
+
+        //QuizMaster qm = new QuizMaster("Example Quiz", "Quiz.txt");
         questionField = (TextView) findViewById(R.id.question_field);
         hintsField = (TextView) findViewById(R.id.hints_field);
 
@@ -39,14 +43,14 @@ public class Question_Screen extends AppCompatActivity {
 
         // get the question
         qm.setNextQuestion();
-        setTitle("Question " + qm.getCurrentQuestionNumber());
+        //setTitle("Question " + qm.getCurrentQuestionNumber());
 
         // use observer pattern for these here
-        questionField.setText("Question " + qm.getCurrentQuestionNumber() + ": " +
-                qm.getQuestionString());
-        hints.setText(qm.getHintCount());
-        skips.setText(qm.getSkipCount());
-        coins.setText(qm.getPoints());
+       // questionField.setText("Question " + qm.getCurrentQuestionNumber() + ": " +
+       //         qm.getQuestionString());
+       // hints.setText(qm.getHintCount());
+       // skips.setText(qm.getSkipCount());
+      // coins.setText(qm.getPoints());
     }
 
     @Override

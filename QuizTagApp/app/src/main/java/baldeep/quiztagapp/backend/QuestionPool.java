@@ -1,5 +1,6 @@
 package baldeep.quiztagapp.backend;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -8,7 +9,7 @@ import java.util.Random;
  * This class implements the Question pool.  Given a set of questions, it will
  * return randomly picked questions out of the pool. 
  */
-public class QuestionPool {
+public class QuestionPool implements Serializable{
 
     String quizName;
     List<Question> questionPool;

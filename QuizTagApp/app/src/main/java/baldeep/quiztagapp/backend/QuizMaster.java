@@ -6,7 +6,6 @@ import java.util.List;
 
 public class QuizMaster implements Serializable{
 
-    private static final long serialVersionUID = 5895683645919672557L;
 
     private final int POINTS = 20;
     private int points;

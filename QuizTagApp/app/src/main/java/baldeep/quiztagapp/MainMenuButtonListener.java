@@ -26,7 +26,7 @@ public class MainMenuButtonListener implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Toast.makeText(v.getContext(), message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(menu, message, Toast.LENGTH_SHORT).show();
 
         if(message.equals("play")){
             Intent gameScreen = new Intent(menu, Game_Menu.class);
