@@ -43,7 +43,6 @@ public class Game_Menu extends AppCompatActivity {
         skips.setText(qm.getSkipCount() + "");
         coins.setText(qm.getPoints() + "");
 
-
     }
 
     @Override

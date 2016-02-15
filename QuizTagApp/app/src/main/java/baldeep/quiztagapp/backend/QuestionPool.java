@@ -1,5 +1,4 @@
 package baldeep.quiztagapp.backend;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +6,7 @@ import java.util.Random;
 
 /**
  * This class implements the Question pool.  Given a set of questions, it will
- * return randomly picked questions out of the pool. 
+ * return randomly picked questions out of the pool.
  */
 public class QuestionPool implements Serializable{
 
@@ -25,31 +24,43 @@ public class QuestionPool implements Serializable{
         this.quizName = quizName;
         questionsAsked = new ArrayList<Question>();
     }
-	
+
+    public QuestionPool(List<Question> questionPool){
+        this.questionPool = questionPool;
+        this.quizName = "";
+        questionsAsked = new ArrayList<Question>();
+    }
+
 	/*
 	 * Picks a question out of the pool of questions given and returns it. It is
-	 * left up to the class using the QuizMaster to extract the data from the 
+	 * left up to the class using the QuizMaster to extract the data from the
 	 * Question
 	 */
 
-    public Question getQuestion(){
+    public Question askQuestion(){
+        Question q;
         // make sure it's not empty
         if(questionPool.isEmpty()) {
-            System.out.println("Questionpool empty");
+            System.out.println("Questionpool empty **********");
             questionPool.addAll(questionsAsked);
             questionsAsked.clear();
-            return null;
         }
 
-        // Pick a random question
-        int randomNo = new Random().nextInt(questionPool.size()-1);
-        Question q =  questionPool.get(randomNo);
+        System.out.println("Selecting a random question from pool size: " + questionPool.size());
+        if(questionPool.size() == 1){
+            q = questionPool.get(0);
+        } else {
+            // Pick a random question
+            int randomNo = new Random().nextInt(questionPool.size() - 1);
+            System.out.println("Looking for another question " + randomNo + " **************");
+            q = questionPool.get(randomNo);
 
-        // has it been asked before? pick another one!
-        while(questionsAsked.contains(q)){
-            randomNo = new Random().nextInt(questionPool.size()-1);
-            System.out.println("Looking for another question " + randomNo);
-            q =  questionPool.get(randomNo);
+            // has it been asked before? pick another one!
+            while (questionsAsked.contains(q)) {
+                randomNo = new Random().nextInt(questionPool.size() - 1);
+                System.out.println("Looking for another question " + randomNo + " **************");
+                q = questionPool.get(randomNo);
+            }
         }
 
         // mark it as asked
@@ -83,3 +94,4 @@ public class QuestionPool implements Serializable{
     }
 
 }
+

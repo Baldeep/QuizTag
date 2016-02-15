@@ -24,10 +24,10 @@ public class FileParser implements Serializable{
         List<Question> qs = new ArrayList<Question>();
 
         List<String> hints = new ArrayList<String>();
-        hints.add("yes");
+        hints.add("Yes");
         hints.add("No");
-        hints.add("maybe");
-        hints.add("meh");
+        hints.add("Maybe");
+        hints.add("None of the selected");
 
         List<String> hints2 = new ArrayList<String>();
         hints.add("yes");
@@ -36,16 +36,16 @@ public class FileParser implements Serializable{
         hints.add("yes");
 
         List<String> hints3 = new ArrayList<String>();
-        hints.add("1");
-        hints.add("2");
         hints.add("3");
         hints.add("4");
+        hints.add("5");
+        hints.add("6");
 
-        qs.add(new Question("Is the development for this going well?", hints, "yes"));
+        qs.add(new Question("Are you happy?", hints, "yes"));
         qs.add(new Question("Is this going to be the best game ever?", hints2, "yes"));
+        qs.add(new Question("How many hints are shown?", hints3, "4"));
         qs.add(new Question("How many days in a week?", hints3, "7"));
         qs.add(new Question("How many fingers on your hand?", hints3, "5"));
-
 
         return qs;
 
