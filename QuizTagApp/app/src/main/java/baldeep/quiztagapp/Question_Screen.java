@@ -9,19 +9,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
+import baldeep.quiztagapp.backend.IObserver;
 import baldeep.quiztagapp.backend.QuizMaster;
 
-/**
- * Created by Baldeep on 07/02/2016.
- */
-public class Question_Screen extends AppCompatActivity {
+
+public class Question_Screen extends AppCompatActivity implements IObserver {
 
     TextView questionField;
-    TextView hintsField;
+    //TextView hintsField;
     TextView hints;
     TextView skips;
     TextView coins;
@@ -67,15 +65,29 @@ public class Question_Screen extends AppCompatActivity {
         hint3.setOnClickListener(new QuestionScreenButtonListener(this, "hint", qm));
         hint4.setOnClickListener(new QuestionScreenButtonListener(this, "hint", qm));
 
-        // get the question
-        setTitle("Question " + qm.getCurrentQuestionNumber());
+        //update();
+
+        /*************************** This needs updating each time ********************************/
+        // Set the title of the screen as the question number
+        /*if(qm.getCurrentQuestionNumber() <= 0){
+            setTitle(qm.getQuizName());
+        } else {
+            setTitle("Question " + qm.getCurrentQuestionNumber());
+        }
 
         // use observer pattern for these here
-        questionField.setText("Question " + qm.getCurrentQuestionNumber() + ": " +
-                qm.getQuestionString());
-        hints.setText(qm.getHintCount() + "");
-        skips.setText(qm.getSkipCount() + "");
-        coins.setText(qm.getPoints() + "");
+        String question = "Question " + qm.getCurrentQuestionNumber() + ": " +
+                qm.getQuestionString();
+        questionField.setText(question);
+        String hintString = qm.getHintCount() + "";
+        hints.setText(hintString);
+        String skipString = qm.getSkipCount() + "";
+        skips.setText(skipString);
+        String coinsString = qm.getPoints() + "";
+        coins.setText(coinsString);
+
+        displayHints();*/
+        /******************************************************************************************/
     }
 
     @Override
@@ -94,33 +106,49 @@ public class Question_Screen extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void displayHints(){
-        List<String> hints = qm.getHints();
+    public void displayHints() {
+        if(qm.hintsAvailable()) {
+            List<String> hints = qm.revealHints();
 
-        if(hints.get(0) != null){
-            hint1.setText(hints.get(0));
-            hint1.setVisibility(View.VISIBLE);
-        }
-        if(hints.get(1) != null){
-            hint2.setText(hints.get(1));
-            hint2.setVisibility(View.VISIBLE);
-        }
-        if(hints.get(2) != null){
-            hint3.setText(hints.get(2));
-            hint3.setVisibility(View.VISIBLE);
-        }
-        if(hints.get(3) != null){
-            hint4.setText(hints.get(3));
-            hint4.setVisibility(View.VISIBLE);
+            if (hints.size() > 0) {
+                hint1.setText(hints.get(0));
+                hint1.setVisibility(View.VISIBLE);
+            }
+            if (hints.size() > 1) {
+                hint2.setText(hints.get(1));
+                hint2.setVisibility(View.VISIBLE);
+            }
+            if (hints.size() > 2) {
+                hint3.setText(hints.get(2));
+                hint3.setVisibility(View.VISIBLE);
+            }
+            if (hints.size() > 3) {
+                hint4.setText(hints.get(3));
+                hint4.setVisibility(View.VISIBLE);
+            }
         }
     }
 
-    public void skipQuestion() {
-        qm.setNextQuestion();
-        questionField.setText(qm.getQuestionString());
-        hint1.setVisibility(View.INVISIBLE);
-        hint2.setVisibility(View.INVISIBLE);
-        hint3.setVisibility(View.INVISIBLE);
-        hint4.setVisibility(View.INVISIBLE);
+
+    @Override
+    public void update() {
+        if(qm.getCurrentQuestionNumber() <= 0){
+            setTitle(qm.getQuizName());
+        } else {
+            setTitle("Question " + qm.getCurrentQuestionNumber());
+        }
+
+        // use observer pattern for these here
+        String question = "Question " + qm.getCurrentQuestionNumber() + ": " +
+                qm.getQuestionString();
+        questionField.setText(question);
+        String hintString = qm.getHintCount() + "";
+        hints.setText(hintString);
+        String skipString = qm.getSkipCount() + "";
+        skips.setText(skipString);
+        String coinsString = qm.getPoints() + "";
+        coins.setText(coinsString);
+
+        displayHints();
     }
 }

@@ -1,44 +1,53 @@
 package baldeep.quiztagapp.backend;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
-/**
- * This class implements the Question pool.  Given a set of questions, it will
- * return randomly picked questions out of the pool.
- */
+
 public class QuestionPool implements Serializable{
 
-    String quizName;
-    List<Question> questionPool;
-    List<Question> questionsAsked;
+    private String quizName;
+    private List<Question> questionPool;
+    private List<Question> questionsAsked;
 
-    /*
-     * The QuizMaster is the class which holds all the questions once they have
-     * been parsed into a list. Additionally a name for the quiz can be saved
-     * here for later printing etc.
+
+
+    private Question currentQuestion;
+
+    /**
+     * The question pool holds a non-empty list of questions and helps with the question handling tasks,
+     * without dealing with any of the power-ups etc
+     * @param quizName The name for the quiz
+     * @param questionPool The pool of questions
      */
     public QuestionPool(String quizName, List<Question> questionPool){
+
+        assert(questionPool.size()>=1);
+
         this.questionPool = questionPool;
         this.quizName = quizName;
-        questionsAsked = new ArrayList<Question>();
+        questionsAsked = new ArrayList<>();
     }
 
+    /**
+     * The question pool holds a list of questions and helps with the question handling tasks,
+     * without dealing with any of the power-ups etc.
+     * @param questionPool The pool of questions
+     */
     public QuestionPool(List<Question> questionPool){
         this.questionPool = questionPool;
         this.quizName = "";
-        questionsAsked = new ArrayList<Question>();
+        questionsAsked = new ArrayList<>();
     }
 
-	/*
-	 * Picks a question out of the pool of questions given and returns it. It is
-	 * left up to the class using the QuizMaster to extract the data from the
-	 * Question
-	 */
-
+    /**
+     * This question picks a random question from the question pool and returns it.
+     * @return A randomly selected Question
+     */
     public Question askQuestion(){
         Question q;
+
         // make sure it's not empty
         if(questionPool.isEmpty()) {
             System.out.println("Questionpool empty **********");
@@ -46,6 +55,14 @@ public class QuestionPool implements Serializable{
             questionsAsked.clear();
         }
 
+        Collections.shuffle(questionPool);
+        q = questionPool.get(0);
+
+        /* Redacting the following as a check is made to ensure the list isn't empty at the start
+         *of the method, therefore it's simpler to just shuffle the array and return the first
+         * element found
+         */
+        /*
         System.out.println("Selecting a random question from pool size: " + questionPool.size());
         if(questionPool.size() == 1){
             q = questionPool.get(0);
@@ -62,17 +79,19 @@ public class QuestionPool implements Serializable{
                 q = questionPool.get(randomNo);
             }
         }
+        */
 
         // mark it as asked
+        currentQuestion = q;
         questionsAsked.add(q);
         questionPool.remove(q);
 
         return q;
     }
 
-    /*
-     * This function clears the questions asked so far with a little bit of
-     * confirmation that it has cleared properly.
+    /**
+     * This class resets the array of questions asked.
+     * @return True if the questions asked were sucessfully cleared, false otherwise
      */
     public boolean clearAskedQuestions(){
         questionsAsked.clear();
@@ -82,6 +101,7 @@ public class QuestionPool implements Serializable{
     public String getQuizName(){
         return quizName;
     }
+
     public void setQuizName(String newName){
         this.quizName = newName;
     }
@@ -89,8 +109,21 @@ public class QuestionPool implements Serializable{
     public List<Question> getQuestionPool(){
         return questionPool;
     }
+
     public void setQuestionPool(List<Question> newQuestions){
         this.questionPool = newQuestions;
+    }
+
+    public List<Question> getAskedQuestions(){
+        return questionsAsked;
+    }
+
+    public Question getCurrentQuestion() {
+        return currentQuestion;
+    }
+
+    public void setCurrentQuestion(Question currentQuestion) {
+        this.currentQuestion = currentQuestion;
     }
 
 }

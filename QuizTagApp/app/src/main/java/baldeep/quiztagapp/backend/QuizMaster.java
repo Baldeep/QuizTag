@@ -1,23 +1,26 @@
 package baldeep.quiztagapp.backend;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class QuizMaster implements Serializable{
 
+public class QuizMaster implements Serializable{
 
     private final int POINTS = 20;
     private int points;
     private int hints;
     private int skips;
+    private boolean hintsRevealed;
 
     private int currentQuestionNumber;
-
     private String quizName;
     private String fileName;
     private QuestionPool qp;
     private Question currentQuestion;
+
+    List<IObserver> observers = new ArrayList<>();
 
     public QuizMaster(String quizName, String fileName){
         this.quizName = quizName;
@@ -30,13 +33,15 @@ public class QuizMaster implements Serializable{
         setNextQuestion();
     }
 
-    public void setNewQuiz(){
-        qp = new QuestionPool(quizName, new FileParser().extractQuestions(fileName));
+    public void setNextQuestion(){
+        currentQuestion = qp.askQuestion();
+        hintsRevealed = false;
+        currentQuestionNumber++;
+        notifyAllObservers();
     }
 
-    public void setNextQuestion(){
-        currentQuestion = qp.getQuestion();
-        currentQuestionNumber++;
+    public int getCurrentQuestionNumber(){
+        return currentQuestionNumber;
     }
 
     public String getQuestionString(){
@@ -51,21 +56,30 @@ public class QuizMaster implements Serializable{
             return false;
     }
 
-    public List<String> getHints(){
+    public int skipQuestion(){
+        if(skips > 1) {
+            setNextQuestion();
+            skips--;
+        }
+        return skips;
+    }
+
+    public List<String> revealHints(){
         if(hints > 1) {
             hints--;
+            hintsRevealed = true;
+            notifyAllObservers();
             return currentQuestion.getHints();
         } else
             return null;
     }
 
-    public boolean resetQuiz(){
-        currentQuestionNumber = 0;
-        return qp.clearAskedQuestions();
+    public boolean hintsAvailable(){
+        return hintsRevealed;
     }
 
-    public int getCurrentQuestionNumber(){
-        return currentQuestionNumber;
+    public List<String> getHintsToCurrentQuestion(){
+        return currentQuestion.getHints();
     }
 
     public String getAnswer(){
@@ -84,6 +98,20 @@ public class QuizMaster implements Serializable{
         return points;
     }
 
+    public String getQuizName(){
+        return qp.getQuizName();
+    }
+
+    public boolean resetQuiz(){
+        currentQuestionNumber = 0;
+        return qp.clearAskedQuestions();
+    }
+
+    public void setNewQuiz(){
+        qp = new QuestionPool(quizName, new FileParser().extractQuestions(fileName));
+
+    }
+
     public void setHintCount(int hintCount){
         hints = hintCount;
     }
@@ -94,5 +122,15 @@ public class QuizMaster implements Serializable{
 
     public void setPoints(int points){
         this.points = points;
+    }
+
+    public void attach(IObserver o){
+        observers.add(o);
+    }
+
+    public void notifyAllObservers(){
+        for(IObserver o : observers){
+            o.update();
+        }
     }
 }
