@@ -31,13 +31,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
         currentQuestionNumber = 0;
         qp = new QuestionPool(quizName, new FileParser().extractQuestions("Example.txt"));
         setNextQuestion();
-       try {
-           powerUps.attach(this);
-       }catch(Exception e){
-           e.printStackTrace();
-           System.out.print("QUIZMASTER IS NULL ***********************");
-       }
-
+        powerUps.attach(this);
     }
 
     /**
@@ -50,11 +44,8 @@ public class QuizMaster extends Observable implements Serializable, Observer{
         currentQuestionNumber = 0;
         qp = new QuestionPool(quizName, new FileParser().extractQuestions("Example.txt"));
         setNextQuestion();
-        try {
-            powerUps.attach(this);
-        }catch(Exception e){
-            e.printStackTrace();
-            System.out.print("QUIZMASTER IS NULL ***********************");
+        if(powerUps == null){
+            System.out.print("powerUps is null");
         }
     }
 
@@ -64,7 +55,6 @@ public class QuizMaster extends Observable implements Serializable, Observer{
     public void setNextQuestion(){
         currentQuestion = qp.askQuestion();
         hintsRevealed = false;
-        powerUps.attach(this);
         currentQuestionNumber++;
         notifyAllObservers();
     }
@@ -94,6 +84,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
     public boolean checkAnswer(String answer){
         if(qp.checkAnswer(answer)) {
             powerUps.setPoints(powerUps.getPoints() + POINTS);
+            notifyAllObservers();
             return true;
         } else
             return false;
@@ -108,6 +99,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
         if(powerUps.getSkips() > 1) {
             setNextQuestion();
             powerUps.setSkips(powerUps.getSkips() - 1);
+            notifyAllObservers();
         }
         return powerUps.getSkips();
     }
@@ -118,7 +110,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      */
     public int revealHints(){
         System.out.println("hints = " + powerUps.getHints() + "*********************");
-        if(powerUps.getHints() > 1) {
+        if(powerUps.getHints() > 1 && !hintsRevealed) {
             powerUps.setHints(powerUps.getHints()-1);
             hintsRevealed = true;
             notifyAllObservers();
@@ -131,6 +123,11 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      * @return True if reveal hints has been called, false otherwise
      */
     public boolean hintsAvailable(){
+        System.out.println("**************************************************");
+        for(String s : currentQuestion.getHints()){
+            System.out.println(" - " + s);
+        }
+        System.out.println("**************************************************");
         return hintsRevealed;
     }
 

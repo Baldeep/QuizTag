@@ -46,7 +46,8 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         // Set up QuizMaster
         Intent previousActivity = getIntent();
         //qm = (QuizMaster) previousActivity.getSerializableExtra("quizMaster");
-        pu = (PowerUps) previousActivity.getSerializableExtra("PowerUps");
+        //pu = (PowerUps) previousActivity.getSerializableExtra("PowerUps");
+        pu = new PowerUps(0, 100, 100);
         qm = new QuizMaster("Example Quiz", pu);
 
         qm.attach(this);
@@ -108,11 +109,6 @@ public class Question_Screen extends AppCompatActivity implements Observer {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.toolbar_back_button){
-            Intent gameScreen = new Intent(this, Game_Menu.class);
-            gameScreen.putExtra("playMessage", "play was pressed");
-            gameScreen.putExtra("PowerUps", pu);
-
-            startActivity(gameScreen);
             this.finish();
             return true;
         }
@@ -123,19 +119,19 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         if(qm.hintsAvailable()) {
             List<String> hints = qm.getHints();
 
-            if (hints.size() > 0) {
+            if (hints.size() >= 1) {
                 hint1.setText(hints.get(0));
                 hint1.setVisibility(View.VISIBLE);
             }
-            if (hints.size() > 1) {
+            if (hints.size() >= 2) {
                 hint2.setText(hints.get(1));
                 hint2.setVisibility(View.VISIBLE);
             }
-            if (hints.size() > 2) {
+            if (hints.size() >= 3) {
                 hint3.setText(hints.get(2));
                 hint3.setVisibility(View.VISIBLE);
             }
-            if (hints.size() > 3) {
+            if (hints.size() >= 4) {
                 hint4.setText(hints.get(3));
                 hint4.setVisibility(View.VISIBLE);
             }
