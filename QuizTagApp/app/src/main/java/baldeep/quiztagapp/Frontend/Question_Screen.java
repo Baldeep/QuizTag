@@ -1,4 +1,4 @@
-package baldeep.quiztagapp;
+package baldeep.quiztagapp.Frontend;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +11,16 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-import baldeep.quiztagapp.backend.IObserver;
+import baldeep.quiztagapp.backend.PowerUps;
 import baldeep.quiztagapp.backend.QuizMaster;
+import baldeep.quiztagapp.Listeners.QuestionScreenButtonListener;
+import baldeep.quiztagapp.R;
 
 
-public class Question_Screen extends AppCompatActivity implements IObserver {
+public class Question_Screen extends AppCompatActivity implements Observer {
 
     TextView questionField;
     //TextView hintsField;
@@ -31,6 +35,7 @@ public class Question_Screen extends AppCompatActivity implements IObserver {
     Button hint3;
     Button hint4;
 
+    PowerUps pu;
     QuizMaster qm;
 
     @Override
@@ -40,8 +45,11 @@ public class Question_Screen extends AppCompatActivity implements IObserver {
 
         // Set up QuizMaster
         Intent previousActivity = getIntent();
-        qm = (QuizMaster) previousActivity.getSerializableExtra("quizMaster");
-        //QuizMaster qm = new QuizMaster("Example Quiz", "Quiz.txt");
+        //qm = (QuizMaster) previousActivity.getSerializableExtra("quizMaster");
+        pu = (PowerUps) previousActivity.getSerializableExtra("PowerUps");
+        qm = new QuizMaster("Example Quiz", pu);
+
+        qm.attach(this);
 
         questionField = (TextView) findViewById(R.id.question_field);
         //hintsField = (TextView) findViewById(R.id.hints_field);
@@ -65,7 +73,7 @@ public class Question_Screen extends AppCompatActivity implements IObserver {
         hint3.setOnClickListener(new QuestionScreenButtonListener(this, "hint", qm));
         hint4.setOnClickListener(new QuestionScreenButtonListener(this, "hint", qm));
 
-        //update();
+        update(qm, null);
 
         /*************************** This needs updating each time ********************************/
         // Set the title of the screen as the question number
@@ -100,6 +108,11 @@ public class Question_Screen extends AppCompatActivity implements IObserver {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.toolbar_back_button){
+            Intent gameScreen = new Intent(this, Game_Menu.class);
+            gameScreen.putExtra("playMessage", "play was pressed");
+            gameScreen.putExtra("PowerUps", pu);
+
+            startActivity(gameScreen);
             this.finish();
             return true;
         }
@@ -108,7 +121,7 @@ public class Question_Screen extends AppCompatActivity implements IObserver {
 
     public void displayHints() {
         if(qm.hintsAvailable()) {
-            List<String> hints = qm.revealHints();
+            List<String> hints = qm.getHints();
 
             if (hints.size() > 0) {
                 hint1.setText(hints.get(0));
@@ -126,12 +139,19 @@ public class Question_Screen extends AppCompatActivity implements IObserver {
                 hint4.setText(hints.get(3));
                 hint4.setVisibility(View.VISIBLE);
             }
+        } else {
+            hint1.setVisibility(View.INVISIBLE);
+            hint2.setVisibility(View.INVISIBLE);
+            hint3.setVisibility(View.INVISIBLE);
+            hint4.setVisibility(View.INVISIBLE);
         }
     }
 
 
     @Override
-    public void update() {
+    public void update(Observable observable, Object data) {
+
+        System.out.println("Updating ******************************************************");
         if(qm.getCurrentQuestionNumber() <= 0){
             setTitle(qm.getQuizName());
         } else {
@@ -142,12 +162,10 @@ public class Question_Screen extends AppCompatActivity implements IObserver {
         String question = "Question " + qm.getCurrentQuestionNumber() + ": " +
                 qm.getQuestionString();
         questionField.setText(question);
-        String hintString = qm.getHintCount() + "";
-        hints.setText(hintString);
-        String skipString = qm.getSkipCount() + "";
-        skips.setText(skipString);
-        String coinsString = qm.getPoints() + "";
-        coins.setText(coinsString);
+
+        hints.setText(pu.getHintsAsString());
+        skips.setText(pu.getSkipsAsString());
+        coins.setText(pu.getPointsAsString());
 
         displayHints();
     }

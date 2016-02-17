@@ -3,82 +3,148 @@ package baldeep.quiztagapp.backend;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 
-
-public class QuizMaster implements Serializable{
+public class QuizMaster extends Observable implements Serializable, Observer{
 
     private final int POINTS = 20;
-    private int points;
-    private int hints;
-    private int skips;
+    private PowerUps powerUps;
     private boolean hintsRevealed;
 
     private int currentQuestionNumber;
-    private String quizName;
-    private String fileName;
     private QuestionPool qp;
     private Question currentQuestion;
 
-    List<IObserver> observers = new ArrayList<>();
+    List<Observer> observers = new ArrayList<>();
 
-    public QuizMaster(String quizName, String fileName){
-        this.quizName = quizName;
-        this.fileName = fileName;
-        points = 0;
-        hints = 200;
-        skips = 200;
+    /**
+     * The default instantiation of QuizMaster starts the game with no powerups or points.
+     *
+     * The QuizMaster class wraps around the QuestionPool class in a way as it uses the basic
+     * methods defined in that class to incorporate the use of power ups.
+     * @param quizName The name of the quiz to start
+     */
+    public QuizMaster(String quizName){
+        this.powerUps = new PowerUps(0, 0, 0);
         currentQuestionNumber = 0;
-        qp = new QuestionPool(quizName, new FileParser().extractQuestions(fileName));
+        qp = new QuestionPool(quizName, new FileParser().extractQuestions("Example.txt"));
         setNextQuestion();
+       try {
+           powerUps.attach(this);
+       }catch(Exception e){
+           e.printStackTrace();
+           System.out.print("QUIZMASTER IS NULL ***********************");
+       }
+
     }
 
+    /**
+     * The QuizMaster class wraps around the QuestionPool class in a way as it uses the basic
+     * methods defined in that class to incorporate the use of power ups.
+     * @param quizName The name of the quiz to start
+     */
+    public QuizMaster(String quizName, PowerUps powerUps){
+        this.powerUps = powerUps;
+        currentQuestionNumber = 0;
+        qp = new QuestionPool(quizName, new FileParser().extractQuestions("Example.txt"));
+        setNextQuestion();
+        try {
+            powerUps.attach(this);
+        }catch(Exception e){
+            e.printStackTrace();
+            System.out.print("QUIZMASTER IS NULL ***********************");
+        }
+    }
+
+    /**
+     * This method picks a new question from the QuestionPool and increments the question number
+     */
     public void setNextQuestion(){
         currentQuestion = qp.askQuestion();
         hintsRevealed = false;
+        powerUps.attach(this);
         currentQuestionNumber++;
         notifyAllObservers();
     }
 
+    /**
+     * Returns the number of the current question
+     * @return Returns the number of the current question
+     */
     public int getCurrentQuestionNumber(){
         return currentQuestionNumber;
     }
 
+    /**
+     * Returns the question from the currently selected question
+     * @return Returns the question from the currently selected question
+     */
     public String getQuestionString(){
         return currentQuestion.getQuestion();
     }
 
+    /**
+     * Checks the answer against the one provided by the QuestionPool and increments the points
+     * @see QuestionPool#checkAnswer(String);
+     * @param answer The answer given to check
+     * @return Returns
+     */
     public boolean checkAnswer(String answer){
-        if(currentQuestion.checkAnswer(answer)) {
-            points += POINTS;
+        if(qp.checkAnswer(answer)) {
+            powerUps.setPoints(powerUps.getPoints() + POINTS);
             return true;
         } else
             return false;
     }
 
+    /**
+     * Selects the next question however it removes one from the total number of skips
+     * @return Return the new value for skips
+     */
     public int skipQuestion(){
-        if(skips > 1) {
+        System.out.println("skips = " + powerUps.getSkips() + "*********************");
+        if(powerUps.getSkips() > 1) {
             setNextQuestion();
-            skips--;
+            powerUps.setSkips(powerUps.getSkips() - 1);
         }
-        return skips;
+        return powerUps.getSkips();
     }
 
-    public List<String> revealHints(){
-        if(hints > 1) {
-            hints--;
+    /**
+     * Sets the hints to be revelaled and removes one from the total number of skips
+     * @return Return the new value for hints
+     */
+    public int revealHints(){
+        System.out.println("hints = " + powerUps.getHints() + "*********************");
+        if(powerUps.getHints() > 1) {
+            powerUps.setHints(powerUps.getHints()-1);
             hintsRevealed = true;
             notifyAllObservers();
-            return currentQuestion.getHints();
-        } else
-            return null;
+        }
+        return powerUps.getHints();
     }
 
+    /**
+     * Shows whether hints should be available or not
+     * @return True if reveal hints has been called, false otherwise
+     */
     public boolean hintsAvailable(){
         return hintsRevealed;
     }
 
-    public List<String> getHintsToCurrentQuestion(){
+
+    /**
+     * Resets the question counter and clears the questions asked from the QuestionPool
+     * @return True if the questions asked have been cleared successfully, false otherwise
+     */
+    public boolean resetQuiz(){
+        currentQuestionNumber = 0;
+        return qp.clearAskedQuestions();
+    }
+
+    public List<String> getHints(){
         return currentQuestion.getHints();
     }
 
@@ -86,51 +152,37 @@ public class QuizMaster implements Serializable{
         return currentQuestion.getAnswer();
     }
 
-    public int getHintCount(){
-        return hints;
-    }
-
-    public int getSkipCount(){
-        return skips;
-    }
-
-    public int getPoints(){
-        return points;
+    public PowerUps getPowerUps(){
+        return powerUps;
     }
 
     public String getQuizName(){
         return qp.getQuizName();
     }
 
-    public boolean resetQuiz(){
-        currentQuestionNumber = 0;
-        return qp.clearAskedQuestions();
-    }
 
-    public void setNewQuiz(){
+    public void setNewQuiz(String quizName, String fileName){
         qp = new QuestionPool(quizName, new FileParser().extractQuestions(fileName));
 
     }
 
-    public void setHintCount(int hintCount){
-        hints = hintCount;
+    public void setPowerUps(PowerUps powerUps){
+        this.powerUps = powerUps;
     }
 
-    public void setSkipCount(int skipCount){
-        skips = skipCount;
-    }
 
-    public void setPoints(int points){
-        this.points = points;
-    }
-
-    public void attach(IObserver o){
+    public void attach(Observer o){
         observers.add(o);
     }
 
     public void notifyAllObservers(){
-        for(IObserver o : observers){
-            o.update();
+        for(Observer o : observers){
+            o.update(this, null);
         }
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
+        notifyAllObservers();
     }
 }

@@ -11,13 +11,11 @@ public class QuestionPool implements Serializable{
     private List<Question> questionPool;
     private List<Question> questionsAsked;
 
-
-
     private Question currentQuestion;
 
     /**
-     * The question pool holds a non-empty list of questions and helps with the question handling tasks,
-     * without dealing with any of the power-ups etc
+     * The question pool holds a non-empty list of questions and helps with the question handling
+     * tasks, without dealing with any of the power-ups etc
      * @param quizName The name for the quiz
      * @param questionPool The pool of questions
      */
@@ -36,6 +34,9 @@ public class QuestionPool implements Serializable{
      * @param questionPool The pool of questions
      */
     public QuestionPool(List<Question> questionPool){
+
+        assert(questionPool.size()>=1);
+
         this.questionPool = questionPool;
         this.quizName = "";
         questionsAsked = new ArrayList<>();
@@ -96,6 +97,10 @@ public class QuestionPool implements Serializable{
     public boolean clearAskedQuestions(){
         questionsAsked.clear();
         return questionsAsked.isEmpty();
+    }
+
+    public boolean checkAnswer(String answer){
+        return currentQuestion.checkAnswer(answer);
     }
 
     public String getQuizName(){

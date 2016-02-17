@@ -1,9 +1,11 @@
-package baldeep.quiztagapp;
+package baldeep.quiztagapp.Frontend;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
+
+import baldeep.quiztagapp.Listeners.ConnectDialogListener;
 
 public class ConnectDialog extends DialogFragment {
 
