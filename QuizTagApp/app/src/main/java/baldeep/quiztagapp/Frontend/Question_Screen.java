@@ -1,5 +1,6 @@
 package baldeep.quiztagapp.Frontend;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -101,15 +102,16 @@ public class Question_Screen extends AppCompatActivity implements Observer {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.back_button_menu, menu);
+        getMenuInflater().inflate(R.menu.quit_button_drop_down_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
-        if(id == R.id.toolbar_back_button){
-            this.finish();
+        if(id == R.id.quit_button_dropdown){
+            DialogFragment df = new QuitDialog();
+            df.show(getFragmentManager(), "Quit Dialog");
             return true;
         }
         return super.onOptionsItemSelected(item);

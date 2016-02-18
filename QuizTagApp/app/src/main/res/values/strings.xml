@@ -19,4 +19,5 @@
     <string name="coin_icon_description">Coins</string>
     <string name="tool_bar_back_button_text">Back</string>
     <string name="question_screen_title">Question</string>
+    <string name="quit_button_text">Quit</string>
 </resources>

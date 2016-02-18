@@ -20,7 +20,7 @@ import baldeep.quiztagapp.R;
 /**
  * Created by skb12156 on 05/02/2016.
  */
-public class Game_Menu extends AppCompatActivity implements Observer{
+public class Game_Menu extends AppCompatActivity {
     private TextView hints;
     private TextView skips;
     private TextView coins;
@@ -65,7 +65,6 @@ public class Game_Menu extends AppCompatActivity implements Observer{
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
     public void update(Observable observable, Object data) {
         hints.setText(powerUps.getHintsAsString());
         skips.setText(powerUps.getSkipsAsString());
