@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import baldeep.quiztagapp.Listeners.MainMenuButtonListener;
 import baldeep.quiztagapp.R;
+import baldeep.quiztagapp.backend.FileReader;
 import baldeep.quiztagapp.backend.PowerUps;
 
 public class Main_Menu extends AppCompatActivity {
@@ -16,6 +17,8 @@ public class Main_Menu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        FileReader f = new FileReader();
+        f.readFile(this);
         setContentView(R.layout.activity_main_menu);
 
         Button play_button = (Button) findViewById(R.id.play_button);

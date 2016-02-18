@@ -1,10 +1,13 @@
 package baldeep.quiztagapp.backend;
 
 
+import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +15,12 @@ import java.util.List;
 public class FileParser implements Serializable{
 
     public static void main(String[] args){
-        List<String> yolo = new ArrayList<String>();
+        /*List<String> yolo = new ArrayList<String>();
         if(yolo.get(0) == null){
             System.out.println("null found");
-        }
+        }*/
     }
+
 
     public List<Question> extractQuestions(String fileName) {
         //String input = parseFile(fileName);
@@ -41,11 +45,22 @@ public class FileParser implements Serializable{
         hints.add("5");
         hints.add("6");
 
-        qs.add(new Question("Are you happy?", hints, "yes"));
+        Question q = new Question("Are you happy?", hints, "yes");
+        qs.add(q);
+         q = new Question("Is this going to be the best game ever?", hints2, "yes");
+        qs.add(q);
+         q = new Question("How many hints are shown?", hints3, "4");
+        qs.add(q);
+         q = new Question("How many days in a week?", hints3, "7");
+        qs.add(q);
+         q = new Question("How many fingers on your hand?", hints3, "5");
+        qs.add(q);
+
+/*        qs.add(new Question("Are you happy?", hints, "yes"));
         qs.add(new Question("Is this going to be the best game ever?", hints2, "yes"));
         qs.add(new Question("How many hints are shown?", hints3, "4"));
         qs.add(new Question("How many days in a week?", hints3, "7"));
-        qs.add(new Question("How many fingers on your hand?", hints3, "5"));
+        qs.add(new Question("How many fingers on your hand?", hints3, "5"));*/
 
         return qs;
 

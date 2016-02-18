@@ -26,6 +26,7 @@ public class Game_Menu extends AppCompatActivity {
     private TextView coins;
 
     Button start_button;
+    Button quiz_tag_button;
 
     PowerUps powerUps;
 
@@ -45,10 +46,17 @@ public class Game_Menu extends AppCompatActivity {
         //powerUps = new PowerUps(0, 100, 100);
 
         start_button = (Button) findViewById(R.id.start_button);
+        quiz_tag_button = (Button) findViewById(R.id.quiz_tag_button);
+
         Bundle startBundle = new Bundle();
         startBundle.putString("message", "start");
         startBundle.putSerializable("powerUps", powerUps);
+
+        Bundle quizTaBundle = new Bundle();
+        quizTaBundle.putString("message", "quiztag");
+
         start_button.setOnClickListener(new GameMenuButtonListener(this, startBundle));
+        quiz_tag_button.setOnClickListener(new GameMenuButtonListener(this, quizTaBundle));
 
         hints = (TextView) findViewById(R.id.hints_count_text);
         skips = (TextView) findViewById(R.id.skips_count_text);

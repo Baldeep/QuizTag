@@ -1,4 +1,6 @@
 package baldeep.quiztagapp.backend;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,6 +10,7 @@ import java.util.List;
 public class QuestionPool implements Serializable{
 
     private String quizName;
+    @SerializedName("QuestionPool")
     private List<Question> questionPool;
     private List<Question> questionsAsked;
 

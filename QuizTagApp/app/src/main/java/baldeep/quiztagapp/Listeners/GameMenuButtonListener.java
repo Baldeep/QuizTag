@@ -35,14 +35,13 @@ public class GameMenuButtonListener implements View.OnClickListener {
 
         if(message.equals("start")){
             Intent questionScreen = new Intent(menu, Question_Screen.class);
+
             PowerUps pu = (PowerUps) arguments.getSerializable("powerUps");
+            questionScreen.putExtra("powerUps", pu);
 
-            if(pu == null){
-
-            }
-            questionScreen.putExtra("PowerUp", pu);
             v.getContext().startActivity(questionScreen);
-        } else if(message.equals("connect")){
+
+        } else if(message.equals("quiztag")){
             DialogFragment df = new ConnectDialog();
 
             Bundle connectArgs = new Bundle();
