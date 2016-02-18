@@ -47,8 +47,8 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         // Set up QuizMaster
         Intent previousActivity = getIntent();
         //qm = (QuizMaster) previousActivity.getSerializableExtra("quizMaster");
-        //pu = (PowerUps) previousActivity.getSerializableExtra("PowerUps");
-        pu = new PowerUps(0, 100, 100);
+        pu = (PowerUps) previousActivity.getSerializableExtra("powerUps");
+        //pu = new PowerUps(0, 100, 100);
         qm = new QuizMaster("Example Quiz", pu);
 
         qm.attach(this);
@@ -148,8 +148,6 @@ public class Question_Screen extends AppCompatActivity implements Observer {
 
     @Override
     public void update(Observable observable, Object data) {
-
-        System.out.println("Updating ******************************************************");
         if(qm.getCurrentQuestionNumber() <= 0){
             setTitle(qm.getQuizName());
         } else {

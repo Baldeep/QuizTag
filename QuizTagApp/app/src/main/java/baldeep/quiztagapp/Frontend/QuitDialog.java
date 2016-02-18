@@ -12,6 +12,7 @@ public class QuitDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         AlertDialog.Builder connectDialog = new AlertDialog.Builder(getActivity());
 

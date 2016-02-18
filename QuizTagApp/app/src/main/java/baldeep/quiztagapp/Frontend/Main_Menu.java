@@ -12,23 +12,30 @@ import baldeep.quiztagapp.backend.PowerUps;
 
 public class Main_Menu extends AppCompatActivity {
 
-    PowerUps pu;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main_menu);
 
-        pu = new PowerUps(0, 100, 100);
-
         Button play_button = (Button) findViewById(R.id.play_button);
         Button connect_button = (Button) findViewById(R.id.connect_button);
         Button scan_button = (Button) findViewById(R.id.scan_button);
 
-        play_button.setOnClickListener(new MainMenuButtonListener(this, "play"));
-        connect_button.setOnClickListener(new MainMenuButtonListener(this, "connect"));
-        scan_button.setOnClickListener(new MainMenuButtonListener(this, "scan"));
+        Bundle playBundle = new Bundle();
+        playBundle.putString("message", "play");
+        PowerUps pu = new PowerUps(0, 100, 100);
+        playBundle.putSerializable("powerUps", pu);
+
+        Bundle connectBundle = new Bundle();
+        connectBundle.putString("message", "connect");
+
+        Bundle scanBundle = new Bundle();
+        scanBundle.putString("message", "scan");
+
+        play_button.setOnClickListener(new MainMenuButtonListener(this, playBundle));
+        connect_button.setOnClickListener(new MainMenuButtonListener(this, connectBundle));
+        scan_button.setOnClickListener(new MainMenuButtonListener(this, scanBundle));
     }
 
     @Override
@@ -45,9 +52,5 @@ public class Main_Menu extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public PowerUps getPowerUps(){
-        return pu;
     }
 }

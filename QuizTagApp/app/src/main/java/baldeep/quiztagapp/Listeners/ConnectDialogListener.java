@@ -15,14 +15,13 @@ public class ConnectDialogListener implements DialogInterface.OnClickListener {
 
     public ConnectDialogListener(Context context, String message){
         this.origin = context;
-        this.message = message;
-        System.out.println("making listener" + message);
+        this.message = message.toLowerCase();
     }
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        if(message.equals("OK")){
-            Toast.makeText(origin, "Connecting to SmartCase", Toast.LENGTH_SHORT).show();
+        if(!message.equals("cancel")){
+            Toast.makeText(origin, "Connecting to " + message, Toast.LENGTH_SHORT).show();
         }
     }
 }

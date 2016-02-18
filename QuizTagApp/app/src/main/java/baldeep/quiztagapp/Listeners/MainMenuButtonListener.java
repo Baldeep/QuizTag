@@ -2,6 +2,7 @@ package baldeep.quiztagapp.Listeners;
 
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
@@ -16,30 +17,41 @@ import baldeep.quiztagapp.backend.PowerUps;
  */
 public class MainMenuButtonListener implements View.OnClickListener {
 
-    String message;
+    Bundle arguments;
     Main_Menu menu;
-    PowerUps pu;
 
-    public MainMenuButtonListener(Main_Menu menu, String msg){
+    public MainMenuButtonListener(Main_Menu menu, Bundle arguments){
         this.menu = menu;
-        this.message = msg;
-        pu = menu.getPowerUps();
+        this.arguments = arguments;
     }
 
 
     @Override
     public void onClick(View v) {
+        String message = arguments.getString("message");
+
         Toast.makeText(menu, message, Toast.LENGTH_SHORT).show();
 
         if(message.equals("play")){
+
             Intent gameScreen = new Intent(menu, Game_Menu.class);
             gameScreen.putExtra("playMessage", "play was pressed");
-            //gameScreen.putExtra("PowerUps", pu);
+            PowerUps pu = (PowerUps) arguments.getSerializable("powerUps");
+            gameScreen.putExtra("powerUps", pu);
 
             menu.startActivity(gameScreen);
+
         } else if(message.equals("connect")){
             DialogFragment df = new ConnectDialog();
-            System.out.println("Made fragment");
+
+            Bundle connectArgs = new Bundle();
+
+            connectArgs.putString("title", "Connect to SmartCase");
+            connectArgs.putString("message",
+                    "Connecting to SmartCase, please place the phone on the case and press OK");
+            connectArgs.putString("type", "SmartCase");
+            df.setArguments(connectArgs);
+
             df.show(menu.getFragmentManager(), "Connect Dialog");
         }
     }

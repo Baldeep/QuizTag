@@ -32,15 +32,23 @@ public class Game_Menu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.game_menu_activity);
 
         Intent previousActivity = getIntent();
-        //powerUps = (PowerUps) previousActivity.getSerializableExtra("PowerUps");
-        powerUps = new PowerUps(0, 100, 100);
+        powerUps = (PowerUps) previousActivity.getSerializableExtra("powerUps");
 
+        if(powerUps == null){
+            System.out.println("FAIL **************************************************");
+        }
+
+        //powerUps = new PowerUps(0, 100, 100);
 
         start_button = (Button) findViewById(R.id.start_button);
-        start_button.setOnClickListener(new GameMenuButtonListener(this, "start", powerUps));
+        Bundle startBundle = new Bundle();
+        startBundle.putString("message", "start");
+        startBundle.putSerializable("powerUps", powerUps);
+        start_button.setOnClickListener(new GameMenuButtonListener(this, startBundle));
 
         hints = (TextView) findViewById(R.id.hints_count_text);
         skips = (TextView) findViewById(R.id.skips_count_text);

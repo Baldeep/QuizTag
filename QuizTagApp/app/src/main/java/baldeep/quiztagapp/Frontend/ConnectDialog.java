@@ -11,18 +11,20 @@ public class ConnectDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         AlertDialog.Builder connectDialog = new AlertDialog.Builder(getActivity());
 
-        connectDialog.setTitle("Connecting to SmartCase");
-        connectDialog.setMessage("Connecting to SmartCase, place phone on case and press OK");
+        connectDialog.setTitle((String) getArguments().get("title"));
+        connectDialog.setMessage((String) getArguments().get("message"));
 
-        connectDialog.setPositiveButton("OK", new ConnectDialogListener(this.getActivity(), "ok"));
+        String type = getArguments().getString("type");
+
+        connectDialog.setPositiveButton("OK", new ConnectDialogListener(this.getActivity(), type));
 
         connectDialog.setNegativeButton("CANCEL",
                 new ConnectDialogListener(this.getActivity(), "cancel"));
 
-            System.out.println("making dialog");
 
         return connectDialog.create();
     }
