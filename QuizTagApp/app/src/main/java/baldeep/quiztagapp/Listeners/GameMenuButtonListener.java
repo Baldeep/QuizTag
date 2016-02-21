@@ -35,12 +35,9 @@ public class GameMenuButtonListener implements View.OnClickListener {
 
         if(message.equals("start")){
             Intent questionScreen = new Intent(menu, Question_Screen.class);
+            questionScreen.putExtra("quizMaster", (QuizMaster) arguments.getSerializable("quizMaster"));
 
-            PowerUps pu = (PowerUps) arguments.getSerializable("powerUps");
-            questionScreen.putExtra("powerUps", pu);
-
-            v.getContext().startActivity(questionScreen);
-
+            menu.startActivityForResult(questionScreen, arguments.getInt("result"));
         } else if(message.equals("quiztag")){
             DialogFragment df = new ConnectDialog();
 
@@ -56,4 +53,6 @@ public class GameMenuButtonListener implements View.OnClickListener {
 
         }
     }
+
+
 }

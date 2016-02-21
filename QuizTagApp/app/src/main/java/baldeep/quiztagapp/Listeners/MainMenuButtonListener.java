@@ -36,8 +36,8 @@ public class MainMenuButtonListener implements View.OnClickListener {
 
             Intent gameScreen = new Intent(menu, Game_Menu.class);
             gameScreen.putExtra("playMessage", "play was pressed");
-            PowerUps pu = (PowerUps) arguments.getSerializable("powerUps");
-            gameScreen.putExtra("powerUps", pu);
+            gameScreen.putExtra("powerUps", arguments.getSerializable("powerUps"));
+            gameScreen.putExtra("questionPool", arguments.getSerializable("questionPool"));
 
             menu.startActivity(gameScreen);
 

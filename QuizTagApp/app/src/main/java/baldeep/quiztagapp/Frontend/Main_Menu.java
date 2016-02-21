@@ -10,6 +10,7 @@ import baldeep.quiztagapp.Listeners.MainMenuButtonListener;
 import baldeep.quiztagapp.R;
 import baldeep.quiztagapp.backend.FileReader;
 import baldeep.quiztagapp.backend.PowerUps;
+import baldeep.quiztagapp.backend.QuestionPool;
 
 public class Main_Menu extends AppCompatActivity {
 
@@ -17,8 +18,6 @@ public class Main_Menu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FileReader f = new FileReader();
-        f.readFile(this);
         setContentView(R.layout.activity_main_menu);
 
         Button play_button = (Button) findViewById(R.id.play_button);
@@ -27,8 +26,17 @@ public class Main_Menu extends AppCompatActivity {
 
         Bundle playBundle = new Bundle();
         playBundle.putString("message", "play");
+
         PowerUps pu = new PowerUps(0, 100, 100);
+
+        QuestionPool qp = new FileReader().getQuestionPoolFromFile(this);
+        if(qp == null){
+            System.out.println("QUESTION POOL IS NULL IN MAIN MENU *****");
+        }
+
         playBundle.putSerializable("powerUps", pu);
+
+        playBundle.putSerializable("questionPool", qp);
 
         Bundle connectBundle = new Bundle();
         connectBundle.putString("message", "connect");

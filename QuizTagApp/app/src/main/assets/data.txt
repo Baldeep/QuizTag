@@ -1,41 +1,65 @@
 {
-	"QuestionPool" : [
-		"Question" :{
-			"questionString" : "Are you Happy?", 
-			"hints" : 
-				{
-				"hint" : [
-					"Yes", 
-					"Maybe", 
-					"No", 
-					"Insufficient Data"
-				],
-			"answer" : "Yes"
-		},
-		"Question" :{
-			"questionString" : "How many fingers does the average human have?", 
-			"hints" : 
-				{
-				"hint" : [
-					"2", 
-					"3", 
-					"4", 
-					"6"
-				],
-			"answer" : "5"
-		}
-		"Question" :{
-			"questionString" : "How many days are there in a week?", 
-			"hints" : 
-				{
-				"hint" : [
-					"2", 
-					"3", 
-					"4", 
-					"5"
-				],
-			"answer" : "7"
-		}
-	]
+   "quizName" : "Sample Quiz", 
+   "QuestionPool": [
+      {
+         "questionString": "What colour is the sky on a rainy day?",
+         "hints": [ 
+            "Blue",
+            "Red",
+            "Green",
+            "Yellow"
+         ],
+         "answer": "Grey"
+      },
+      {
+         "questionString": "What colour is the S on Superman's top?",
+         "hints": [ 
+            "Blue",
+            "Red",
+            "Green",
+            "Yellow"
+         ],
+         "answer": "Red"
+      },
+      {
+         "questionString": "How long is one foot in inches?",
+         "hints": [ 
+            "10",
+            "11",
+            "12",
+            "13"
+         ],
+         "answer": "12"
+      },
+      {
+         "questionString": "How many fingers does the average human have?",
+         "hints": [
+            "2",
+            "3",
+            "4",
+            "6"
+         ],
+         "answer": "5"
+      },
+      {
+         "questionString": "How many days are there in a week?",
+         "hints": [
+            "2",
+            "3",
+            "4",
+            "5"
+         ],
+         "answer": "7"
+      },
+      {
+         "questionString": "What colour is the sky on a rainy day?",
+         "hints": [ 
+            "Blue",
+            "Red",
+            "Green",
+            "Yellow"
+         ],
+         "answer": "Grey"
+      }
+   ]
 }
-		

@@ -16,6 +16,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import baldeep.quiztagapp.backend.PowerUps;
+import baldeep.quiztagapp.backend.Question;
 import baldeep.quiztagapp.backend.QuizMaster;
 import baldeep.quiztagapp.Listeners.QuestionScreenButtonListener;
 import baldeep.quiztagapp.R;
@@ -47,9 +48,10 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         // Set up QuizMaster
         Intent previousActivity = getIntent();
         //qm = (QuizMaster) previousActivity.getSerializableExtra("quizMaster");
-        pu = (PowerUps) previousActivity.getSerializableExtra("powerUps");
+        //pu = (PowerUps) previousActivity.getSerializableExtra("powerUps");
         //pu = new PowerUps(0, 100, 100);
-        qm = new QuizMaster("Example Quiz", pu);
+        qm = (QuizMaster) previousActivity.getSerializableExtra("quizMaster");
+        pu = qm.getPowerUps();
 
         qm.attach(this);
 
@@ -110,11 +112,21 @@ public class Question_Screen extends AppCompatActivity implements Observer {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.quit_button_dropdown){
+
+            Intent goingBack = new Intent();
+            goingBack.putExtra("powerUps", pu);
+            setResult(RESULT_OK, goingBack);
+
             DialogFragment df = new QuitDialog();
             df.show(getFragmentManager(), "Quit Dialog");
+
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public PowerUps getPowerUps(){
+        return pu;
     }
 
     public void displayHints() {
@@ -165,4 +177,5 @@ public class Question_Screen extends AppCompatActivity implements Observer {
 
         displayHints();
     }
+
 }

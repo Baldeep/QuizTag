@@ -1,14 +1,20 @@
 package baldeep.quiztagapp.backend;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Question implements Serializable{
-	String question;
-	List<String> hintPool;
-	List<String> hints;
-	String answer;
+
+    @SerializedName("questionString")
+	private String question;
+    @SerializedName("hints")
+	private List<String> hintPool;
+    @SerializedName("hintlist")
+	private List<String> hints;
+	private String answer;
 
     /**
      * This class acts as a Data Structure which provides all the data required to be held by a
@@ -18,7 +24,6 @@ public class Question implements Serializable{
      * @param answer The answer to the question. Cannot be null.
      */
 	public Question(String question, List<String> hints, String answer){
-
 		this.question = question;
 		this.answer = answer;
 		this.hintPool = hints;
@@ -79,6 +84,11 @@ public class Question implements Serializable{
 
 	private List<String> findHints(){
 		List<String> newHints = new ArrayList<>();
+
+        if(!hintPool.contains(answer)){
+            hintPool.add(answer);
+        }
+
 		Collections.shuffle(hintPool);
 
 		if(hintPool.size() <= 4){

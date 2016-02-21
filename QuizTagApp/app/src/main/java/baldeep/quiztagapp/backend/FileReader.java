@@ -9,11 +9,14 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.List;
 
 import baldeep.quiztagapp.Frontend.Main_Menu;
 
-public class FileReader {
+public class FileReader implements Serializable{
+
+    private QuestionPool qp;
 
     /**
      * Parses in JSON file into a QuestionPool to be used for the quiz master
@@ -24,7 +27,7 @@ public class FileReader {
      *
      * @param context
      */
-    public static void readFile(Context context){
+    private void readFile(Context context){
         Gson gson = new Gson();
 
         AssetManager am = context.getAssets();
@@ -33,17 +36,34 @@ public class FileReader {
             InputStream in = am.open("data.txt");
             InputStreamReader input = new InputStreamReader(in);
 
-            QuestionPool qp = gson.fromJson(input, QuestionPool.class);
-
-            List<Question> questions = qp.getQuestionPool();
-
-            for(Question q : questions) {
-                System.out.print(q.getQuestion());
-            }
+            qp = gson.fromJson(input, QuestionPool.class);
 
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(context, "IO Exception", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public QuestionPool getQuestionPoolFromFile(Context context){
+        // Need to set the hints as GSON doesn't call the constructor
+
+        readFile(context);
+
+        for(Question q : qp.getQuestionPool())
+            q.resetHints();
+
+        System.out.println("Printing questions **********************************************");
+        System.out.println(qp.getQuizName());
+        for(Question q : qp.getQuestionPool()) {
+            System.out.println(q.getQuestion() + ", " + q.getAnswer() + "\n");
+
+            for(String s : q.getHints()){
+                System.out.println(s);
+            }
+            System.out.println("*************************************");
+        }
+
+        QuestionPool questionPool = new QuestionPool(qp.getQuizName(), qp.getQuestionPool());
+        return questionPool;
     }
 }

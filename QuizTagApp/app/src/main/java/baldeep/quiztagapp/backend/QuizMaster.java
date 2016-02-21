@@ -17,19 +17,19 @@ public class QuizMaster extends Observable implements Serializable, Observer{
     private QuestionPool qp;
     private Question currentQuestion;
 
-    List<Observer> observers = new ArrayList<>();
+    private List<Observer> observers = new ArrayList<>();
 
     /**
      * The default instantiation of QuizMaster starts the game with no powerups or points.
      *
      * The QuizMaster class wraps around the QuestionPool class in a way as it uses the basic
      * methods defined in that class to incorporate the use of power ups.
-     * @param quizName The name of the quiz to start
+     * @param qp The name QuizPool for the QuizMaster to Control
      */
-    public QuizMaster(String quizName){
+    public QuizMaster(QuestionPool qp){
         this.powerUps = new PowerUps(0, 0, 0);
         currentQuestionNumber = 0;
-        qp = new QuestionPool(quizName, new FileParser().extractQuestions("Example.txt"));
+        this.qp = qp;
         setNextQuestion();
         powerUps.attach(this);
     }
@@ -37,16 +37,16 @@ public class QuizMaster extends Observable implements Serializable, Observer{
     /**
      * The QuizMaster class wraps around the QuestionPool class in a way as it uses the basic
      * methods defined in that class to incorporate the use of power ups.
-     * @param quizName The name of the quiz to start
+     * @param qp The name QuizPool for the QuizMaster to Control
      */
-    public QuizMaster(String quizName, PowerUps powerUps){
+    public QuizMaster(QuestionPool qp, PowerUps powerUps){
         this.powerUps = powerUps;
         currentQuestionNumber = 0;
-        qp = new QuestionPool(quizName, new FileParser().extractQuestions("Example.txt"));
-        setNextQuestion();
-        if(powerUps == null){
-            System.out.print("powerUps is null");
-        }
+        this.qp = qp;
+        if(qp == null){
+            System.out.println("QUESTION POOL IS NULL");
+        } else
+            setNextQuestion();
     }
 
     /**
@@ -122,11 +122,6 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      * @return True if reveal hints has been called, false otherwise
      */
     public boolean hintsAvailable(){
-        System.out.println("**************************************************");
-        for(String s : currentQuestion.getHints()){
-            System.out.println(" - " + s);
-        }
-        System.out.println("**************************************************");
         return hintsRevealed;
     }
 
