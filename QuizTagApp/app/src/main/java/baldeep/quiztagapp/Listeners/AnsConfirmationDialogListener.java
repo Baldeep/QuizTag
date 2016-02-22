@@ -30,6 +30,7 @@ public class AnsConfirmationDialogListener implements DialogInterface.OnClickLis
             Boolean correct = quizMaster.checkAnswer(answer);
 
             if(correct){
+                quizMaster.setNextQuestion();
                 Toast.makeText(activity, "Correct!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(activity, "Wrong Answer!", Toast.LENGTH_SHORT).show();

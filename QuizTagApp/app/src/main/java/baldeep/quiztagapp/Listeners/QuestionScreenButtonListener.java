@@ -50,7 +50,6 @@ public class QuestionScreenButtonListener implements View.OnClickListener {
             DialogFragment df = new AnswerConfirmationDialog();
             df.setArguments(confirmBundle);
             df.show(screen.getFragmentManager(), "Confirm Dialog");
-            quizMaster.setNextQuestion();
         }
 
 
