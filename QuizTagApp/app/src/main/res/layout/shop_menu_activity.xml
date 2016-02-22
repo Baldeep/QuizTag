@@ -79,23 +79,15 @@
     <include layout="@layout/buy_skips_button"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:layout_weight="0.33"
+             android:layout_weight="0.5"
              />
 
-    <Button
+    <include layout="@layout/buy_skips_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/quiz_tag_txt"
-        android:textSize="30sp"
-        android:id="@+id/quiz_tag_button"
-        android:layout_weight="0.33"/>
+        android:layout_weight="0.5"
+        />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/points_btn_txt"
-        android:textSize="30sp"
-        android:id="@+id/points_button"
-        android:layout_weight="0.33"/>
+
 
 </LinearLayout>

@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 
 import baldeep.quiztagapp.Listeners.AnsConfirmationDialogListener;
-
+import baldeep.quiztagapp.backend.QuizMaster;
 
 public class AnswerConfirmationDialog extends DialogFragment {
 
@@ -15,17 +16,35 @@ public class AnswerConfirmationDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        String title = getArguments().getString("title");
+        String message = getArguments().getString("message");
+
+        AlertDialog.Builder confirmDialog = new AlertDialog.Builder(getActivity());
+
+        confirmDialog.setTitle(title);
+        confirmDialog.setMessage(message);
+
+        Bundle confirmBundle = new Bundle();
+        QuizMaster qm = (QuizMaster) getArguments().getSerializable("quizMaster");
+        confirmBundle.putSerializable("quizMaster", qm);
         String answer = getArguments().getString("answer");
+        confirmBundle.putString("answer", answer);
+        confirmBundle.putString("message", "yes");
 
-        AlertDialog.Builder connectDialog = new AlertDialog.Builder(getActivity());
+        confirmDialog.setPositiveButton("Yes", new AnsConfirmationDialogListener(this.getActivity(), confirmBundle));
 
-        connectDialog.setTitle("Confirm");
-        connectDialog.setMessage("You have selected: \n" + answer + "\nIs this your final answer?");
+        Bundle noBundle = new Bundle();
+        noBundle.putString("message", "no");
 
-        connectDialog.setPositiveButton("Yes", new AnsConfirmationDialogListener(this.getActivity(), "yes"));
+        confirmDialog.setNegativeButton("No", new AnsConfirmationDialogListener(this.getActivity(), noBundle));
 
-        connectDialog.setNegativeButton("No", new AnsConfirmationDialogListener(this.getActivity(), "no"));
+        return confirmDialog.create();
+    }
 
-        return connectDialog.create();
+    protected void returnResult(boolean dialogResult){
+        Intent answer = new Intent();
+
+        answer.putExtra("dialogResult", dialogResult);
+        getActivity().setResult(Activity.RESULT_OK, answer);
     }
 }

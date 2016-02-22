@@ -70,12 +70,17 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         hint3 = (Button) findViewById(R.id.hint3);
         hint4 = (Button) findViewById(R.id.hint4);
 
-        hintsButton.setOnClickListener(new QuestionScreenButtonListener(this, "hint", qm));
-        skipButton.setOnClickListener(new QuestionScreenButtonListener(this, "skip", qm));
-        hint1.setOnClickListener(new QuestionScreenButtonListener(this, "hint", qm));
-        hint2.setOnClickListener(new QuestionScreenButtonListener(this, "hint", qm));
-        hint3.setOnClickListener(new QuestionScreenButtonListener(this, "hint", qm));
-        hint4.setOnClickListener(new QuestionScreenButtonListener(this, "hint", qm));
+        Bundle hintsBundle = new Bundle();
+        hintsBundle.putSerializable("quizMaster", qm);
+        hintsBundle.putString("message", "hint");
+        hintsButton.setOnClickListener(new QuestionScreenButtonListener(this, hintsBundle));
+
+        Bundle skipBundle = new Bundle();
+        skipBundle.putSerializable("quizMaster", qm);
+        skipBundle.putString("message", "skip");
+        skipButton.setOnClickListener(new QuestionScreenButtonListener(this, skipBundle));
+
+        // Hints get their listeners attached in the display hints method
 
         update(qm, null);
 
@@ -125,30 +130,59 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         return super.onOptionsItemSelected(item);
     }
 
-    public PowerUps getPowerUps(){
-        return pu;
-    }
+    private void displayHints() {
+        List<String> hints = qm.getHints();
+        if (hints.size() >= 1) {
+            hint1.setText(hints.get(0));
+        }
+        if (hints.size() >= 2) {
+            hint2.setText(hints.get(1));
+        }
+        if (hints.size() >= 3) {
+            hint3.setText(hints.get(2));
+        }
+        if (hints.size() >= 4) {
+            hint4.setText(hints.get(3));
+        }
 
-    public void displayHints() {
+        // Need to redefine listeners in order to change the text set
+        Bundle answerBundle = new Bundle();
+        answerBundle.putSerializable("quizMaster", qm);
+        answerBundle.putString("message", "answer");
+        answerBundle.putString("questionNo", qm.getCurrentQuestionNumber() + "");
+        answerBundle.putString("button", "hint1");
+        answerBundle.putString("text", String.valueOf(hint1.getText()));
+        hint1.setOnClickListener(new QuestionScreenButtonListener(this, answerBundle));
+
+        answerBundle = new Bundle();
+        answerBundle.putSerializable("quizMaster", qm);
+        answerBundle.putString("message", "answer");
+        answerBundle.putString("questionNo", qm.getCurrentQuestionNumber() + "");
+        answerBundle.putString("button", "hint2");
+        answerBundle.putString("text", String.valueOf(hint2.getText()));
+        hint2.setOnClickListener(new QuestionScreenButtonListener(this, answerBundle));
+
+        answerBundle = new Bundle();
+        answerBundle.putSerializable("quizMaster", qm);
+        answerBundle.putString("message", "answer");
+        answerBundle.putString("questionNo", qm.getCurrentQuestionNumber() + "");
+        answerBundle.putString("button", "hint3");
+        answerBundle.putString("text", String.valueOf(hint3.getText()));
+        hint3.setOnClickListener(new QuestionScreenButtonListener(this, answerBundle));
+
+        answerBundle = new Bundle();
+        answerBundle.putSerializable("quizMaster", qm);
+        answerBundle.putString("message", "answer");
+        answerBundle.putString("questionNo", qm.getCurrentQuestionNumber() + "");
+        answerBundle.putString("button", "hint4");
+        answerBundle.putString("text", String.valueOf(hint4.getText()));
+        hint4.setOnClickListener(new QuestionScreenButtonListener(this, answerBundle));
+
         if(qm.hintsAvailable()) {
-            List<String> hints = qm.getHints();
-
-            if (hints.size() >= 1) {
-                hint1.setText(hints.get(0));
-                hint1.setVisibility(View.VISIBLE);
-            }
-            if (hints.size() >= 2) {
-                hint2.setText(hints.get(1));
-                hint2.setVisibility(View.VISIBLE);
-            }
-            if (hints.size() >= 3) {
-                hint3.setText(hints.get(2));
-                hint3.setVisibility(View.VISIBLE);
-            }
-            if (hints.size() >= 4) {
-                hint4.setText(hints.get(3));
-                hint4.setVisibility(View.VISIBLE);
-            }
+            hint1.setVisibility(View.VISIBLE);
+            hint2.setVisibility(View.VISIBLE);
+            hint3.setVisibility(View.VISIBLE);
+            hint4.setVisibility(View.VISIBLE);
         } else {
             hint1.setVisibility(View.INVISIBLE);
             hint2.setVisibility(View.INVISIBLE);
@@ -176,6 +210,15 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         coins.setText(pu.getPointsAsString());
 
         displayHints();
+    }
+
+    @Override
+    public void onBackPressed(){
+        Intent goingBack = new Intent();
+        goingBack.putExtra("powerUps", pu);
+        setResult(RESULT_OK, goingBack);
+
+        super.onBackPressed();
     }
 
 }

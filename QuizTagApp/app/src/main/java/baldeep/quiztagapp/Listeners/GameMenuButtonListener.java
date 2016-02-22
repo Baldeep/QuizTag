@@ -32,7 +32,6 @@ public class GameMenuButtonListener implements View.OnClickListener {
 
         Toast.makeText(v.getContext(), message, Toast.LENGTH_SHORT).show();
 
-
         if(message.equals("start")){
             Intent questionScreen = new Intent(menu, Question_Screen.class);
             questionScreen.putExtra("quizMaster", (QuizMaster) arguments.getSerializable("quizMaster"));

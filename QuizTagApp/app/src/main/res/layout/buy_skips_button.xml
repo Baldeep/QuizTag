@@ -18,12 +18,37 @@
         android:id="@+id/shop_button_image"
         android:src="@drawable/skip_icon" />
 
-    <TextView
-        android:id="@+id/shop_button_text"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:textSize="24sp"
-        android:paddingRight="30dp"
-        android:gravity="center" />
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <TextView
+            android:id="@+id/shop_button_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:text="Buy Skips"
+            android:textAllCaps="true"
+            android:textColor="#000000"
+            android:fontFamily="sans-serif-medium"/>
+
+        <TextView
+            android:id="@+id/shop_button_cost"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:text="30 coins"
+            android:textAllCaps="true"
+            android:textColor="#000000"
+            android:fontFamily="sans-serif-medium"/>
+
+
+    </LinearLayout>
+
 </LinearLayout>

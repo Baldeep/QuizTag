@@ -1,43 +1,60 @@
 package baldeep.quiztagapp.Listeners;
 
+import android.app.DialogFragment;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import baldeep.quiztagapp.Frontend.AnswerConfirmationDialog;
 import baldeep.quiztagapp.backend.QuizMaster;
 import baldeep.quiztagapp.Frontend.Question_Screen;
 
-/**
- * Created by Baldeep on 11/02/2016.
- */
 public class QuestionScreenButtonListener implements View.OnClickListener {
 
-    String message;
-    QuizMaster quizMaster;
     Question_Screen screen;
+    Bundle arguments;
 
-    public QuestionScreenButtonListener(Question_Screen screen, String msg, QuizMaster qm){
-        this.message = msg;
-        this.quizMaster = qm;
+    public QuestionScreenButtonListener(Question_Screen screen, Bundle arguments){
+        this.arguments = arguments;
         this.screen = screen;
     }
 
 
     @Override
     public void onClick(View v) {
-        Toast.makeText(v.getContext(), message, Toast.LENGTH_SHORT).show();
+        String message = arguments.getString("message");
+        QuizMaster quizMaster = (QuizMaster) arguments.getSerializable("quizMaster");
 
         if(message.equals("hint")){
+            Toast.makeText(v.getContext(), message, Toast.LENGTH_SHORT).show();
             quizMaster.revealHints();
         }
         if(message.equals("skip")){
+            Toast.makeText(v.getContext(), message, Toast.LENGTH_SHORT).show();
             quizMaster.skipQuestion();
         }
 
-        if(message.equals("hint")){
-            String id = v.getId() + "";
-            System.out.print("id" + id + "***********************************");
+        if(message.equals("answer")){
+            String answer = arguments.getString("text");
+            Toast.makeText(v.getContext(), answer, Toast.LENGTH_SHORT).show();
+
+            Bundle confirmBundle = new Bundle();
+            confirmBundle.putSerializable("quizMaster", quizMaster);
+            confirmBundle.putString("answer", answer);
+            String title = "Question " + arguments.getString("questionNo");
+            confirmBundle.putString("title", title);
+            String text = "You have selected:\n" + answer
+                    + "\nIs this your final answer?";
+            confirmBundle.putString("message", text);
+
+            DialogFragment df = new AnswerConfirmationDialog();
+            df.setArguments(confirmBundle);
+            df.show(screen.getFragmentManager(), "Confirm Dialog");
+            quizMaster.setNextQuestion();
         }
 
 
     }
+
+
 }

@@ -95,7 +95,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      * @return Return the new value for skips
      */
     public int skipQuestion(){
-        if(powerUps.getSkips() > 1) {
+        if(powerUps.getSkips() > 0) {
             setNextQuestion();
             powerUps.setSkips(powerUps.getSkips() - 1);
             notifyAllObservers();
@@ -109,7 +109,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      */
     public int revealHints(){
 
-        if(powerUps.getHints() > 1 && !hintsRevealed) {
+        if(powerUps.getHints() > 0 && !hintsRevealed) {
             powerUps.setHints(powerUps.getHints()-1);
             hintsRevealed = true;
             notifyAllObservers();
