@@ -17,8 +17,8 @@ import baldeep.quiztagapp.backend.PowerUps;
  */
 public class MainMenuButtonListener implements View.OnClickListener {
 
-    Bundle arguments;
-    Main_Menu menu;
+    private Bundle arguments;
+    private Main_Menu menu;
 
     public MainMenuButtonListener(Main_Menu menu, Bundle arguments){
         this.menu = menu;

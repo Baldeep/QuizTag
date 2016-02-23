@@ -7,8 +7,8 @@ import android.content.Intent;
 
 public class QuitDialogListener implements DialogInterface.OnClickListener {
 
-    String message;
-    Activity activity;
+    private String message;
+    private Activity activity;
 
     public QuitDialogListener(Activity activity, String message) {
         this.activity = activity;

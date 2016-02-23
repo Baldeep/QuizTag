@@ -28,6 +28,7 @@ public class Game_Menu extends AppCompatActivity {
 
     private Button start_button;
     private Button quiz_tag_button;
+    private Button shop_button;
 
     private PowerUps powerUps;
     private QuestionPool questionPool;
@@ -60,6 +61,7 @@ public class Game_Menu extends AppCompatActivity {
 
         start_button = (Button) findViewById(R.id.start_button);
         quiz_tag_button = (Button) findViewById(R.id.quiz_tag_button);
+        shop_button = (Button) findViewById(R.id.shop_button);
 
         Bundle startBundle = new Bundle();
         startBundle.putString("message", "start");
@@ -70,8 +72,14 @@ public class Game_Menu extends AppCompatActivity {
         Bundle quizTagBundle = new Bundle();
         quizTagBundle.putString("message", "quiztag");
 
+        Bundle shopBundle = new Bundle();
+        shopBundle.putString("message", "shop");
+        shopBundle.putSerializable("powerUps", powerUps);
+
         start_button.setOnClickListener(new GameMenuButtonListener(this, startBundle));
         quiz_tag_button.setOnClickListener(new GameMenuButtonListener(this, quizTagBundle));
+        shop_button.setOnClickListener(new GameMenuButtonListener(this, shopBundle));
+
 
         hints = (TextView) findViewById(R.id.hints_count_text);
         skips = (TextView) findViewById(R.id.skips_count_text);

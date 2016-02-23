@@ -13,8 +13,8 @@ import baldeep.quiztagapp.backend.QuizMaster;
  */
 public class AnsConfirmationDialogListener implements DialogInterface.OnClickListener {
 
-    Activity activity;
-    Bundle arguments;
+    private Activity activity;
+    private Bundle arguments;
 
     public AnsConfirmationDialogListener(Activity activity, Bundle arguments) {
         this.activity = activity;

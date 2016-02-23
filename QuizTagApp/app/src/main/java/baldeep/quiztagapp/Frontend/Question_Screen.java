@@ -16,7 +16,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import baldeep.quiztagapp.backend.PowerUps;
-import baldeep.quiztagapp.backend.Question;
 import baldeep.quiztagapp.backend.QuizMaster;
 import baldeep.quiztagapp.Listeners.QuestionScreenButtonListener;
 import baldeep.quiztagapp.R;
@@ -24,21 +23,21 @@ import baldeep.quiztagapp.R;
 
 public class Question_Screen extends AppCompatActivity implements Observer {
 
-    TextView questionField;
+    private TextView questionField;
     //TextView hintsField;
-    TextView hints;
-    TextView skips;
-    TextView coins;
+    private TextView hints;
+    private TextView skips;
+    private TextView coins;
 
-    ImageButton hintsButton;
-    ImageButton skipButton;
-    Button hint1;
-    Button hint2;
-    Button hint3;
-    Button hint4;
+    private ImageButton hintsButton;
+    private ImageButton skipButton;
+    private Button hint1;
+    private Button hint2;
+    private Button hint3;
+    private Button hint4;
 
-    PowerUps pu;
-    QuizMaster qm;
+    private PowerUps pu;
+    private QuizMaster qm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,10 +178,12 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         hint4.setOnClickListener(new QuestionScreenButtonListener(this, answerBundle));
 
         if(qm.hintsAvailable()) {
-            hint1.setVisibility(View.VISIBLE);
-            hint2.setVisibility(View.VISIBLE);
-            hint3.setVisibility(View.VISIBLE);
-            hint4.setVisibility(View.VISIBLE);
+            switch(hints.size()){
+                case 4: hint4.setVisibility(View.VISIBLE);
+                case 3: hint3.setVisibility(View.VISIBLE);
+                case 2: hint2.setVisibility(View.VISIBLE);
+                case 1: hint1.setVisibility(View.VISIBLE);
+            }
         } else {
             hint1.setVisibility(View.INVISIBLE);
             hint2.setVisibility(View.INVISIBLE);

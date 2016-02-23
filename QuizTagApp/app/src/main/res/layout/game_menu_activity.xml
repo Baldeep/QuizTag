@@ -81,6 +81,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/start_btn_txt"
+        android:background="@android:drawable/btn_default"
         android:textSize="30sp"
         android:id="@+id/start_button"
         android:layout_weight="0.33"/>
@@ -89,6 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/quiz_tag_txt"
+        android:background="@android:drawable/btn_default"
         android:textSize="30sp"
         android:id="@+id/quiz_tag_button"
         android:layout_weight="0.33"/>
@@ -97,8 +99,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/points_btn_txt"
+        android:background="@android:drawable/btn_default"
         android:textSize="30sp"
-        android:id="@+id/points_button"
+        android:id="@+id/shop_button"
         android:layout_weight="0.33"/>
 
 </LinearLayout>

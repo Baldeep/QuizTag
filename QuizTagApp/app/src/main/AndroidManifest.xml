@@ -30,6 +30,9 @@
         <activity android:name=".Frontend.Question_Screen"
             android:label="@string/question_screen_title"
             />
+
+        <activity android:name=".Frontend.Shop_Menu"
+            android:label="Shop Screen"/>
     </application>
 
 </manifest>

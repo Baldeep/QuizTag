@@ -10,8 +10,8 @@ import android.widget.Toast;
  */
 public class ConnectDialogListener implements DialogInterface.OnClickListener {
 
-    String message;
-    Context origin;
+    private String message;
+    private Context origin;
 
     public ConnectDialogListener(Context context, String message){
         this.origin = context;

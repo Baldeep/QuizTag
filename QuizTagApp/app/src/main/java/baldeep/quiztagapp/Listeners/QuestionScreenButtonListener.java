@@ -11,8 +11,8 @@ import baldeep.quiztagapp.Frontend.Question_Screen;
 
 public class QuestionScreenButtonListener implements View.OnClickListener {
 
-    Question_Screen screen;
-    Bundle arguments;
+    private Question_Screen screen;
+    private Bundle arguments;
 
     public QuestionScreenButtonListener(Question_Screen screen, Bundle arguments){
         this.arguments = arguments;

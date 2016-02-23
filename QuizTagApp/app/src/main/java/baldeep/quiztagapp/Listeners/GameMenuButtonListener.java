@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import baldeep.quiztagapp.Frontend.ConnectDialog;
+import baldeep.quiztagapp.Frontend.Shop_Menu;
 import baldeep.quiztagapp.backend.PowerUps;
 import baldeep.quiztagapp.backend.QuizMaster;
 import baldeep.quiztagapp.Frontend.Game_Menu;
@@ -17,8 +18,8 @@ import baldeep.quiztagapp.Frontend.Question_Screen;
  */
 public class GameMenuButtonListener implements View.OnClickListener {
 
-    Bundle arguments;
-    Game_Menu menu;
+    private Bundle arguments;
+    private Game_Menu menu;
 
     public GameMenuButtonListener(Game_Menu menu, Bundle arguments){
         this.arguments = arguments;
@@ -49,7 +50,12 @@ public class GameMenuButtonListener implements View.OnClickListener {
 
             df.show(menu.getFragmentManager(), "Connect Dialog");
         } else if(message.equals("shop")){
+            Intent shopScreen = new Intent(menu, Shop_Menu.class);
 
+            PowerUps pu = (PowerUps) arguments.getSerializable("powerUps");
+            shopScreen.putExtra("powerUps", pu);
+
+            menu.startActivityForResult(shopScreen, arguments.getInt("result"));
         }
     }
 
