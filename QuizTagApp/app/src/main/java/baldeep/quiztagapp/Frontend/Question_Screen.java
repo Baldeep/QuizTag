@@ -222,8 +222,4 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         super.onBackPressed();
     }
 
-    public void answerConfirmed(){
-
-    }
-
 }
