@@ -51,9 +51,7 @@ public class GameMenuButtonListener implements View.OnClickListener {
             df.show(menu.getFragmentManager(), "Connect Dialog");
         } else if(message.equals("shop")){
             Intent shopScreen = new Intent(menu, Shop_Menu.class);
-
-            PowerUps pu = (PowerUps) arguments.getSerializable("powerUps");
-            shopScreen.putExtra("powerUps", pu);
+            shopScreen.putExtra("powerUps", (PowerUps) arguments.getSerializable("powerUps"));
 
             menu.startActivityForResult(shopScreen, arguments.getInt("result"));
         }

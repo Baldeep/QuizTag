@@ -1,5 +1,7 @@
 package baldeep.quiztagapp.Frontend;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,6 +16,7 @@ import baldeep.quiztagapp.backend.QuestionPool;
 
 public class Main_Menu extends AppCompatActivity {
 
+    private PowerUps pu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,28 +27,25 @@ public class Main_Menu extends AppCompatActivity {
         Button connect_button = (Button) findViewById(R.id.connect_button);
         Button scan_button = (Button) findViewById(R.id.scan_button);
 
-        Bundle playBundle = new Bundle();
-        playBundle.putString("message", "play");
-
-        PowerUps pu = new PowerUps(0, 100, 100);
+        readSaveFile();
 
         QuestionPool qp = new FileReader().getQuestionPoolFromFile(this);
         if(qp == null){
             System.out.println("QUESTION POOL IS NULL IN MAIN MENU *****");
         }
 
+        Bundle playBundle = new Bundle();
+        playBundle.putString("message", "play");
         playBundle.putSerializable("powerUps", pu);
-
         playBundle.putSerializable("questionPool", qp);
+        play_button.setOnClickListener(new MainMenuButtonListener(this, playBundle));
 
         Bundle connectBundle = new Bundle();
         connectBundle.putString("message", "connect");
+        connect_button.setOnClickListener(new MainMenuButtonListener(this, connectBundle));
 
         Bundle scanBundle = new Bundle();
         scanBundle.putString("message", "scan");
-
-        play_button.setOnClickListener(new MainMenuButtonListener(this, playBundle));
-        connect_button.setOnClickListener(new MainMenuButtonListener(this, connectBundle));
         scan_button.setOnClickListener(new MainMenuButtonListener(this, scanBundle));
     }
 
@@ -64,4 +64,32 @@ public class Main_Menu extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        PowerUps pu = (PowerUps) data.getSerializableExtra("powerUps");
+        this.pu = pu;
+
+        SharedPreferences saveGame = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor saver = saveGame.edit();
+        saver.putInt("skips", pu.getSkips());
+        saver.putInt("hints", pu.getHints());
+        saver.putInt("points", pu.getPoints());
+
+        saver.commit();
+    }
+
+    private void readSaveFile(){
+        SharedPreferences saveGame = getPreferences(MODE_PRIVATE);
+        int points = saveGame.getInt("points", 120);
+        int hints = saveGame.getInt("hints", 10);
+        int skips = saveGame.getInt("skips", 10);
+
+        System.out.println("Power ups(points: " + points + ", hints: " + hints +
+                ", skips: " + skips + ")");
+
+        pu = new PowerUps(points, hints, skips);
+    }
+
 }

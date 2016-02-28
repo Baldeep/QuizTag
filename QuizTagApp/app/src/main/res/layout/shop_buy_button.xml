@@ -15,7 +15,7 @@
         android:maxHeight="50dp"
         android:maxWidth="50dp"
         android:scaleType="fitCenter"
-        android:id="@+id/shop_skip_button_image"
+        android:id="@+id/shop_button_image"
         android:src="@drawable/skip_icon" />
 
     <LinearLayout
@@ -25,7 +25,7 @@
         android:layout_gravity="center">
 
         <TextView
-            android:id="@+id/shop_skip_button_text"
+            android:id="@+id/shop_button_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -37,7 +37,7 @@
             android:fontFamily="sans-serif-medium"/>
 
         <TextView
-            android:id="@+id/shop_skip_button_cost"
+            android:id="@+id/shop_button_subtext"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

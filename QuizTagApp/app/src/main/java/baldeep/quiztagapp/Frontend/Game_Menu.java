@@ -32,54 +32,25 @@ public class Game_Menu extends AppCompatActivity {
 
     private PowerUps powerUps;
     private QuestionPool questionPool;
+    private QuizMaster qm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         setContentView(R.layout.game_menu_activity);
 
         Intent previousActivity = getIntent();
         powerUps = (PowerUps) previousActivity.getSerializableExtra("powerUps");
         questionPool = (QuestionPool) previousActivity.getSerializableExtra("questionPool");
-        if(questionPool == null){
-            System.out.println("QUESTION POOL IS NULL IN GAME MENU **********");
-        }
-        QuizMaster qm = new QuizMaster(questionPool, powerUps);
 
-        if(powerUps == null){
-            System.out.println("POWERUPS IS NULL\n" +
-                    "**************************************************");
-        }
-        if(powerUps == null){
-            System.out.println("POWERUPS IS NULL\n" +
-                    "**************************************************");
-        }
-
-        //powerUps = new PowerUps(0, 100, 100);
+        qm = new QuizMaster(questionPool, powerUps);
 
         start_button = (Button) findViewById(R.id.start_button);
         quiz_tag_button = (Button) findViewById(R.id.quiz_tag_button);
         shop_button = (Button) findViewById(R.id.shop_button);
 
-        Bundle startBundle = new Bundle();
-        startBundle.putString("message", "start");
-        startBundle.putSerializable("quizMaster", qm);
-        final int result = 1;
-        startBundle.putInt("result", result);
-
-        Bundle quizTagBundle = new Bundle();
-        quizTagBundle.putString("message", "quiztag");
-
-        Bundle shopBundle = new Bundle();
-        shopBundle.putString("message", "shop");
-        shopBundle.putSerializable("powerUps", powerUps);
-
-        start_button.setOnClickListener(new GameMenuButtonListener(this, startBundle));
-        quiz_tag_button.setOnClickListener(new GameMenuButtonListener(this, quizTagBundle));
-        shop_button.setOnClickListener(new GameMenuButtonListener(this, shopBundle));
-
+        setButtonListeners();
 
         hints = (TextView) findViewById(R.id.hints_count_text);
         skips = (TextView) findViewById(R.id.skips_count_text);
@@ -98,6 +69,9 @@ public class Game_Menu extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.toolbar_back_button){
+            Intent goingBack = new Intent();
+            goingBack.putExtra("powerUps", powerUps);
+            setResult(RESULT_OK, goingBack);
             this.finish();
             return true;
         }
@@ -108,6 +82,7 @@ public class Game_Menu extends AppCompatActivity {
         hints.setText(powerUps.getHintsAsString());
         skips.setText(powerUps.getSkipsAsString());
         coins.setText(powerUps.getPointsAsString());
+        setButtonListeners();
     }
 
     @Override
@@ -117,5 +92,35 @@ public class Game_Menu extends AppCompatActivity {
         this.powerUps = pu;
 
         update(null, null);
+    }
+
+    private void setButtonListeners(){
+        Bundle startBundle = new Bundle();
+        startBundle.putString("message", "start");
+        qm = new QuizMaster(questionPool, powerUps);
+        startBundle.putSerializable("quizMaster", qm);
+        final int result = 1;
+        startBundle.putInt("result", result);
+
+        Bundle quizTagBundle = new Bundle();
+        quizTagBundle.putString("message", "quiztag");
+
+        Bundle shopBundle = new Bundle();
+        shopBundle.putString("message", "shop");
+        final int shopResult = 1;
+        shopBundle.putInt("result", shopResult);
+        shopBundle.putSerializable("powerUps", powerUps);
+
+        start_button.setOnClickListener(new GameMenuButtonListener(this, startBundle));
+        quiz_tag_button.setOnClickListener(new GameMenuButtonListener(this, quizTagBundle));
+        shop_button.setOnClickListener(new GameMenuButtonListener(this, shopBundle));
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent goingBack = new Intent();
+        goingBack.putExtra("powerUps", powerUps);
+        setResult(RESULT_OK, goingBack);
+        super.onBackPressed();
     }
 }

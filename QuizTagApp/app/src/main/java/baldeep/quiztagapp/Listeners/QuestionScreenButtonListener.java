@@ -26,17 +26,14 @@ public class QuestionScreenButtonListener implements View.OnClickListener {
         QuizMaster quizMaster = (QuizMaster) arguments.getSerializable("quizMaster");
 
         if(message.equals("hint")){
-            Toast.makeText(v.getContext(), message, Toast.LENGTH_SHORT).show();
             quizMaster.revealHints();
         }
         if(message.equals("skip")){
-            Toast.makeText(v.getContext(), message, Toast.LENGTH_SHORT).show();
             quizMaster.skipQuestion();
         }
 
         if(message.equals("answer")){
             String answer = arguments.getString("text");
-            Toast.makeText(v.getContext(), answer, Toast.LENGTH_SHORT).show();
 
             Bundle confirmBundle = new Bundle();
             confirmBundle.putSerializable("quizMaster", quizMaster);

@@ -76,13 +76,15 @@
             android:padding="10dp"/>
     </LinearLayout>
 
-    <include layout="@layout/buy_skips_button"
+    <include layout="@layout/shop_buy_button"
+             android:id="@+id/shop_buy_skips_btn"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:layout_weight="0.5"
              />
 
-    <include layout="@layout/buy_hints_button"
+    <include layout="@layout/shop_buy_button"
+             android:id="@+id/shop_buy_hints_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.5"

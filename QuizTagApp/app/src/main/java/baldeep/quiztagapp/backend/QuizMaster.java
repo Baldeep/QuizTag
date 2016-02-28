@@ -17,6 +17,8 @@ public class QuizMaster extends Observable implements Serializable, Observer{
     private QuestionPool qp;
     private Question currentQuestion;
 
+    private int wrongChoices = 0;
+
     private List<Observer> observers = new ArrayList<>();
 
     /**
@@ -55,6 +57,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
     public void setNextQuestion(){
         currentQuestion = qp.askQuestion();
         hintsRevealed = false;
+        wrongChoices = 0;
         currentQuestionNumber++;
         notifyAllObservers();
     }
@@ -110,7 +113,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
     public int revealHints(){
 
         if(powerUps.getHints() > 0 && !hintsRevealed) {
-            powerUps.setHints(powerUps.getHints()-1);
+            powerUps.setHints(powerUps.getHints() - 1);
             hintsRevealed = true;
             notifyAllObservers();
         }
@@ -123,6 +126,17 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      */
     public boolean hintsAvailable(){
         return hintsRevealed;
+    }
+
+    /**
+     * This is a little additional feature which revels the hints if the user gets the answer
+     * wrong 5 times. This counter is reset when a new question is picked
+     */
+    public void wrongAnswer(){
+        wrongChoices++;
+        if(wrongChoices == 5){
+            hintsRevealed = true;
+        }
     }
 
 
@@ -171,6 +185,12 @@ public class QuizMaster extends Observable implements Serializable, Observer{
             o.update(this, null);
         }
     }
+
+    public int getPointsPerQuestion(){
+        return POINTS;
+    }
+
+
 
     @Override
     public void update(Observable observable, Object data) {

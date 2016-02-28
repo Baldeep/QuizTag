@@ -13,6 +13,9 @@ public class PowerUps extends Observable implements Serializable{
     private int skips;
     private List<Observer> observers;
 
+    private static final int HINTS_COST = 30;
+    private static final int SKIPS_COST = 60;
+
     /**
      * This class holds the basic data for the powers ups to be used in order to decouple them from
      * the quiz master class
@@ -73,5 +76,13 @@ public class PowerUps extends Observable implements Serializable{
     private void notifyAllObservers(){
         for(Observer o : observers)
             o.update(this, null);
+    }
+
+    public int getHintsCost(){
+        return HINTS_COST;
+    }
+
+    public int getSkipsCost(){
+        return SKIPS_COST;
     }
 }

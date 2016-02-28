@@ -38,8 +38,9 @@ public class MainMenuButtonListener implements View.OnClickListener {
             gameScreen.putExtra("playMessage", "play was pressed");
             gameScreen.putExtra("powerUps", arguments.getSerializable("powerUps"));
             gameScreen.putExtra("questionPool", arguments.getSerializable("questionPool"));
+            gameScreen.putExtra("result", arguments.getInt("result"));
 
-            menu.startActivity(gameScreen);
+            menu.startActivityForResult(gameScreen, 1);
 
         } else if(message.equals("connect")){
             DialogFragment df = new ConnectDialog();
