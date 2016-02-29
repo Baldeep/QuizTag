@@ -7,13 +7,10 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import baldeep.quiztagapp.Frontend.AnswerConfirmationDialog;
+import baldeep.quiztagapp.Frontend.InformationDialog;
 import baldeep.quiztagapp.Frontend.Question_Screen;
-import baldeep.quiztagapp.Frontend.ShowAnswerDialog;
 import baldeep.quiztagapp.backend.QuizMaster;
 
-/**
- * Created by skb12156 on 18/02/2016.
- */
 public class AnsConfirmationDialogListener implements DialogInterface.OnClickListener {
 
     private Activity activity;
@@ -41,7 +38,7 @@ public class AnsConfirmationDialogListener implements DialogInterface.OnClickLis
                 checked.putString("title", "Correct!");
                 String msg = "You earned " + quizMaster.getPointsPerQuestion() + " points!";
                 checked.putString("message", msg);
-                DialogFragment df = new ShowAnswerDialog();
+                DialogFragment df = new InformationDialog();
                 df.setArguments(checked);
                 df.show(activity.getFragmentManager(), "result");
                 quizMaster.setNextQuestion();
@@ -51,7 +48,7 @@ public class AnsConfirmationDialogListener implements DialogInterface.OnClickLis
                 /** This also should be in a different method --- */
                 checked.putString("title", "Incorrect!");
                 checked.putString("message", "Try again!");
-                DialogFragment df = new ShowAnswerDialog();
+                DialogFragment df = new InformationDialog();
                 df.setArguments(checked);
                 df.show(activity.getFragmentManager(), "result");
                 quizMaster.wrongAnswer();

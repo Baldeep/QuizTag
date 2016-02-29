@@ -39,7 +39,7 @@
             "4",
             "6"
          ],
-         "answer": "5"
+         "answer": "10"
       },
       {
          "questionString": "How many days are there in a week?",

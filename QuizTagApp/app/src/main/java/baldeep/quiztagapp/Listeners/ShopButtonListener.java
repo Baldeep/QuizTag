@@ -1,9 +1,11 @@
 package baldeep.quiztagapp.Listeners;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import baldeep.quiztagapp.Frontend.InformationDialog;
 import baldeep.quiztagapp.Frontend.Shop_Menu;
 import baldeep.quiztagapp.backend.PowerUps;
 
@@ -33,12 +35,28 @@ public class ShopButtonListener implements View.OnClickListener {
                 pu.setPoints(pu.getPoints() - pu.getHintsCost());
                 pu.setHints(pu.getHints() + 1);
                 menu.update();
+            } else {
+                DialogFragment noPoint = new InformationDialog();
+                Bundle noPointBundle = new Bundle();
+                noPointBundle.putString("title", "Not enough points");
+                noPointBundle.putString("message", "You don't have enough points to buy more hints" +
+                        "\nPlay the game to earn more points!");
+                noPoint.setArguments(noPointBundle);
+                noPoint.show(menu.getFragmentManager(), "No Point");
             }
         } else if(message.equals("skips")){
             if(pu.getPoints() > pu.getSkipsCost()){
                 pu.setPoints(pu.getPoints()-pu.getSkipsCost());
                 pu.setSkips(pu.getSkips() + 1);
                 menu.update();
+            } else {
+                DialogFragment noPoint = new InformationDialog();
+                Bundle noPointBundle = new Bundle();
+                noPointBundle.putString("title", "Not enough points");
+                noPointBundle.putString("message", "You don't have enough points to buy more skips" +
+                        "\nPlay the game to earn more points!");
+                noPoint.setArguments(noPointBundle);
+                noPoint.show(menu.getFragmentManager(), "No Point");
             }
         }
     }

@@ -17,19 +17,25 @@ import baldeep.quiztagapp.backend.QuestionPool;
 public class Main_Menu extends AppCompatActivity {
 
     private PowerUps pu;
+    private QuestionPool qp;
+
+    private Button play_button;
+    private Button connect_button;
+    private Button scan_button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main_menu);
 
-        Button play_button = (Button) findViewById(R.id.play_button);
-        Button connect_button = (Button) findViewById(R.id.connect_button);
-        Button scan_button = (Button) findViewById(R.id.scan_button);
+        play_button = (Button) findViewById(R.id.play_button);
+        connect_button = (Button) findViewById(R.id.connect_button);
+        scan_button = (Button) findViewById(R.id.scan_button);
 
         readSaveFile();
 
-        QuestionPool qp = new FileReader().getQuestionPoolFromFile(this);
+        qp = new FileReader().getQuestionPoolFromFile(this);
         if(qp == null){
             System.out.println("QUESTION POOL IS NULL IN MAIN MENU *****");
         }
@@ -49,6 +55,7 @@ public class Main_Menu extends AppCompatActivity {
         scan_button.setOnClickListener(new MainMenuButtonListener(this, scanBundle));
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.main, menu);
@@ -64,12 +71,17 @@ public class Main_Menu extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         PowerUps pu = (PowerUps) data.getSerializableExtra("powerUps");
         this.pu = pu;
+
+        Bundle playBundle = new Bundle();
+        playBundle.putString("message", "play");
+        playBundle.putSerializable("powerUps", pu);
+        playBundle.putSerializable("questionPool", qp);
+        play_button.setOnClickListener(new MainMenuButtonListener(this, playBundle));
 
         SharedPreferences saveGame = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor saver = saveGame.edit();

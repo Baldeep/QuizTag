@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:id="@+id/buy_things">
+    <item android:id="@+id/buy_hints_dropdown"
+        android:title="@string/buy_hints"
+        app:showAsAction="never|withText"
+        android:orderInCategory="70"/>
+
+    <item android:id="@+id/buy_skips_dropdown"
+        android:title="@string/buy_skips"
+        app:showAsAction="never|withText"
+        android:orderInCategory="70"/>
+    </group>
+
+    <group android:id="@+id/quit">
+    <item android:id="@+id/quit_button_dropdown"
+        android:title="@string/quit_button_text"
+        app:showAsAction="never|withText"
+        android:orderInCategory="90"
+        />
+    </group>
+
+</menu>

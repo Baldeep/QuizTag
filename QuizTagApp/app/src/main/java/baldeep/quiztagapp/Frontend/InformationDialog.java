@@ -11,20 +11,20 @@ import baldeep.quiztagapp.Listeners.ConnectDialogListener;
 /**
  * Created by Baldeep on 28/02/2016.
  */
-public class ShowAnswerDialog extends DialogFragment {
+public class InformationDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AlertDialog.Builder answerDialog = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder infoDialog = new AlertDialog.Builder(getActivity());
 
-        answerDialog.setTitle((String) getArguments().get("title"));
-        answerDialog.setMessage((String) getArguments().get("message"));
+        infoDialog.setTitle((String) getArguments().get("title"));
+        infoDialog.setMessage((String) getArguments().get("message"));
 
         //answerDialog.setCancelable(false);
 
-        answerDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        infoDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Do nothing, just dissapear
@@ -32,6 +32,6 @@ public class ShowAnswerDialog extends DialogFragment {
         });
 
 
-        return answerDialog.create();
+        return infoDialog.create();
     }
 }

@@ -20,4 +20,6 @@
     <string name="tool_bar_back_button_text">Back</string>
     <string name="question_screen_title">Question</string>
     <string name="quit_button_text">Quit</string>
+    <string name="buy_hints">Buy Hints</string>
+    <string name="buy_skips">Buy Skips</string>
 </resources>

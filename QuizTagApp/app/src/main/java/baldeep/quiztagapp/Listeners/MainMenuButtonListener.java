@@ -9,6 +9,7 @@ import android.widget.Toast;
 import baldeep.quiztagapp.Frontend.ConnectDialog;
 import baldeep.quiztagapp.Frontend.Game_Menu;
 import baldeep.quiztagapp.Frontend.Main_Menu;
+import baldeep.quiztagapp.Frontend.NFC_Tag_Writer;
 import baldeep.quiztagapp.backend.PowerUps;
 
 /**
@@ -46,14 +47,17 @@ public class MainMenuButtonListener implements View.OnClickListener {
             DialogFragment df = new ConnectDialog();
 
             Bundle connectArgs = new Bundle();
-
             connectArgs.putString("title", "Connect to SmartCase");
             connectArgs.putString("message",
                     "Connecting to SmartCase, please place the phone on the case and press OK");
             connectArgs.putString("type", "SmartCase");
             df.setArguments(connectArgs);
-
             df.show(menu.getFragmentManager(), "Connect Dialog");
+
+        } else if(message.equals("scan")){
+            Intent nfcExample = new Intent(menu, NFC_Tag_Writer.class);
+
+            menu.startActivity(nfcExample);
         }
     }
 }

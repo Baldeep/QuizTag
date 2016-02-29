@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import baldeep.quiztagapp.Listeners.ShopButtonListener;
 import baldeep.quiztagapp.backend.PowerUps;
 import baldeep.quiztagapp.backend.QuizMaster;
 import baldeep.quiztagapp.Listeners.QuestionScreenButtonListener;
@@ -108,7 +109,7 @@ public class Question_Screen extends AppCompatActivity implements Observer {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.quit_button_drop_down_menu, menu);
+        getMenuInflater().inflate(R.menu.question_screen_menu, menu);
         return true;
     }
 
@@ -116,7 +117,6 @@ public class Question_Screen extends AppCompatActivity implements Observer {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.quit_button_dropdown){
-
             Intent goingBack = new Intent();
             goingBack.putExtra("powerUps", pu);
             setResult(RESULT_OK, goingBack);
@@ -125,6 +125,39 @@ public class Question_Screen extends AppCompatActivity implements Observer {
             df.show(getFragmentManager(), "Quit Dialog");
 
             return true;
+        }
+        if(id == R.id.buy_hints_dropdown){
+            /** copied from ShopButtonListener **/
+            if(pu.getPoints() > pu.getHintsCost()){
+                pu.setPoints(pu.getPoints() - pu.getHintsCost());
+                pu.setHints(pu.getHints() + 1);
+                update(pu, null);
+            } else {
+                DialogFragment noPoint = new InformationDialog();
+                Bundle noPointBundle = new Bundle();
+                noPointBundle.putString("title", "Not enough points");
+                noPointBundle.putString("message", "You don't have enough points to buy more hints" +
+                        "\nPlay the game to earn more points!");
+                noPoint.setArguments(noPointBundle);
+                noPoint.show(getFragmentManager(), "No Point");
+            }
+        }
+
+        if(id == R.id.buy_skips_dropdown){
+            /** copied from ShopButtonListener **/
+            if(pu.getPoints() > pu.getSkipsCost()){
+                pu.setPoints(pu.getPoints()-pu.getSkipsCost());
+                pu.setSkips(pu.getSkips() + 1);
+                update(pu, null);
+            } else {
+                DialogFragment noPoint = new InformationDialog();
+                Bundle noPointBundle = new Bundle();
+                noPointBundle.putString("title", "Not enough points");
+                noPointBundle.putString("message", "You don't have enough points to buy more skips" +
+                        "\nPlay the game to earn more points!");
+                noPoint.setArguments(noPointBundle);
+                noPoint.show(getFragmentManager(), "No Point");
+            }
         }
         return super.onOptionsItemSelected(item);
     }

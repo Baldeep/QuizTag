@@ -38,6 +38,9 @@
         <activity android:name=".Frontend.Shop_Menu"
             android:label="Shop Screen"/>
 
+        <activity android:name=".Frontend.NFC_Tag_Writer"
+            android:label="NFC Stuff"/>
+
     </application>
 
 </manifest>
