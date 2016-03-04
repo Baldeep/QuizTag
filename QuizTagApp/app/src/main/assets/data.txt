@@ -60,6 +60,59 @@
             "Yellow"
          ],
          "answer": "Grey"
+      },
+      {
+         "questionString": "What colour is the sky on a sunny day?",
+         "hints": [ 
+            "Blue",
+            "Red",
+            "Green",
+            "Yellow"
+         ],
+         "answer": "Blue"
+      },
+      {
+         "questionString": "What is the Raspberry Pi logo?",
+         "hints": [ 
+            "An Apple",
+            "A Pear",
+            "A Banana",
+            "A Kiwi"
+         ],
+         "answer": "A Raspberry"
+      },
+      {
+         "questionString": "How many sides does a standard d6 die have?",
+         "hints": [ 
+            "3",
+            "4",
+            "8",
+            "10",
+            "12",
+            "20"
+         ],
+         "answer": "6"
+      },
+      {
+         "questionString": "Which of these is a museum in Glasgow?",
+         "hints": [ 
+            "Kelvingrove Art Gallery and Museum",
+            "The Louvre",
+            "The Museum of Natural History",
+            "Pizza Hut"
+         ],
+         "answer": "Kelvingrove Art Gallery and Museum"
+      },
+      {
+         "questionString": "What comes after Spring?",
+         "hints": [ 
+            "Summer",
+            "Winter",
+            "Autumn",
+            "Rain",
+            "Spring"
+         ],
+         "answer": "Summer"
       }
    ]
 }

@@ -32,7 +32,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="text/plain" />
+                <data android:mimeType="application/[pagage name]" />
             </intent-filter>
         </activity>
 
