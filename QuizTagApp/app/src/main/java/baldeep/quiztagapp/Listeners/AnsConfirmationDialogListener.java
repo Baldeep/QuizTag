@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import baldeep.quiztagapp.Frontend.AnswerConfirmationDialog;
@@ -33,8 +34,7 @@ public class AnsConfirmationDialogListener implements DialogInterface.OnClickLis
 
             Bundle checked = new Bundle();
             if(correct){
-
-                System.out.println("************************CORRECT**************");
+                Log.d("AnswerConfirmation", "correct");
                 checked.putString("title", "Correct!");
                 String msg = "You earned " + quizMaster.getPointsPerQuestion() + " points!";
                 checked.putString("message", msg);
