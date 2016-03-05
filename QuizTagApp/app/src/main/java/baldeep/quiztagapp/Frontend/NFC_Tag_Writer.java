@@ -115,6 +115,9 @@ public class NFC_Tag_Writer extends AppCompatActivity {
         if(NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
             nfcTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             Toast.makeText(this, "Tag Detected" + nfcTag.toString(), Toast.LENGTH_LONG ).show();
+            if(NFCHardwareAvailable() && nfcTag!= null && NFCTagIsValid()){
+                readTag(getIntent());
+            }
         }
     }
 
