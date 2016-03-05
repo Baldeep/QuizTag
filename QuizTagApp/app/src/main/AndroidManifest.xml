@@ -50,7 +50,13 @@
 
         <activity android:name=".Frontend.NFC_Tag_Writer"
             android:label="NFC Stuff">
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
         </activity>
 
     </application>

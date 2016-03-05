@@ -16,6 +16,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +44,42 @@ public class NFC_Tag_Writer extends AppCompatActivity {
 
         tv = (TextView) findViewById(R.id.nfc_text_view);
 
-        /** Can copy this to Main_Menu once complete 1 -- **/
+        Button btn = (Button) findViewById(R.id.nfc_button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(NFCHardwareAvailable() && nfcTag!= null && NFCTagIsValid()){
+                    readTag(getIntent());
+                }
+            }
+        });
+
+
+        pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0,
+                new Intent(this, getClass()).
+                        addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+        IntentFilter NdefIntent = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
+        intentFilters = new IntentFilter[]{NdefIntent};
+
+    }
+
+    private boolean NFCTagIsValid(){
+        Ndef ndef = Ndef.get(nfcTag);
+        if(ndef == null){
+            Toast.makeText(this, "Tag is not valid", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        NdefMessage message = ndef.getCachedNdefMessage();
+        if(message == null){
+            Toast.makeText(this, "Tag is empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+
+    private boolean NFCHardwareAvailable(){
         NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if(nfcAdapter == null){
             DialogFragment noNfc = new NFCInfoDialog();
@@ -52,6 +89,7 @@ public class NFC_Tag_Writer extends AppCompatActivity {
             noNFCBundle.putString("type", "noNFC");
             noNfc.setArguments(noNFCBundle);
             noNfc.show(getFragmentManager(), "NFC OFF");
+            return false;
         }
         if(!nfcAdapter.isEnabled()){
             DialogFragment nfcOff = new NFCInfoDialog();
@@ -61,15 +99,9 @@ public class NFC_Tag_Writer extends AppCompatActivity {
             NFCoffBundle.putString("type", "nfcOff");
             nfcOff.setArguments(NFCoffBundle);
             nfcOff.show(getFragmentManager(), "NFC OFF");
+            return false;
         }
-        /** -- 1 **/
-
-        pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0,
-                new Intent(this, getClass()).
-                        addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-        IntentFilter NdefIntent = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
-        intentFilters = new IntentFilter[]{NdefIntent};
-
+        return true;
     }
 
     @Override
@@ -83,26 +115,26 @@ public class NFC_Tag_Writer extends AppCompatActivity {
         if(NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
             nfcTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             Toast.makeText(this, "Tag Detected" + nfcTag.toString(), Toast.LENGTH_LONG ).show();
-            readTag(intent);
         }
     }
 
     private void readTag(Intent intent){
         Ndef ndef = Ndef.get(nfcTag);
-        if(ndef != null){
-            try {
-                ndef.connect();
-                NdefMessage message = ndef.getNdefMessage();
-                NdefRecord[] record = message.getRecords();
+        try{
+            ndef.connect();
 
-                String text = "";
-                for(int i = 0; i < record.length; i++){
-                    System.out.println(record[i].toString());
-                    text += record[i].toString();
-                }
+            NdefMessage message = ndef.getNdefMessage();
+            NdefRecord[] records = message.getRecords();
 
-                tv.setText(text);
+            String allText = "";
+            for(NdefRecord record : records) {
+                byte[] payload = record.getPayload();
+                String text = new String(payload);
+                allText += text;
+            }
+            tv.setText(allText);
 
+            ndef.close();
 
             } catch (IOException e) {
                 Toast.makeText(this, "Unable to read NFC tag, try again.", Toast.LENGTH_SHORT).show();
@@ -110,7 +142,6 @@ public class NFC_Tag_Writer extends AppCompatActivity {
             } catch (FormatException e) {
                 e.printStackTrace();
             }
-        }
     }
 
     @Override
