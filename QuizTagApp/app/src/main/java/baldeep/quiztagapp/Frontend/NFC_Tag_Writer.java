@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import baldeep.quiztagapp.R;
 
@@ -35,9 +36,9 @@ public class NFC_Tag_Writer extends AppCompatActivity {
     private TextView textView;
     private EditText editText;
 
-
     NfcAdapter nfcAdapter;
     PendingIntent pendingIntent;
+    boolean writeMode;
     IntentFilter intentFileters[];
     Tag tag;
 
@@ -64,12 +65,6 @@ public class NFC_Tag_Writer extends AppCompatActivity {
             df.show(getFragmentManager(), "NFC Info");
         }
 
-        // Set an intent filter
-        pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-        IntentFilter intentFilter = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
-        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
-        intentFileters = new IntentFilter[]{intentFilter};
-
         // Just put this here for now for the write button
         // based on tutorial:
         // http://www.framentos.com/en/android-tutorial/2012/07/31/write-hello-world-into-a-nfc-tag-with-a/
@@ -84,6 +79,12 @@ public class NFC_Tag_Writer extends AppCompatActivity {
                     }
             }
         });
+
+        // Set an intent filter
+        pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
+        tagDetected.addCategory(Intent.CATEGORY_DEFAULT);
+        intentFileters = new IntentFilter[] { tagDetected };
     }
 
     /**
@@ -96,7 +97,7 @@ public class NFC_Tag_Writer extends AppCompatActivity {
         if(nfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
         }
-        super.onNewIntent(intent);
+        //super.onNewIntent(intent);
     }
 
     /**
@@ -151,7 +152,28 @@ public class NFC_Tag_Writer extends AppCompatActivity {
         }
     }
     private NdefRecord createRecord(String text){
-        return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, new byte[0], text.getBytes());
+        String lang       = "en";
+        byte[] textBytes  = text.getBytes();
+        byte[] langBytes  = new byte[0];
+        try {
+            langBytes = lang.getBytes("US-ASCII");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        int    langLength = langBytes.length;
+        int    textLength = textBytes.length;
+        byte[] payload    = new byte[1 + langLength + textLength];
+
+        // set status byte (see NDEF spec for actual bits)
+        payload[0] = (byte) langLength;
+
+        // copy langbytes and textbytes into payload
+        System.arraycopy(langBytes, 0, payload, 1,              langLength);
+        System.arraycopy(textBytes, 0, payload, 1 + langLength, textLength);
+
+        NdefRecord recordNFC = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,  NdefRecord.RTD_TEXT,  new byte[0], payload);
+
+        return recordNFC;
     }
 
     @Override
@@ -168,5 +190,27 @@ public class NFC_Tag_Writer extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        WriteModeOff();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        WriteModeOn();
+    }
+
+    private void WriteModeOn(){
+        writeMode = true;
+        nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFileters, null);
+    }
+
+    private void WriteModeOff(){
+        writeMode = false;
+        nfcAdapter.disableForegroundDispatch(this);
     }
 }
