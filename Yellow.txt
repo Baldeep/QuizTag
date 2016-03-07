@@ -1,0 +1,5 @@
+{
+     "name" : "Yellow", 
+     "description" : "Yellow is in the spectrum of visible light, in the traditional color wheel used by painters, yellow is found between green and orange. It is a primary color in subtractive color, used in color printing, along with cyan, magenta, and black. gold, butter, and ripe lemons are yellow.", 
+     "url" : "https://en.wikipedia.org/wiki/Yellow"
+}

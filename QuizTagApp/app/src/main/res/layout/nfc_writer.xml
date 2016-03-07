@@ -9,6 +9,7 @@
         android:text="NFC TAG INFO HERE"
         android:textSize="25dp"
         android:id="@+id/nfc_text_view"
+        android:padding="40dp"
         />
     <EditText
         android:layout_width="match_parent"
@@ -18,12 +19,27 @@
         android:hint="Enter Something"
         android:padding="40dp"/>
 
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="NFC BUTTON"
-        android:id="@+id/nfc_button"
-        android:padding="50dp"/>
+        android:orientation="horizontal">
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Read"
+            android:id="@+id/nfc_read_button"
+            android:padding="50dp"
+            android:layout_weight="0.5"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Write"
+            android:id="@+id/nfc_write_button"
+            android:padding="50dp"
+            android:layout_weight="0.5"/>
+
+    </LinearLayout>
 
 </LinearLayout>

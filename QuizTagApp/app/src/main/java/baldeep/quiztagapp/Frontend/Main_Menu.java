@@ -33,7 +33,8 @@ public class Main_Menu extends AppCompatActivity {
         connect_button = (Button) findViewById(R.id.connect_button);
         scan_button = (Button) findViewById(R.id.scan_button);
 
-        readSaveFile();
+        Bundle saveGameData = new GameSaver().loadGame(this);
+        pu = (PowerUps) saveGameData.getSerializable("powerUps");
 
         qp = new FileReader().getQuestionPoolFromFile(this);
         if(qp == null){
@@ -74,34 +75,12 @@ public class Main_Menu extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        PowerUps pu = (PowerUps) data.getSerializableExtra("powerUps");
-        this.pu = pu;
+        pu = (PowerUps) data.getSerializableExtra("powerUps");
 
         Bundle playBundle = new Bundle();
         playBundle.putString("message", "play");
         playBundle.putSerializable("powerUps", pu);
         playBundle.putSerializable("questionPool", qp);
         play_button.setOnClickListener(new MainMenuButtonListener(this, playBundle));
-
-        SharedPreferences saveGame = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor saver = saveGame.edit();
-        saver.putInt("skips", pu.getSkips());
-        saver.putInt("hints", pu.getHints());
-        saver.putInt("points", pu.getPoints());
-
-        saver.commit();
     }
-
-    private void readSaveFile(){
-        SharedPreferences saveGame = getPreferences(MODE_PRIVATE);
-        int points = saveGame.getInt("points", 120);
-        int hints = saveGame.getInt("hints", 10);
-        int skips = saveGame.getInt("skips", 10);
-
-        System.out.println("Power ups(points: " + points + ", hints: " + hints +
-                ", skips: " + skips + ")");
-
-        pu = new PowerUps(points, hints, skips);
-    }
-
 }
