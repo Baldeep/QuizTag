@@ -13,6 +13,7 @@ import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -23,8 +24,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 
 import baldeep.quiztagapp.R;
 
@@ -64,7 +67,11 @@ public class NFC_Tag_Writer extends AppCompatActivity {
             df.setArguments(nfcBundle);
             df.show(getFragmentManager(), "NFC Info");
         }
-
+        // Set an intent filter
+        pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
+        tagDetected.addCategory(Intent.CATEGORY_DEFAULT);
+        intentFileters = new IntentFilter[] { tagDetected };
         // Just put this here for now for the write button
         // based on tutorial:
         // http://www.framentos.com/en/android-tutorial/2012/07/31/write-hello-world-into-a-nfc-tag-with-a/
@@ -80,11 +87,17 @@ public class NFC_Tag_Writer extends AppCompatActivity {
             }
         });
 
-        // Set an intent filter
-        pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
-        tagDetected.addCategory(Intent.CATEGORY_DEFAULT);
-        intentFileters = new IntentFilter[] { tagDetected };
+        read_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tag != null) {
+                    String text = readTag(tag);
+                    textView.setText(text);
+                    Toast.makeText(NFC_Tag_Writer.this, "reading", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
     /**
@@ -97,7 +110,7 @@ public class NFC_Tag_Writer extends AppCompatActivity {
         if(nfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
         }
-        //super.onNewIntent(intent);
+        super.onNewIntent(intent);
     }
 
     /**
@@ -154,6 +167,8 @@ public class NFC_Tag_Writer extends AppCompatActivity {
     private NdefRecord createRecord(String text){
         String lang       = "en";
         byte[] textBytes  = text.getBytes();
+        int    textLength = textBytes.length;
+
         byte[] langBytes  = new byte[0];
         try {
             langBytes = lang.getBytes("US-ASCII");
@@ -161,7 +176,7 @@ public class NFC_Tag_Writer extends AppCompatActivity {
             e.printStackTrace();
         }
         int    langLength = langBytes.length;
-        int    textLength = textBytes.length;
+
         byte[] payload    = new byte[1 + langLength + textLength];
 
         // set status byte (see NDEF spec for actual bits)
@@ -176,6 +191,67 @@ public class NFC_Tag_Writer extends AppCompatActivity {
         return recordNFC;
     }
 
+    private String readTag(Tag tag){
+        String text = "";
+
+        Ndef ndef = Ndef.get(tag);
+        if(ndef == null){
+            Toast.makeText(NFC_Tag_Writer.this, "Tag not Ndef formatted", Toast.LENGTH_SHORT).show();
+        } else {
+            try {
+                ndef.connect();
+                NdefMessage message = ndef.getNdefMessage();
+                NdefRecord[] records = message.getRecords();
+
+                for(NdefRecord nr : records){
+                    if (nr.getTnf() == NdefRecord.TNF_WELL_KNOWN && Arrays.equals(nr.getType(), NdefRecord.RTD_TEXT)) {
+                        try {
+                            text = readText(nr);
+                        } catch (UnsupportedEncodingException e) {
+                            Log.e("TAG", "Unsupported Encoding", e);
+                        }
+                    }
+                }
+                ndef.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (FormatException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return text;
+    }
+    private String readText(NdefRecord record) throws UnsupportedEncodingException {
+        /*
+         * See NFC forum specification for "Text Record Type Definition" at 3.2.1
+         *
+         * http://www.nfc-forum.org/specs/
+         *
+         * bit_7 defines encoding
+         * bit_6 reserved for future use, must be 0
+         * bit_5..0 length of IANA language code
+         */
+
+        byte[] payload = record.getPayload();
+
+        // Get the Text Encoding
+        String textEncoding = " ";
+        if((payload[0] & 128) == 0){
+            textEncoding = "UTF-8";
+        } else {
+            textEncoding = "UTF-16";
+        }
+
+        // Get the Language Code
+        int languageCodeLength = payload[0] & 0063;
+
+        // String languageCode = new String(payload, 1, languageCodeLength, "US-ASCII");
+        // e.g. "en"
+
+        // Get the Text
+        return new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, textEncoding);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.back_button_menu, menu);

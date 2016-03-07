@@ -102,6 +102,10 @@ public class Shop_Menu extends AppCompatActivity {
     }
 
     public void update() {
+        Bundle saveGameData = new Bundle();
+        saveGameData.putSerializable("powerUps", powerUps);
+        new GameSaver().saveGame(this, saveGameData);
+
         hints.setText(powerUps.getHintsAsString());
         skips.setText(powerUps.getSkipsAsString());
         coins.setText(powerUps.getPointsAsString());
@@ -111,6 +115,8 @@ public class Shop_Menu extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         this.powerUps = (PowerUps) data.getSerializableExtra("powerUps");
+
         update();
     }
+
 }
