@@ -1,16 +1,29 @@
 package baldeep.quiztagapp.Frontend;
 
 import android.app.DialogFragment;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.nfc.FormatException;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.nfc.Tag;
+import android.nfc.tech.Ndef;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -39,6 +52,11 @@ public class Question_Screen extends AppCompatActivity implements Observer {
 
     private PowerUps pu;
     private QuizMaster qm;
+
+    NfcAdapter nfcAdapter;
+    PendingIntent pendingIntent;
+    IntentFilter intentFileters[];
+    Tag tag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +102,7 @@ public class Question_Screen extends AppCompatActivity implements Observer {
 
         update(qm, null);
 
+        setNFCIntents();
         /*************************** This needs updating each time ********************************/
         // Set the title of the screen as the question number
         /*if(qm.getCurrentQuestionNumber() <= 0){
@@ -255,4 +274,91 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         super.onBackPressed();
     }
 
+    private void setNFCIntents(){
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if(!nfcAdapter.isEnabled()){
+            DialogFragment df = new NFCInfoDialog();
+            Bundle nfcBundle = new Bundle();
+            nfcBundle.putString("title", "NFC Hardware");
+            nfcBundle.putString("message", "Check NFC is enabled");
+            nfcBundle.putString("type", "nfcOff");
+            df.setArguments(nfcBundle);
+            df.show(getFragmentManager(), "NFC Info");
+        }
+        pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
+        tagDetected.addCategory(Intent.CATEGORY_DEFAULT);
+        intentFileters = new IntentFilter[] { tagDetected };
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if(nfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
+            tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            String tagContents = readTag(tag);
+            Toast.makeText(this, tagContents, Toast.LENGTH_SHORT).show();
+        }
+        super.onNewIntent(intent);
+    }
+
+    private String readTag(Tag tag){
+        String text = "";
+
+        if(tag != null) {
+            Ndef ndef = Ndef.get(tag);
+            if (ndef == null) {
+                Toast.makeText(this, "Tag not Ndef formatted", Toast.LENGTH_SHORT).show();
+            } else {
+                try {
+                    ndef.connect();
+                    NdefMessage message = ndef.getNdefMessage();
+                    NdefRecord[] records = message.getRecords();
+
+                    for (NdefRecord nr : records) {
+                        if (nr.getTnf() == NdefRecord.TNF_WELL_KNOWN && Arrays.equals(nr.getType(), NdefRecord.RTD_TEXT)) {
+                            text = decodeTag(nr);
+                        }
+                    }
+                    ndef.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (FormatException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            Toast.makeText(this, "Error Reading Tag. Try Again.", Toast.LENGTH_SHORT).show();
+        }
+        return text;
+    }
+    private String decodeTag(NdefRecord record) {
+        /*See NFC forum specification for "Text Record Type Definition" at 3.2.1
+         *
+         * http://www.nfc-forum.org/specs/
+         */
+
+        byte[] payload = record.getPayload();
+
+        String textEncoding = "";
+        if((payload[0] & 128) == 0){
+            textEncoding = "UTF-8";
+        } else {
+            textEncoding = "UTF-16";
+        }
+
+        int languageCodeLength = payload[0] & 0063;
+
+        // String languageCode = new String(payload, 1, languageCodeLength, "US-ASCII");
+        // e.g. "en"
+        String text = "";
+        try {
+            text = new String(payload, languageCodeLength + 1, payload.length -
+                    languageCodeLength - 1, textEncoding);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            Log.e("Decode Tag", "Unsupported Encoding");
+        }
+
+        return text;
+    }
 }

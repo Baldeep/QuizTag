@@ -219,7 +219,6 @@ public class NFC_Tag_Writer extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
         return text;
     }
     private String readText(NdefRecord record) throws UnsupportedEncodingException {
