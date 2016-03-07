@@ -99,31 +99,23 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         skipButton.setOnClickListener(new QuestionScreenButtonListener(this, skipBundle));
 
         // Hints get their listeners attached in the display hints method
-
         update(qm, null);
 
-        setNFCIntents();
-        /*************************** This needs updating each time ********************************/
-        // Set the title of the screen as the question number
-        /*if(qm.getCurrentQuestionNumber() <= 0){
-            setTitle(qm.getQuizName());
-        } else {
-            setTitle("Question " + qm.getCurrentQuestionNumber());
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if(nfcAdapter == null || !nfcAdapter.isEnabled()){
+            DialogFragment df = new NFCInfoDialog();
+            Bundle nfcBundle = new Bundle();
+            nfcBundle.putString("title", "NFC Hardware");
+            nfcBundle.putString("message", "Check NFC is enabled");
+            nfcBundle.putString("type", "nfcOff");
+            df.setArguments(nfcBundle);
+            df.show(getFragmentManager(), "NFC Info");
         }
-
-        // use observer pattern for these here
-        String question = "Question " + qm.getCurrentQuestionNumber() + ": " +
-                qm.getQuestionString();
-        questionField.setText(question);
-        String hintString = qm.getHintCount() + "";
-        hints.setText(hintString);
-        String skipString = qm.getSkipCount() + "";
-        skips.setText(skipString);
-        String coinsString = qm.getPoints() + "";
-        coins.setText(coinsString);
-
-        displayHints();*/
-        /******************************************************************************************/
+        // Set an intent filter
+        pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
+        tagDetected.addCategory(Intent.CATEGORY_DEFAULT);
+        intentFileters = new IntentFilter[] { tagDetected };
     }
 
     @Override
@@ -274,29 +266,23 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         super.onBackPressed();
     }
 
-    private void setNFCIntents(){
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        if(!nfcAdapter.isEnabled()){
-            DialogFragment df = new NFCInfoDialog();
-            Bundle nfcBundle = new Bundle();
-            nfcBundle.putString("title", "NFC Hardware");
-            nfcBundle.putString("message", "Check NFC is enabled");
-            nfcBundle.putString("type", "nfcOff");
-            df.setArguments(nfcBundle);
-            df.show(getFragmentManager(), "NFC Info");
-        }
-        pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
-        tagDetected.addCategory(Intent.CATEGORY_DEFAULT);
-        intentFileters = new IntentFilter[] { tagDetected };
-    }
-
     @Override
     protected void onNewIntent(Intent intent) {
         if(nfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            Log.d("NFC INTENT", "nfc intent discovered");
+
             String tagContents = readTag(tag);
+
             Toast.makeText(this, tagContents, Toast.LENGTH_SHORT).show();
+            Bundle answerBundle = new Bundle();
+            answerBundle.putSerializable("quizMaster", qm);
+            answerBundle.putString("message", "answer");
+            answerBundle.putString("questionNo", qm.getCurrentQuestionNumber() + "");
+            answerBundle.putString("button", "hint4");
+            answerBundle.putString("text", tagContents);
+            new QuestionScreenButtonListener(this, answerBundle).onClick(hint4);
+
         }
         super.onNewIntent(intent);
     }
@@ -304,7 +290,9 @@ public class Question_Screen extends AppCompatActivity implements Observer {
     private String readTag(Tag tag){
         String text = "";
 
-        if(tag != null) {
+        if(tag == null){
+            Toast.makeText(this, "Tag may have moved. Try again.", Toast.LENGTH_SHORT).show();
+        } else {
             Ndef ndef = Ndef.get(tag);
             if (ndef == null) {
                 Toast.makeText(this, "Tag not Ndef formatted", Toast.LENGTH_SHORT).show();
@@ -316,7 +304,11 @@ public class Question_Screen extends AppCompatActivity implements Observer {
 
                     for (NdefRecord nr : records) {
                         if (nr.getTnf() == NdefRecord.TNF_WELL_KNOWN && Arrays.equals(nr.getType(), NdefRecord.RTD_TEXT)) {
-                            text = decodeTag(nr);
+                            try {
+                                text = decodeTag(nr);
+                            } catch (UnsupportedEncodingException e) {
+                                Log.e("TAG", "Unsupported Encoding", e);
+                            }
                         }
                     }
                     ndef.close();
@@ -326,39 +318,49 @@ public class Question_Screen extends AppCompatActivity implements Observer {
                     e.printStackTrace();
                 }
             }
-        } else {
-            Toast.makeText(this, "Error Reading Tag. Try Again.", Toast.LENGTH_SHORT).show();
         }
         return text;
     }
-    private String decodeTag(NdefRecord record) {
-        /*See NFC forum specification for "Text Record Type Definition" at 3.2.1
+    private String decodeTag(NdefRecord record) throws UnsupportedEncodingException {
+        /*
+         * See NFC forum specification for "Text Record Type Definition" at 3.2.1
          *
          * http://www.nfc-forum.org/specs/
+         *
+         * bit_7 defines encoding
+         * bit_6 reserved for future use, must be 0
+         * bit_5..0 length of IANA language code
          */
 
         byte[] payload = record.getPayload();
 
-        String textEncoding = "";
+        // Get the Text Encoding
+        String textEncoding = " ";
         if((payload[0] & 128) == 0){
             textEncoding = "UTF-8";
         } else {
             textEncoding = "UTF-16";
         }
 
+        // Get the Language Code
         int languageCodeLength = payload[0] & 0063;
 
         // String languageCode = new String(payload, 1, languageCodeLength, "US-ASCII");
         // e.g. "en"
-        String text = "";
-        try {
-            text = new String(payload, languageCodeLength + 1, payload.length -
-                    languageCodeLength - 1, textEncoding);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            Log.e("Decode Tag", "Unsupported Encoding");
-        }
 
-        return text;
+        // Get the Text
+        return new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, textEncoding);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        nfcAdapter.disableForegroundDispatch(this);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFileters, null);
     }
 }

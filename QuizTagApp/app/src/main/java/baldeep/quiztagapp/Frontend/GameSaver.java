@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import baldeep.quiztagapp.backend.PowerUps;
 
@@ -19,7 +20,7 @@ public class GameSaver {
         saver.putInt("hints", pu.getHints());
         saver.putInt("points", pu.getPoints());
 
-        System.out.println("SAVING: Power ups(points: " + pu.getPoints() + ", hints: " + pu.getHints() +
+        Log.i("Saving", "Power ups(points: " + pu.getPoints() + ", hints: " + pu.getHints() +
                 ", skips: " + pu.getSkips() + ")");
 
         saver.commit();
@@ -31,7 +32,7 @@ public class GameSaver {
         int hints = saveGame.getInt("hints", 10);
         int skips = saveGame.getInt("skips", 10);
 
-        System.out.println("LOADING: Power ups(points: " + points + ", hints: " + hints +
+        Log.i("Loading", "Power ups(points: " + points + ", hints: " + hints +
                 ", skips: " + skips + ")");
 
         PowerUps pu = new PowerUps(points, hints, skips);

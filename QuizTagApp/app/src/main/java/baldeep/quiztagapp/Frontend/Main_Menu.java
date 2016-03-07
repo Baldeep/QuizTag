@@ -82,5 +82,10 @@ public class Main_Menu extends AppCompatActivity {
         playBundle.putSerializable("powerUps", pu);
         playBundle.putSerializable("questionPool", qp);
         play_button.setOnClickListener(new MainMenuButtonListener(this, playBundle));
+
+
+        Bundle saveGame = new Bundle();
+        saveGame.putSerializable("powerUps", pu);
+        new GameSaver().saveGame(this, saveGame);
     }
 }

@@ -80,7 +80,7 @@ public class NFC_Tag_Writer extends AppCompatActivity {
             public void onClick(View v) {
                     if(tag != null){
                         // Take the tag no matter the format
-                        writeTag(editText.getText().toString(), tag);
+                        writeTag(String.valueOf(editText.getText()), tag);
                     } else {
                         Toast.makeText(NFC_Tag_Writer.this, "No Tag Detected", Toast.LENGTH_SHORT).show();
                     }
@@ -93,7 +93,7 @@ public class NFC_Tag_Writer extends AppCompatActivity {
                 if (tag != null) {
                     String text = readTag(tag);
                     textView.setText(text);
-                    Toast.makeText(NFC_Tag_Writer.this, "reading", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NFC_Tag_Writer.this, "Reading", Toast.LENGTH_SHORT).show();
                 }
             }
         });
