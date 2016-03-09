@@ -21,6 +21,10 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -89,7 +93,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
         Button write_btn = (Button) findViewById(R.id.button);
+
         write_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,9 +110,24 @@ public class MainActivity extends AppCompatActivity {
                         while((line = br.readLine()) != null){
                             Log.d("Line", line);
                             fileAsString = fileAsString + "\n" + line;
-                            Log.d("File As String", fileAsString);
                         }
                         Log.d("fileAsString", fileAsString);
+
+
+                        Gson gson = new Gson();
+                        ExhibitObject exhibit = new ExhibitObject();
+                        try {
+                            exhibit = gson.fromJson(fileAsString, ExhibitObject.class);
+                        }catch (JsonSyntaxException e){
+                            Toast.makeText(MainActivity.this, "File is in bad JSon format", Toast.LENGTH_SHORT).show();
+                        }
+
+                        writeTag(fileAsString, exhibit.getName(), tag);
+
+                        System.out.println("Name: " + exhibit.getName() +
+                        "Description: " + exhibit.getDescription() +
+                        "url: " + exhibit.getUrl());
+
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                         Log.e("FileNotFoundException", "FileNotFoundException");
@@ -130,40 +152,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         if(nfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            Toast.makeText(this, "Tag Found", Toast.LENGTH_SHORT).show();
         }
         super.onNewIntent(intent);
     }
 
-    private void writeTag(String text, Tag tag){
-        NdefRecord record = createRecord(text);
-        NdefRecord[] records = new NdefRecord[]{record};
+    private void writeTag(String json, String name, Tag tag){
+        NdefRecord jsonRecord = createRecord(json);
+        NdefRecord nameRecord = createRecord(name);
+        NdefRecord[] records = new NdefRecord[]{jsonRecord, nameRecord};
         NdefMessage message = new NdefMessage(records);
-
-        // Check the tag is in Ndef format
-        Ndef ndef = Ndef.get(tag);
-        if(ndef != null){
-            try {
-                ndef.connect(); // establish connection
-                ndef.writeNdefMessage(message);
-                Toast.makeText(this, "Ndef Write successful", Toast.LENGTH_SHORT).show();
-                ndef.close(); //close connection
-            } catch (IOException e) {
-                Toast.makeText(this, "Failed to write, tag may have moved", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-            } catch (FormatException e) {
-                Toast.makeText(this, "Tag is of invalid format", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-            }
-        } else {
-            // If it's not in Ndef Format, format it if possible
-            NdefFormatable formattable = NdefFormatable.get(tag);
-            if(formattable != null){
+        if(tag!=null) {
+            // Check the tag is in Ndef format
+            Ndef ndef = Ndef.get(tag);
+            if (ndef != null) {
                 try {
-                    formattable.connect();
-                    formattable.format(message);
-                    Toast.makeText(this, "Ndef Format and write successful", Toast.LENGTH_SHORT).show();
-                    formattable.close();
-                }  catch (IOException e) {
+                    ndef.connect(); // establish connection
+                    ndef.writeNdefMessage(message);
+                    Toast.makeText(this, "Ndef Write successful", Toast.LENGTH_SHORT).show();
+                    ndef.close(); //close connection
+                } catch (IOException e) {
                     Toast.makeText(this, "Failed to write, tag may have moved", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 } catch (FormatException e) {
@@ -171,8 +179,28 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(this, "Invalid Tag format", Toast.LENGTH_SHORT).show();
+                // If it's not in Ndef Format, format it if possible
+                NdefFormatable formattable = NdefFormatable.get(tag);
+                if (formattable != null) {
+                    try {
+                        formattable.connect();
+                        formattable.format(message);
+                        Toast.makeText(this, "Ndef Format and write successful", Toast.LENGTH_SHORT).show();
+                        formattable.close();
+                    } catch (IOException e) {
+                        Toast.makeText(this, "Failed to write, tag may have moved", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    } catch (FormatException e) {
+                        Toast.makeText(this, "Tag is of invalid format", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(this, "Invalid Tag format", Toast.LENGTH_SHORT).show();
+                }
             }
+        } else {
+            Toast.makeText(this, "Tag has moved", Toast.LENGTH_SHORT).show();
+
         }
     }
     private NdefRecord createRecord(String text){
@@ -200,6 +228,18 @@ public class MainActivity extends AppCompatActivity {
         NdefRecord recordNFC = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,  NdefRecord.RTD_TEXT,  new byte[0], payload);
 
         return recordNFC;
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        nfcAdapter.disableForegroundDispatch(this);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFileters, null);
     }
 
 }

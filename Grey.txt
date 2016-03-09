@@ -1,5 +1,5 @@
 {
      "name" : "Grey", 
-     "description" : "Grey or gray, is an intermediate color between black and white. It is a neutral or achromatic color, meaning literally that it is a color "without color". It is the color of a cloud-covered sky, of ash and of lead.", 
+     "description" : "Grey or gray, is an intermediate color between black and white. It is a neutral or achromatic color, meaning literally that it is a color 'without color'. It is the color of a cloud-covered sky, of ash and of lead.", 
      "url" : "https://en.wikipedia.org/wiki/Grey"
 }

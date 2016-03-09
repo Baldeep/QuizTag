@@ -127,32 +127,16 @@ public class NFC_Tag_Writer extends AppCompatActivity {
         NdefRecord record = createRecord(text);
         NdefRecord[] records = new NdefRecord[]{record};
         NdefMessage message = new NdefMessage(records);
-
-        // Check the tag is in Ndef format
-        Ndef ndef = Ndef.get(tag);
-        if(ndef != null){
-            try {
-                ndef.connect(); // establish connection
-                ndef.writeNdefMessage(message);
-                Toast.makeText(NFC_Tag_Writer.this, "Ndef Write successful", Toast.LENGTH_SHORT).show();
-                ndef.close(); //close connection
-            } catch (IOException e) {
-                Toast.makeText(NFC_Tag_Writer.this, "Failed to write, tag may have moved", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-            } catch (FormatException e) {
-                Toast.makeText(NFC_Tag_Writer.this, "Tag is of invalid format", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-            }
-        } else {
-            // If it's not in Ndef Format, format it if possible
-            NdefFormatable formattable = NdefFormatable.get(tag);
-            if(formattable != null){
+        if(tag != null) {
+            // Check the tag is in Ndef format
+            Ndef ndef = Ndef.get(tag);
+            if (ndef != null) {
                 try {
-                    formattable.connect();
-                    formattable.format(message);
-                    Toast.makeText(NFC_Tag_Writer.this, "Ndef Format and write successful", Toast.LENGTH_SHORT).show();
-                    formattable.close();
-                }  catch (IOException e) {
+                    ndef.connect(); // establish connection
+                    ndef.writeNdefMessage(message);
+                    Toast.makeText(NFC_Tag_Writer.this, "Ndef Write successful", Toast.LENGTH_SHORT).show();
+                    ndef.close(); //close connection
+                } catch (IOException e) {
                     Toast.makeText(NFC_Tag_Writer.this, "Failed to write, tag may have moved", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 } catch (FormatException e) {
@@ -160,7 +144,24 @@ public class NFC_Tag_Writer extends AppCompatActivity {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(NFC_Tag_Writer.this, "Invalid Tag format", Toast.LENGTH_SHORT).show();
+                // If it's not in Ndef Format, format it if possible
+                NdefFormatable formattable = NdefFormatable.get(tag);
+                if (formattable != null) {
+                    try {
+                        formattable.connect();
+                        formattable.format(message);
+                        Toast.makeText(NFC_Tag_Writer.this, "Ndef Format and write successful", Toast.LENGTH_SHORT).show();
+                        formattable.close();
+                    } catch (IOException e) {
+                        Toast.makeText(NFC_Tag_Writer.this, "Failed to write, tag may have moved", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    } catch (FormatException e) {
+                        Toast.makeText(NFC_Tag_Writer.this, "Tag is of invalid format", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(NFC_Tag_Writer.this, "Invalid Tag format", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

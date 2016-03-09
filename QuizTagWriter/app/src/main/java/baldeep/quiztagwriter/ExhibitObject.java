@@ -1,21 +1,21 @@
-package baldeep.quiztagapp.backend;
+package baldeep.quiztagwriter;
 
 /**
  * Created by Baldeep on 08/03/2016.
  */
-public class ExhibitTag {
+public class ExhibitObject {
 
     private String name;
     private String description;
     private String url;
 
-    public ExhibitTag(){
+    public ExhibitObject(){
         this.name = "";
         this.description = "";
         this.url = "";
     }
 
-    public ExhibitTag(String name, String description, String url){
+    public ExhibitObject(String name, String description, String url){
         this.name = name;
         this.description = description;
         this.url = url;

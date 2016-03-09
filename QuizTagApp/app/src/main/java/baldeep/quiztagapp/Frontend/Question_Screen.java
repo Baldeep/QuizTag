@@ -21,6 +21,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
@@ -31,6 +33,8 @@ import java.util.Observer;
 import baldeep.quiztagapp.Listeners.ShopButtonListener;
 import baldeep.quiztagapp.backend.PowerUps;
 import baldeep.quiztagapp.backend.QuizMaster;
+import baldeep.quiztagapp.backend.ExhibitTag;
+
 import baldeep.quiztagapp.Listeners.QuestionScreenButtonListener;
 import baldeep.quiztagapp.R;
 
@@ -272,56 +276,73 @@ public class Question_Screen extends AppCompatActivity implements Observer {
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             Log.d("NFC INTENT", "nfc intent discovered");
 
-            String tagContents = readTag(tag);
+            String answerFromTag = readAnswerFromTag(tag);
+            /*Gson gson = new Gson();
+            ExhibitTag exhibit = new ExhibitTag();
 
-            Toast.makeText(this, tagContents, Toast.LENGTH_SHORT).show();
-            Bundle answerBundle = new Bundle();
-            answerBundle.putSerializable("quizMaster", qm);
-            answerBundle.putString("message", "answer");
-            answerBundle.putString("questionNo", qm.getCurrentQuestionNumber() + "");
-            answerBundle.putString("button", "hint4");
-            answerBundle.putString("text", tagContents);
-            new QuestionScreenButtonListener(this, answerBundle).onClick(hint4);
+            exhibit = gson.fromJson(tagContents, ExhibitTag.class);
 
+            System.out.println("Name: " + exhibit.getName() +
+                    "Description: " + exhibit.getDescription() +
+                    "url: " + exhibit.getUrl());*/
+            if(!answerFromTag.equals("")){
+                checkAnswer(answerFromTag);
+            } else {
+                Toast.makeText(this, "Answer wasn't read properly, try again", Toast.LENGTH_SHORT).show();
+            }
         }
         super.onNewIntent(intent);
     }
+    
+    private void checkAnswer(String answer){
+        
+        Toast.makeText(this, answer, Toast.LENGTH_SHORT).show();
+        
+        Bundle answerBundle = new Bundle();
+        answerBundle.putSerializable("quizMaster", qm);
+        answerBundle.putString("message", "answer");
+        answerBundle.putString("questionNo", qm.getCurrentQuestionNumber() + "");
+        answerBundle.putString("button", "hint4");
+        answerBundle.putString("text", answer);
+        new QuestionScreenButtonListener(this, answerBundle).onClick(hint4);
+    }
 
-    private String readTag(Tag tag){
+    private String readAnswerFromTag(Tag tag){
         String text = "";
 
-        if(tag == null){
-            Toast.makeText(this, "Tag may have moved. Try again.", Toast.LENGTH_SHORT).show();
-        } else {
+        if(tag!=null){
             Ndef ndef = Ndef.get(tag);
-            if (ndef == null) {
-                Toast.makeText(this, "Tag not Ndef formatted", Toast.LENGTH_SHORT).show();
-            } else {
+            if(ndef!=null){
                 try {
                     ndef.connect();
                     NdefMessage message = ndef.getNdefMessage();
-                    NdefRecord[] records = message.getRecords();
+                    
+                    if(message != null) {
+                        NdefRecord[] record = message.getRecords();
 
-                    for (NdefRecord nr : records) {
-                        if (nr.getTnf() == NdefRecord.TNF_WELL_KNOWN && Arrays.equals(nr.getType(), NdefRecord.RTD_TEXT)) {
-                            try {
-                                text = decodeTag(nr);
-                            } catch (UnsupportedEncodingException e) {
-                                Log.e("TAG", "Unsupported Encoding", e);
-                            }
+                        if (record.length > 1) {
+                            text = decodeTag(record[1]);
                         }
+                    } else {
+                        Toast.makeText(this, "Didn't manage to read the tag, try again.", Toast.LENGTH_SHORT).show();
                     }
+                    
                     ndef.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (FormatException e) {
                     e.printStackTrace();
                 }
+            } else {
+                Toast.makeText(this, "The tag is in the wrong format, contact tech support", Toast.LENGTH_SHORT).show();
             }
+        } else {
+            Toast.makeText(this, "Didn't manage to read the tag, try again.", Toast.LENGTH_SHORT).show();
         }
+
         return text;
     }
-    private String decodeTag(NdefRecord record) throws UnsupportedEncodingException {
+    private String decodeTag(NdefRecord record) {
         /*
          * See NFC forum specification for "Text Record Type Definition" at 3.2.1
          *
@@ -345,22 +366,29 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         // Get the Language Code
         int languageCodeLength = payload[0] & 0063;
 
-        // String languageCode = new String(payload, 1, languageCodeLength, "US-ASCII");
-        // e.g. "en"
+        String text = null;
+        try {
+            text = new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, textEncoding);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            text = "";
+        }
 
         // Get the Text
-        return new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, textEncoding);
+        return text;
     }
 
     @Override
     public void onPause(){
         super.onPause();
+        if(nfcAdapter!=null) // for testing on emulator
         nfcAdapter.disableForegroundDispatch(this);
     }
 
     @Override
     public void onResume(){
         super.onResume();
+        if(nfcAdapter!=null) // for testing on emulator
         nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFileters, null);
     }
 }
