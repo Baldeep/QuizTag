@@ -86,7 +86,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/question_field"
-        android:textSize="15sp"
+        android:textSize="20sp"
         android:layout_weight="0.5"
         android:layout_marginBottom="2dp"/>
 
@@ -96,7 +96,7 @@
         android:background="@android:color/darker_gray"
         />
 
-    <Button
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/hint1"
@@ -106,7 +106,7 @@
         android:visibility="invisible"
         />
 
-    <Button
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/hint2"
@@ -116,7 +116,7 @@
         android:visibility="invisible"
         />
 
-    <Button
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/hint3"
@@ -126,7 +126,7 @@
         android:visibility="invisible"
         />
 
-    <Button
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/hint4"

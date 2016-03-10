@@ -40,11 +40,4 @@ public class AnswerConfirmationDialog extends DialogFragment {
 
         return confirmDialog.create();
     }
-
-    protected void returnResult(boolean dialogResult){
-        Intent answer = new Intent();
-
-        answer.putExtra("dialogResult", dialogResult);
-        getActivity().setResult(Activity.RESULT_OK, answer);
-    }
 }

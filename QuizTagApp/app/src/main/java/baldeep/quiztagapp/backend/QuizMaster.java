@@ -89,8 +89,22 @@ public class QuizMaster extends Observable implements Serializable, Observer{
             powerUps.setPoints(powerUps.getPoints() + POINTS);
             notifyAllObservers();
             return true;
-        } else
+        } else {
+            wrongAnswer();
             return false;
+        }
+    }
+
+    /**
+     * This is a little additional feature which revels the hints if the user gets the answer
+     * wrong 5 times. This counter is reset when a new question is picked
+     */
+    public void wrongAnswer(){
+        wrongChoices++;
+        if(wrongChoices == 4){
+            hintsRevealed = true;
+            notifyAllObservers();
+        }
     }
 
     /**
@@ -107,17 +121,44 @@ public class QuizMaster extends Observable implements Serializable, Observer{
     }
 
     /**
-     * Sets the hints to be revelaled and removes one from the total number of skips
-     * @return Return the new value for hints
+     * Exchanges points for skip power ups
+     * @return Returns true if the skips were sucessfully added, false otherwise
+     */
+    public boolean buySkips(){
+        if(powerUps.getPoints() >= powerUps.getSkipsCost()) {
+            powerUps.setPoints(powerUps.getPoints() - powerUps.getSkipsCost());
+            powerUps.setSkips(powerUps.getSkips() + 1);
+            notifyAllObservers();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Sets the hints to be revealed if there are enough hints avalable to do so
+     * @return The new value for the hints available
      */
     public int revealHints(){
-
-        if(powerUps.getHints() > 0 && !hintsRevealed) {
-            powerUps.setHints(powerUps.getHints() - 1);
+        if (powerUps.getHints() > 0) {
             hintsRevealed = true;
+            powerUps.setSkips(powerUps.getHints() - 1);
             notifyAllObservers();
         }
-        return powerUps.getHints();
+        return powerUps.getSkips();
+    }
+
+    /**
+     * Sets the hints to be revelaled and removes one from the total number of skips
+     * @return Returns true if the skips were sucessfully added, false otherwise
+     */
+    public boolean buyHints(){
+        if(powerUps.getPoints() >= powerUps.getHintsCost()) {
+            powerUps.setPoints(powerUps.getPoints() - powerUps.getHintsCost());
+            powerUps.setHints(powerUps.getHints() + 1);
+            notifyAllObservers();
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -127,18 +168,6 @@ public class QuizMaster extends Observable implements Serializable, Observer{
     public boolean hintsAvailable(){
         return hintsRevealed;
     }
-
-    /**
-     * This is a little additional feature which revels the hints if the user gets the answer
-     * wrong 5 times. This counter is reset when a new question is picked
-     */
-    public void wrongAnswer(){
-        wrongChoices++;
-        if(wrongChoices == 5){
-            hintsRevealed = true;
-        }
-    }
-
 
     /**
      * Resets the question counter and clears the questions asked from the QuestionPool

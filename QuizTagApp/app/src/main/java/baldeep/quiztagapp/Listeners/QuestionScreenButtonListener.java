@@ -32,24 +32,6 @@ public class QuestionScreenButtonListener implements View.OnClickListener {
             quizMaster.skipQuestion();
         }
 
-        if(message.equals("answer")){
-            String answer = arguments.getString("text");
-
-            Bundle confirmBundle = new Bundle();
-            confirmBundle.putSerializable("quizMaster", quizMaster);
-            confirmBundle.putString("answer", answer);
-            String title = "Question " + arguments.getString("questionNo");
-            confirmBundle.putString("title", title);
-            String text = "You have selected:\n" + answer
-                    + "\nIs this your final answer?";
-            confirmBundle.putString("message", text);
-
-            DialogFragment df = new AnswerConfirmationDialog();
-            df.setArguments(confirmBundle);
-            df.show(screen.getFragmentManager(), "Confirm Dialog");
-        }
-
-
     }
 
 
