@@ -50,6 +50,7 @@
             android:label="NFC Stuff">
 
         </activity>
+        <activity android:name=".Frontend.Scan_Screen"/>
 
     </application>
 

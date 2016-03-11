@@ -207,7 +207,7 @@ public class NFC_Tag_Writer extends AppCompatActivity {
                 for(NdefRecord nr : records){
                     if (nr.getTnf() == NdefRecord.TNF_WELL_KNOWN && Arrays.equals(nr.getType(), NdefRecord.RTD_TEXT)) {
                         try {
-                            text = readText(nr);
+                            text = readText(nr); // second record is just the name, so that gets returned in the end
                         } catch (UnsupportedEncodingException e) {
                             Log.e("TAG", "Unsupported Encoding", e);
                         }

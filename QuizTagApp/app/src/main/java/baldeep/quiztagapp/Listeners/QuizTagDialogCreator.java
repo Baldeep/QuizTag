@@ -8,6 +8,8 @@ import android.os.Bundle;
 
 import baldeep.quiztagapp.Frontend.AnswerConfirmationDialog;
 import baldeep.quiztagapp.Frontend.InformationDialog;
+import baldeep.quiztagapp.Frontend.NFCInfoDialog;
+import baldeep.quiztagapp.Frontend.QuitDialog;
 import baldeep.quiztagapp.backend.QuizMaster;
 
 /**
@@ -44,6 +46,21 @@ public class QuizTagDialogCreator {
         DialogFragment df = new AnswerConfirmationDialog();
         df.setArguments(confirmBundle);
         df.show(fragmentManager, "Confirm Dialog");
+    }
+
+    public void quitConfirmationDialog(FragmentManager fragmentManager, Bundle arguments){
+        DialogFragment df = new QuitDialog();
+        df.show(fragmentManager, "Quit Dialog");
+    }
+
+    public void nfcDisabledDialog(FragmentManager fragmentManager, Bundle arguments){
+        DialogFragment df = new NFCInfoDialog();
+        Bundle nfcBundle = new Bundle();
+        nfcBundle.putString("title", "NFC Hardware");
+        nfcBundle.putString("message", "Check NFC is enabled");
+        nfcBundle.putString("type", "nfcOff");
+        df.setArguments(nfcBundle);
+        df.show(fragmentManager, "NFC Info");
     }
 
 

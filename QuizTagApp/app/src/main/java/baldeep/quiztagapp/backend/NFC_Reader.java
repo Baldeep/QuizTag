@@ -8,6 +8,9 @@ import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
@@ -18,7 +21,6 @@ import java.io.UnsupportedEncodingException;
  * while the second contains just the name of the exhibit
  */
 public class NFC_Reader {
-
 
     /**
      * This method reads the name field from the NFC tag. It also makes complete null checks and
@@ -50,9 +52,7 @@ public class NFC_Reader {
                     }
 
                     ndef.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (FormatException e) {
+                } catch (IOException | FormatException e) {
                     e.printStackTrace();
                 }
             } else {
@@ -65,6 +65,13 @@ public class NFC_Reader {
         return text;
     }
 
+    /**
+     * This method reads the first record of the tag and creates an exhibit object from it, it makes
+     * the usual null checks for NFC reading and additionally checks
+     * @param activity The activity calling this method
+     * @param tag The tag to be read
+     * @return An ExhibitTag object containing name, description and web url of the object scanned, returns null if the object wasn't read properly
+     */
     public ExhibitTag readExhibitFromTag(Activity activity, Tag tag){
         ExhibitTag exhibit = new ExhibitTag();
         String text = "";
@@ -80,16 +87,14 @@ public class NFC_Reader {
                         NdefRecord[] record = message.getRecords();
 
                         if (record.length > 1) {
-                            text = decodeTag(record[1]);
+                            text = decodeTag(record[0]);
                         }
                     } else {
                         Toast.makeText(activity, "Didn't manage to read the tag, try again.", Toast.LENGTH_SHORT).show();
                     }
 
                     ndef.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (FormatException e) {
+                } catch (IOException | FormatException e) {
                     e.printStackTrace();
                 }
             } else {
@@ -98,7 +103,19 @@ public class NFC_Reader {
         } else {
             Toast.makeText(activity, "Didn't manage to read the tag, try again.", Toast.LENGTH_SHORT).show();
         }
-        return exhibit;
+
+        if(!text.equals("")){
+            try {
+                Gson gson = new Gson();
+                exhibit = gson.fromJson(text, ExhibitTag.class);
+            } catch (JsonParseException e){
+                Toast.makeText(activity, "Tag in wrong format, contact tech support", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        if(exhibit.getName() != null && exhibit.getDescription() != null && exhibit.getUrl() != null)
+            return exhibit;
+        return null;
     }
 
     private String decodeTag(NdefRecord record) {
@@ -115,7 +132,7 @@ public class NFC_Reader {
         byte[] payload = record.getPayload();
 
         // Get the Text Encoding
-        String textEncoding = " ";
+        String textEncoding;
         if((payload[0] & 128) == 0){
             textEncoding = "UTF-8";
         } else {
@@ -125,7 +142,7 @@ public class NFC_Reader {
         // Get the Language Code
         int languageCodeLength = payload[0] & 0063;
 
-        String text = null;
+        String text;
         try {
             text = new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, textEncoding);
         } catch (UnsupportedEncodingException e) {

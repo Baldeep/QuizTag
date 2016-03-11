@@ -22,4 +22,6 @@
     <string name="quit_button_text">Quit</string>
     <string name="buy_hints">Buy Hints</string>
     <string name="buy_skips">Buy Skips</string>
+    <string name="scan_screen_name_field">Name: </string>
+    <string name="scan_screen_url_text">see more</string>
 </resources>

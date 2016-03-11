@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Observable;
@@ -44,12 +45,12 @@ public class Question_Screen extends AppCompatActivity implements Observer {
     private QuizMaster qm;
 
     // nfcAdapter and intent filters need to be here
-    NfcAdapter nfcAdapter;
+    private NfcAdapter nfcAdapter;
     // Intent needs to be declared programmatically otherwise
     // the tag will open this activity if declared in the manifest
-    PendingIntent pendingIntent;
-    IntentFilter intentFileters[];
-    Tag tag;
+    private PendingIntent pendingIntent;
+    private IntentFilter intentFileters[];
+    private Tag tag;
 
     // To create dialog pop ups
     QuizTagDialogCreator dialogCreator = new QuizTagDialogCreator();
@@ -96,13 +97,7 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         // Check NFC is enabled
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if(nfcAdapter == null || !nfcAdapter.isEnabled()){
-            DialogFragment df = new NFCInfoDialog();
-            Bundle nfcBundle = new Bundle();
-            nfcBundle.putString("title", "NFC Hardware");
-            nfcBundle.putString("message", "Check NFC is enabled");
-            nfcBundle.putString("type", "nfcOff");
-            df.setArguments(nfcBundle);
-            df.show(getFragmentManager(), "NFC Info");
+            dialogCreator.nfcDisabledDialog(getFragmentManager(), new Bundle());
         }
 
         // Set the intent filter
@@ -130,8 +125,7 @@ public class Question_Screen extends AppCompatActivity implements Observer {
             goingBack.putExtra("powerUps", qm.getPowerUps());
             setResult(RESULT_OK, goingBack);
 
-            DialogFragment df = new QuitDialog();
-            df.show(getFragmentManager(), "Quit Dialog");
+            dialogCreator.quitConfirmationDialog(getFragmentManager(), new Bundle());
 
             return true;
         }
@@ -220,7 +214,7 @@ public class Question_Screen extends AppCompatActivity implements Observer {
     protected void onNewIntent(Intent intent) {
         if(nfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            Log.d("NFC INTENT", "nfc intent discovered");
+            Toast.makeText(this, "Tag found", Toast.LENGTH_SHORT).show();
 
             String answerFromTag = new NFC_Reader().readNameFromTag(this, tag);
             /*Gson gson = new Gson();
@@ -237,7 +231,11 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         }
         super.onNewIntent(intent);
     }
-    
+
+    /**
+     * This method checks the answers
+     * @param answer
+     */
     private void checkAnswer(String answer){
         
         // Toast.makeText(this, answer, Toast.LENGTH_SHORT).show();

@@ -51,7 +51,6 @@ public class AnsConfirmationDialogListener implements DialogInterface.OnClickLis
                 DialogFragment df = new InformationDialog();
                 df.setArguments(checked);
                 df.show(activity.getFragmentManager(), "result");
-                quizMaster.wrongAnswer();
                 /** -- up to here **/
             }
         }
