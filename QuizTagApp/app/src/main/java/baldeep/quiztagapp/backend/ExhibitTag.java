@@ -8,17 +8,20 @@ public class ExhibitTag {
     private String name;
     private String description;
     private String url;
+    private String year;
 
     public ExhibitTag(){
         this.name = "";
         this.description = "";
         this.url = "";
+        this.year = "";
     }
 
-    public ExhibitTag(String name, String description, String url){
+    public ExhibitTag(String name, String description, String url, String year){
         this.name = name;
         this.description = description;
         this.url = url;
+        this.year = year;
     }
 
     public String getDescription() {
@@ -43,5 +46,9 @@ public class ExhibitTag {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getYear() {
+        return year;
     }
 }

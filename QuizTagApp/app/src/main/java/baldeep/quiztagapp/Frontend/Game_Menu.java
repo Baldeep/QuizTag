@@ -3,15 +3,14 @@ package baldeep.quiztagapp.Frontend;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.io.Serializable;
-import java.util.Observable;
-import java.util.Observer;
-
+import baldeep.quiztagapp.backend.FileHandler;
+import baldeep.quiztagapp.backend.GameSaver;
 import baldeep.quiztagapp.backend.PowerUps;
 import baldeep.quiztagapp.backend.QuestionPool;
 import baldeep.quiztagapp.backend.QuizMaster;
@@ -40,9 +39,13 @@ public class Game_Menu extends AppCompatActivity {
 
         setContentView(R.layout.game_menu_activity);
 
-        Intent previousActivity = getIntent();
-        powerUps = (PowerUps) previousActivity.getSerializableExtra("powerUps");
-        questionPool = (QuestionPool) previousActivity.getSerializableExtra("questionPool");
+        Bundle saveGameData = new GameSaver().loadGame(this);
+        powerUps = (PowerUps) saveGameData.getSerializable("powerUps");
+
+        questionPool = new FileHandler().getQuestionPoolFromFile(this);
+        if(questionPool == null){
+           Log.e("Reading QuestioPool", "Reading questionpool resulted in null");
+        }
 
         qm = new QuizMaster(questionPool, powerUps);
 
@@ -50,13 +53,11 @@ public class Game_Menu extends AppCompatActivity {
         quiz_tag_button = (Button) findViewById(R.id.quiz_tag_button);
         shop_button = (Button) findViewById(R.id.shop_button);
 
-        setButtonListeners();
-
         hints = (TextView) findViewById(R.id.hints_count_text);
         skips = (TextView) findViewById(R.id.skips_count_text);
         coins = (TextView) findViewById(R.id.coins_count_text);
 
-        update(powerUps, null);
+        update();
     }
 
     @Override
@@ -78,49 +79,51 @@ public class Game_Menu extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void update(Observable observable, Object data) {
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        this.powerUps = (PowerUps) data.getSerializableExtra("powerUps");
+
+        Bundle saveGame = new Bundle();
+        saveGame.putSerializable("powerUps", powerUps);
+        new GameSaver().saveGame(this, saveGame);
+        update();
+    }
+
+    /**
+     *  This class could not be made an observer as the powerups need to be passed down to the next
+     *  activities which would require this class and the inherited AppCompatActivity class to be
+     *  Serialisable. Therefore this class needs to manually be updated on activity result.
+     */
+    private void update() {
         hints.setText(powerUps.getHintsAsString());
         skips.setText(powerUps.getSkipsAsString());
         coins.setText(powerUps.getPointsAsString());
         setButtonListeners();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        PowerUps pu = (PowerUps) data.getSerializableExtra("powerUps");
-        this.powerUps = pu;
-
-        update(null, null);
-    }
-
+    /**
+     * As the power ups may be changed by multiple classes, the listeners for each button need to be
+     * updated also otherwise the powerups will changes will not carry on.
+     */
     private void setButtonListeners(){
         Bundle startBundle = new Bundle();
         startBundle.putString("message", "start");
         qm = new QuizMaster(questionPool, powerUps);
         startBundle.putSerializable("quizMaster", qm);
-        final int result = 1;
-        startBundle.putInt("result", result);
+        startBundle.putInt("result", 1);
 
         Bundle quizTagBundle = new Bundle();
         quizTagBundle.putString("message", "quiztag");
 
         Bundle shopBundle = new Bundle();
         shopBundle.putString("message", "shop");
-        final int shopResult = 1;
-        shopBundle.putInt("result", shopResult);
+        shopBundle.putInt("result", 1);
         shopBundle.putSerializable("powerUps", powerUps);
 
         start_button.setOnClickListener(new GameMenuButtonListener(this, startBundle));
         quiz_tag_button.setOnClickListener(new GameMenuButtonListener(this, quizTagBundle));
         shop_button.setOnClickListener(new GameMenuButtonListener(this, shopBundle));
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent goingBack = new Intent();
-        goingBack.putExtra("powerUps", powerUps);
-        setResult(RESULT_OK, goingBack);
-        super.onBackPressed();
     }
 }

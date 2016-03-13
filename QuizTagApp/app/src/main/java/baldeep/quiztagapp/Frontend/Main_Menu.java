@@ -1,7 +1,5 @@
 package baldeep.quiztagapp.Frontend;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,14 +8,9 @@ import android.widget.Button;
 
 import baldeep.quiztagapp.Listeners.MainMenuButtonListener;
 import baldeep.quiztagapp.R;
-import baldeep.quiztagapp.backend.FileReader;
-import baldeep.quiztagapp.backend.PowerUps;
-import baldeep.quiztagapp.backend.QuestionPool;
+import baldeep.quiztagapp.backend.FileHandler;
 
 public class Main_Menu extends AppCompatActivity {
-
-    private PowerUps pu;
-    private QuestionPool qp;
 
     private Button play_button;
     private Button connect_button;
@@ -27,24 +20,16 @@ public class Main_Menu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        new FileHandler().writeFile(this.getApplicationContext(), "Hello World");
+        new FileHandler().readFileTest(this.getApplicationContext());
         setContentView(R.layout.activity_main_menu);
 
         play_button = (Button) findViewById(R.id.play_button);
         connect_button = (Button) findViewById(R.id.connect_button);
         scan_button = (Button) findViewById(R.id.scan_button);
 
-        Bundle saveGameData = new GameSaver().loadGame(this);
-        pu = (PowerUps) saveGameData.getSerializable("powerUps");
-
-        qp = new FileReader().getQuestionPoolFromFile(this);
-        if(qp == null){
-            System.out.println("QUESTION POOL IS NULL IN MAIN MENU *****");
-        }
-
         Bundle playBundle = new Bundle();
         playBundle.putString("message", "play");
-        playBundle.putSerializable("powerUps", pu);
-        playBundle.putSerializable("questionPool", qp);
         play_button.setOnClickListener(new MainMenuButtonListener(this, playBundle));
 
         Bundle connectBundle = new Bundle();
@@ -55,7 +40,6 @@ public class Main_Menu extends AppCompatActivity {
         scanBundle.putString("message", "scan");
         scan_button.setOnClickListener(new MainMenuButtonListener(this, scanBundle));
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -71,21 +55,5 @@ public class Main_Menu extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        pu = (PowerUps) data.getSerializableExtra("powerUps");
-
-        Bundle playBundle = new Bundle();
-        playBundle.putString("message", "play");
-        playBundle.putSerializable("powerUps", pu);
-        playBundle.putSerializable("questionPool", qp);
-        play_button.setOnClickListener(new MainMenuButtonListener(this, playBundle));
-
-
-        Bundle saveGame = new Bundle();
-        saveGame.putSerializable("powerUps", pu);
-        new GameSaver().saveGame(this, saveGame);
     }
 }

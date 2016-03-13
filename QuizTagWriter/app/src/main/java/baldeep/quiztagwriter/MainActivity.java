@@ -1,5 +1,6 @@
 package baldeep.quiztagwriter;
 
+import android.app.DialogFragment;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -112,14 +113,19 @@ public class MainActivity extends AppCompatActivity {
                             fileAsString = fileAsString + "\n" + line;
                         }
                         Log.d("fileAsString", fileAsString);
-
-
+                        
                         Gson gson = new Gson();
                         ExhibitObject exhibit = new ExhibitObject();
                         try {
                             exhibit = gson.fromJson(fileAsString, ExhibitObject.class);
                         }catch (JsonSyntaxException e){
-                            Toast.makeText(MainActivity.this, "File is in bad JSon format", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Bad JSon format", Toast.LENGTH_SHORT).show();
+                            DialogFragment df = new InformationDialog();
+                            Bundle info = new Bundle();
+                            info.putString("title", "JSON ERROR");
+                            info.putString("message", e.toString());
+                            df.setArguments(info);
+                            df.show(getFragmentManager(), "JSON");
                         }
 
                         writeTag(fileAsString, exhibit.getName(), tag);
@@ -163,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
         NdefRecord[] records = new NdefRecord[]{jsonRecord, nameRecord};
         NdefMessage message = new NdefMessage(records);
         if(tag!=null) {
+            Toast.makeText(this, "Writing", Toast.LENGTH_SHORT).show();
             // Check the tag is in Ndef format
             Ndef ndef = Ndef.get(tag);
             if (ndef != null) {

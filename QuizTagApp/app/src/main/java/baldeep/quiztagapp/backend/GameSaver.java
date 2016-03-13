@@ -1,4 +1,4 @@
-package baldeep.quiztagapp.Frontend;
+package baldeep.quiztagapp.backend;
 
 import android.app.Activity;
 import android.content.Context;

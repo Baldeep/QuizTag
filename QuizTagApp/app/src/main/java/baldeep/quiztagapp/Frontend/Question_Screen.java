@@ -1,7 +1,5 @@
 package baldeep.quiztagapp.Frontend;
 
-import android.app.Activity;
-import android.app.DialogFragment;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -9,7 +7,6 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +18,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import baldeep.quiztagapp.Listeners.QuizTagDialogCreator;
+import baldeep.quiztagapp.Listeners.DialogCreator;
 import baldeep.quiztagapp.backend.NFC_Reader;
 import baldeep.quiztagapp.backend.QuizMaster;
 
@@ -53,7 +50,7 @@ public class Question_Screen extends AppCompatActivity implements Observer {
     private Tag tag;
 
     // To create dialog pop ups
-    QuizTagDialogCreator dialogCreator = new QuizTagDialogCreator();
+    DialogCreator dialogCreator = new DialogCreator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -234,7 +231,7 @@ public class Question_Screen extends AppCompatActivity implements Observer {
 
     /**
      * This method checks the answers
-     * @param answer
+     * @param answer The answer to be checked for the current question
      */
     private void checkAnswer(String answer){
         

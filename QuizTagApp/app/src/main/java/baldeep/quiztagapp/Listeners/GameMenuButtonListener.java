@@ -32,25 +32,26 @@ public class GameMenuButtonListener implements View.OnClickListener {
         String message = arguments.getString("message");
 
         if(message.equals("start")){
+
             Intent questionScreen = new Intent(menu, Question_Screen.class);
             questionScreen.putExtra("quizMaster", (QuizMaster) arguments.getSerializable("quizMaster"));
-
             menu.startActivityForResult(questionScreen, arguments.getInt("result"));
-        } else if(message.equals("quiztag")){
-            DialogFragment df = new ConnectDialog();
 
+        } else if(message.equals("quiztag")){
+
+            DialogFragment df = new ConnectDialog();
             Bundle connectArgs = new Bundle();
             connectArgs.putString("title", "Download Quiz");
             connectArgs.putString("message",
                     "To download a new quiz please place phone on QuizTag and press ok");
             connectArgs.putString("type", "QuizTag");
             df.setArguments(connectArgs);
-
             df.show(menu.getFragmentManager(), "Connect Dialog");
+
+
         } else if(message.equals("shop")){
             Intent shopScreen = new Intent(menu, Shop_Menu.class);
             shopScreen.putExtra("powerUps", (PowerUps) arguments.getSerializable("powerUps"));
-
             menu.startActivityForResult(shopScreen, arguments.getInt("result"));
         }
     }

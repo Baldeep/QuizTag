@@ -32,25 +32,75 @@ public class NFC_Reader {
      *         return an empty string.
      */
     public String readNameFromTag(Activity activity, Tag tag){
+        ExhibitTag et = readExhibitFromTag(activity, tag);
+        return et.getName();
+    }
+
+    /**
+     * This method reads the first record of the tag and creates an exhibit object from it, it makes
+     * the usual null checks for NFC reading and additionally checks
+     * @param activity The activity calling this method
+     * @param tag The tag to be read
+     * @return An ExhibitTag object containing name, description and web url of the object scanned, returns null if the object wasn't read properly
+     */
+    public ExhibitTag readExhibitFromTag(Activity activity, Tag tag){
+        ExhibitTag exhibit = new ExhibitTag();
+
+        String text = readTag(activity, tag);
+
+        if(!text.equals("") && !text.equals(null)){
+            try {
+                Gson gson = new Gson();
+                exhibit = gson.fromJson(text, ExhibitTag.class);
+            } catch (JsonParseException e){
+                Toast.makeText(activity, "Tag in wrong format, contact tech support", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        if(exhibit.getName() != null && exhibit.getDescription() != null && exhibit.getUrl() != null)
+            return exhibit;
+        return null;
+    }
+
+    public QuestionPool readQuestionPoolFromTag(Activity activity, Tag tag){
+        QuestionPool qp = null;
+
+        String text = readTag(activity, tag);
+
+        if(!text.equals("") && !text.equals(null)){
+            try {
+                Gson gson = new Gson();
+                qp = gson.fromJson(text, QuestionPool.class);
+            } catch (JsonParseException e){
+                Toast.makeText(activity, "Tag in wrong format, contact tech support", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        for(Question q : qp.getQuestionPool())
+            q.resetHints();
+
+        return qp;
+    }
+
+
+    public String readTag(Activity activity, Tag tag) {
         String text = "";
 
-        if(tag!=null){
+        if (tag != null) {
             Ndef ndef = Ndef.get(tag);
-            if(ndef!=null){
+            if (ndef != null) {
                 try {
                     ndef.connect();
                     NdefMessage message = ndef.getNdefMessage();
-
-                    if(message != null) {
+                    if (message != null) {
                         NdefRecord[] record = message.getRecords();
 
                         if (record.length > 1) {
-                            text = decodeTag(record[1]);
+                            text = decodeTag(record[0]);
                         }
                     } else {
                         Toast.makeText(activity, "Didn't manage to read the tag, try again.", Toast.LENGTH_SHORT).show();
                     }
-
                     ndef.close();
                 } catch (IOException | FormatException e) {
                     e.printStackTrace();
@@ -63,59 +113,6 @@ public class NFC_Reader {
         }
 
         return text;
-    }
-
-    /**
-     * This method reads the first record of the tag and creates an exhibit object from it, it makes
-     * the usual null checks for NFC reading and additionally checks
-     * @param activity The activity calling this method
-     * @param tag The tag to be read
-     * @return An ExhibitTag object containing name, description and web url of the object scanned, returns null if the object wasn't read properly
-     */
-    public ExhibitTag readExhibitFromTag(Activity activity, Tag tag){
-        ExhibitTag exhibit = new ExhibitTag();
-        String text = "";
-
-        if(tag!=null){
-            Ndef ndef = Ndef.get(tag);
-            if(ndef!=null){
-                try {
-                    ndef.connect();
-                    NdefMessage message = ndef.getNdefMessage();
-
-                    if(message != null) {
-                        NdefRecord[] record = message.getRecords();
-
-                        if (record.length > 1) {
-                            text = decodeTag(record[0]);
-                        }
-                    } else {
-                        Toast.makeText(activity, "Didn't manage to read the tag, try again.", Toast.LENGTH_SHORT).show();
-                    }
-
-                    ndef.close();
-                } catch (IOException | FormatException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Toast.makeText(activity, "The tag is in the wrong format, contact tech support", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(activity, "Didn't manage to read the tag, try again.", Toast.LENGTH_SHORT).show();
-        }
-
-        if(!text.equals("")){
-            try {
-                Gson gson = new Gson();
-                exhibit = gson.fromJson(text, ExhibitTag.class);
-            } catch (JsonParseException e){
-                Toast.makeText(activity, "Tag in wrong format, contact tech support", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        if(exhibit.getName() != null && exhibit.getDescription() != null && exhibit.getUrl() != null)
-            return exhibit;
-        return null;
     }
 
     private String decodeTag(NdefRecord record) {

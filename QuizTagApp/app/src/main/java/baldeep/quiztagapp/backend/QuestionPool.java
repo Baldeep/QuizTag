@@ -13,8 +13,8 @@ public class QuestionPool implements Serializable{
     @SerializedName("QuestionPool")
     private List<Question> questionPool;
     private List<Question> questionsAsked;
-
     private Question currentQuestion;
+    private boolean random;
 
     /**
      * The question pool holds a non-empty list of questions and helps with the question handling
@@ -22,18 +22,19 @@ public class QuestionPool implements Serializable{
      * @param quizName The name for the quiz
      * @param questionPool The pool of questions
      */
-    public QuestionPool(String quizName, List<Question> questionPool){
+    public QuestionPool(String quizName, List<Question> questionPool, boolean random){
 
         assert(questionPool.size()>=1);
 
         this.questionPool = questionPool;
         this.quizName = quizName;
         questionsAsked = new ArrayList<>();
+        this.random = random;
     }
 
     /**
      * The question pool holds a list of questions and helps with the question handling tasks,
-     * without dealing with any of the power-ups etc.
+     * without dealing with any of the power-ups etc. The questions selected will be picked at random
      * @param questionPool The pool of questions
      */
     public QuestionPool(List<Question> questionPool){
@@ -43,6 +44,7 @@ public class QuestionPool implements Serializable{
         this.questionPool = questionPool;
         this.quizName = "";
         questionsAsked = new ArrayList<>();
+        random = true;
     }
 
     /**
@@ -52,6 +54,7 @@ public class QuestionPool implements Serializable{
     public Question askQuestion(){
         Question q;
 
+
         // make sure it's not empty
         if(questionPool.isEmpty()) {
             System.out.println("Questionpool empty **********");
@@ -59,7 +62,9 @@ public class QuestionPool implements Serializable{
             questionsAsked.clear();
         }
 
-        Collections.shuffle(questionPool);
+        if(random) {
+            Collections.shuffle(questionPool);
+        }
         q = questionPool.get(0);
 
         /* Redacting the following as a check is made to ensure the list isn't empty at the start
@@ -89,6 +94,7 @@ public class QuestionPool implements Serializable{
         currentQuestion = q;
         questionsAsked.add(q);
         questionPool.remove(q);
+
 
         return q;
     }
@@ -132,6 +138,18 @@ public class QuestionPool implements Serializable{
 
     public void setCurrentQuestion(Question currentQuestion) {
         this.currentQuestion = currentQuestion;
+    }
+
+    public boolean isRandom(){
+        return random;
+    }
+
+    public void setRandom(boolean random){
+        this.random = random;
+    }
+
+    public int getQuestionPoolSize(){
+        return questionPool.size();
     }
 
 }

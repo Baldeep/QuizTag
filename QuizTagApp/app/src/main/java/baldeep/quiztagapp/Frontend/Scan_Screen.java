@@ -9,14 +9,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import baldeep.quiztagapp.Listeners.QuizTagDialogCreator;
+import baldeep.quiztagapp.Listeners.DialogCreator;
 import baldeep.quiztagapp.R;
 import baldeep.quiztagapp.backend.ExhibitTag;
 import baldeep.quiztagapp.backend.NFC_Reader;
@@ -24,7 +24,7 @@ import baldeep.quiztagapp.backend.NFC_Reader;
 
 public class Scan_Screen extends AppCompatActivity{
 
-    private QuizTagDialogCreator dialogCreator = new QuizTagDialogCreator();
+    private DialogCreator dialogCreator = new DialogCreator();
     private ExhibitTag exhibitTag;
 
     private TextView name;
@@ -56,8 +56,6 @@ public class Scan_Screen extends AppCompatActivity{
             dialogCreator.nfcDisabledDialog(getFragmentManager(), new Bundle());
         }
 
-        ExhibitTag exhibitTag = new NFC_Reader().readExhibitFromTag(this, tag);
-
         // Set the intent filter
         pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
         IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
@@ -83,7 +81,13 @@ public class Scan_Screen extends AppCompatActivity{
         if(nfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             Toast.makeText(this, "Tag found", Toast.LENGTH_SHORT).show();
+
+            long startTime = System.currentTimeMillis();
             exhibitTag = new NFC_Reader().readExhibitFromTag(this, tag);
+            long endTime = System.currentTimeMillis();
+            long timeTaken = endTime-startTime;
+            Log.d("ReadExhibitName", "Time taken" + timeTaken);
+
             updateFields();
         }
         super.onNewIntent(intent);
@@ -92,12 +96,13 @@ public class Scan_Screen extends AppCompatActivity{
     private void updateFields(){
 
         if(exhibitTag != null){
-            String nameString = getResources().getString(R.string.scan_screen_name_field) + exhibitTag.getName();
+            String nameString = getResources().getString(R.string.scan_screen_name_field) + exhibitTag.getName() + " " + exhibitTag.getYear();
             name.setText(nameString);
 
+            description.setMovementMethod(new ScrollingMovementMethod());
             description.setText(exhibitTag.getDescription());
 
-            url.setMovementMethod((LinkMovementMethod.getInstance()));
+
             String urlText = "<a href='" + exhibitTag.getUrl() + "'>" + getResources().getString(R.string.scan_screen_url_text) + "</a>";
             url.setText(Html.fromHtml(urlText));
         }

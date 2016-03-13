@@ -1,26 +1,17 @@
 package baldeep.quiztagapp.Frontend;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
-import java.util.Observable;
-import java.util.Observer;
 
 import baldeep.quiztagapp.Listeners.ShopButtonListener;
 import baldeep.quiztagapp.R;
+import baldeep.quiztagapp.backend.GameSaver;
 import baldeep.quiztagapp.backend.PowerUps;
 
 public class Shop_Menu extends AppCompatActivity {

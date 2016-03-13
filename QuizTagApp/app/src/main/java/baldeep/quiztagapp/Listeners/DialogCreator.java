@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import baldeep.quiztagapp.Frontend.AnswerConfirmationDialog;
+import baldeep.quiztagapp.Frontend.ConnectDialog;
 import baldeep.quiztagapp.Frontend.InformationDialog;
 import baldeep.quiztagapp.Frontend.NFCInfoDialog;
 import baldeep.quiztagapp.Frontend.QuitDialog;
@@ -15,7 +16,7 @@ import baldeep.quiztagapp.backend.QuizMaster;
 /**
  * This class creates wrapper methods to create pop up dialogs
  */
-public class QuizTagDialogCreator {
+public class DialogCreator {
 
     public void failedBuyDialog(FragmentManager fragmentManager, Bundle arguments){
         String type = arguments.getString("message");
@@ -61,6 +62,17 @@ public class QuizTagDialogCreator {
         nfcBundle.putString("type", "nfcOff");
         df.setArguments(nfcBundle);
         df.show(fragmentManager, "NFC Info");
+    }
+
+    public void smartCaseConnectionDialog(FragmentManager fragmentManager, Bundle arguments){
+        DialogFragment df = new ConnectDialog();
+        Bundle connectArgs = new Bundle();
+        connectArgs.putString("title", "Connect to SmartCase");
+        connectArgs.putString("message",
+                "Connecting to SmartCase, please place the phone on the case and press OK");
+        connectArgs.putString("type", "SmartCase");
+        df.setArguments(connectArgs);
+        df.show(fragmentManager, "Connect Dialog");
     }
 
 

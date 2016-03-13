@@ -195,9 +195,8 @@ public class QuizMaster extends Observable implements Serializable, Observer{
     }
 
 
-    public void setNewQuiz(String quizName, String fileName){
-        qp = new QuestionPool(quizName, new FileParser().extractQuestions(fileName));
-
+    public void setNewQuiz(QuestionPool qp){
+        this.qp = qp;
     }
 
     public void setPowerUps(PowerUps powerUps){
