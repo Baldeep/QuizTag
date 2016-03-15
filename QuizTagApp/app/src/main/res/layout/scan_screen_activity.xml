@@ -36,7 +36,7 @@
         android:id="@+id/scan_screen_url_field"
         android:layout_weight="0.05"
         android:text="@string/scan_screen_url_text"
-        android:textSize="15sp"
+        android:textSize="20sp"
         android:textAlignment="center"/>
 
 
