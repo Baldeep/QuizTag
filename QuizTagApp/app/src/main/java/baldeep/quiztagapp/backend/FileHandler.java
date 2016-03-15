@@ -60,6 +60,7 @@ public class FileHandler implements Serializable{
 
         try {
             FileOutputStream fileout = context.openFileOutput("quiz.txt", Context.MODE_PRIVATE);
+
             Log.d("WRITE ADDRESS", context.getFilesDir().getAbsolutePath());
             OutputStreamWriter outputWriter=new OutputStreamWriter(fileout);
             outputWriter.write(text);
