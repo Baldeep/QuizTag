@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -209,11 +210,15 @@ public class Question_Screen extends AppCompatActivity implements Observer {
 
     @Override
     protected void onNewIntent(Intent intent) {
+        Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        v.cancel();
         if(nfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             Toast.makeText(this, "Tag found", Toast.LENGTH_SHORT).show();
 
             String answerFromTag = new NFC_Reader().readNameFromTag(this, tag);
+            long[] pattern = {0, 200, 100, 200};
+            v.vibrate(pattern, -1);
             /*Gson gson = new Gson();
             ExhibitTag exhibit = new ExhibitTag();
 

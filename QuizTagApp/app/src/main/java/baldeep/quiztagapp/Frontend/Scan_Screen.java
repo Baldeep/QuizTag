@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -78,16 +79,19 @@ public class Scan_Screen extends AppCompatActivity{
     }
     @Override
     protected void onNewIntent(Intent intent) {
+        Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        v.cancel();
         if(nfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             Toast.makeText(this, "Tag found", Toast.LENGTH_SHORT).show();
 
-            long startTime = System.currentTimeMillis();
+            //long startTime = System.currentTimeMillis();
             exhibitTag = new NFC_Reader().readExhibitFromTag(this, tag);
-            long endTime = System.currentTimeMillis();
+            /*long endTime = System.currentTimeMillis();
             long timeTaken = endTime-startTime;
-            Log.d("ReadExhibitName", "Time taken" + timeTaken);
-
+            Log.d("ReadExhibitName", "Time taken" + timeTaken);*/
+            long[] pattern = {0, 200, 100, 200};
+            v.vibrate(pattern, -1);
             updateFields();
         }
         super.onNewIntent(intent);

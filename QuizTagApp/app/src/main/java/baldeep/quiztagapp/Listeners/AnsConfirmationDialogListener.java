@@ -5,11 +5,8 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
-import baldeep.quiztagapp.Frontend.AnswerConfirmationDialog;
-import baldeep.quiztagapp.Frontend.InformationDialog;
-import baldeep.quiztagapp.Frontend.Question_Screen;
+import baldeep.quiztagapp.Fragments.InformationDialog;
 import baldeep.quiztagapp.backend.QuizMaster;
 
 public class AnsConfirmationDialogListener implements DialogInterface.OnClickListener {

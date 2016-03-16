@@ -1,11 +1,8 @@
 package baldeep.quiztagapp.Listeners;
 
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
-import baldeep.quiztagapp.Frontend.AnswerConfirmationDialog;
 import baldeep.quiztagapp.backend.QuizMaster;
 import baldeep.quiztagapp.Frontend.Question_Screen;
 

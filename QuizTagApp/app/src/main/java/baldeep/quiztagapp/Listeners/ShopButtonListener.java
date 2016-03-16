@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import baldeep.quiztagapp.Frontend.InformationDialog;
+import baldeep.quiztagapp.Fragments.InformationDialog;
 import baldeep.quiztagapp.Frontend.Shop_Menu;
 import baldeep.quiztagapp.backend.PowerUps;
 

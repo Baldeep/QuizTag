@@ -1,4 +1,4 @@
-package baldeep.quiztagapp.Frontend;
+package baldeep.quiztagapp.Fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;

@@ -1,18 +1,17 @@
-package baldeep.quiztagapp.Frontend;
+package baldeep.quiztagapp.Fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-
-import baldeep.quiztagapp.Listeners.ConnectDialogListener;
+import android.provider.Settings;
 
 /**
- * Created by Baldeep on 28/02/2016.
+ * Created by skb12156 on 04/03/2016.
  */
-
-public class InformationDialog extends DialogFragment {
+public class NFCInfoDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -23,12 +22,18 @@ public class InformationDialog extends DialogFragment {
         infoDialog.setTitle((String) getArguments().get("title"));
         infoDialog.setMessage((String) getArguments().get("message"));
 
-        //answerDialog.setCancelable(false);
+        infoDialog.setCancelable(false);
 
         infoDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Do nothing, just dissapear
+                if(getArguments().getString("type").equals("nfcOff")){
+                    // Open NFC Settings
+                    startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+                } else if (getArguments().getString("type").equals("noNFC")){
+                    // Close the application
+                    getActivity().finish();
+                }
             }
         });
 
@@ -36,4 +41,3 @@ public class InformationDialog extends DialogFragment {
         return infoDialog.create();
     }
 }
-

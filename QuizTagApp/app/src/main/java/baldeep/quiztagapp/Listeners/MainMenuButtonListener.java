@@ -1,11 +1,9 @@
 package baldeep.quiztagapp.Listeners;
 
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import baldeep.quiztagapp.Frontend.ConnectDialog;
 import baldeep.quiztagapp.Frontend.Game_Menu;
 import baldeep.quiztagapp.Frontend.Main_Menu;
 import baldeep.quiztagapp.Frontend.Scan_Screen;

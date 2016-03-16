@@ -4,9 +4,8 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
-import baldeep.quiztagapp.Frontend.ConnectDialog;
+import baldeep.quiztagapp.Fragments.ConnectDialog;
 import baldeep.quiztagapp.Frontend.Shop_Menu;
 import baldeep.quiztagapp.backend.PowerUps;
 import baldeep.quiztagapp.backend.QuizMaster;

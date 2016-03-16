@@ -1,16 +1,14 @@
 package baldeep.quiztagapp.Listeners;
 
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.os.Bundle;
 
-import baldeep.quiztagapp.Frontend.AnswerConfirmationDialog;
-import baldeep.quiztagapp.Frontend.ConnectDialog;
-import baldeep.quiztagapp.Frontend.InformationDialog;
-import baldeep.quiztagapp.Frontend.NFCInfoDialog;
-import baldeep.quiztagapp.Frontend.QuitDialog;
+import baldeep.quiztagapp.Fragments.AnswerConfirmationDialog;
+import baldeep.quiztagapp.Fragments.ConnectDialog;
+import baldeep.quiztagapp.Fragments.InformationDialog;
+import baldeep.quiztagapp.Fragments.NFCInfoDialog;
+import baldeep.quiztagapp.Fragments.QuitDialog;
 import baldeep.quiztagapp.backend.QuizMaster;
 
 /**
