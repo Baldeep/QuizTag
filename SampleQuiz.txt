@@ -1,6 +1,6 @@
 {
    "quizName" : "Sample Quiz", 
-   "random" : false,
+   "random" : true,
    "QuestionPool": [
       {
          "questionString": "What colour is the sky on a rainy day?",

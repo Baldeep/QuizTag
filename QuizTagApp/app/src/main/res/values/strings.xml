@@ -24,6 +24,16 @@
     <string name="buy_skips">Buy Skips</string>
     <string name="scan_screen_name_field">Name: </string>
     <string name="scan_screen_url_text">see more</string>
+<<<<<<< HEAD
     <string name="next">Next</string>
     <string name="back">Back</string>
+=======
+    <string name="quiz_tag_download_btn_text">Dowload Quiz</string>
+    <string name="quiz_type">Quiz Type: </string>
+    <string name="total_questions">Total Questions: </string>
+    <string name="quiz_type_random">Random</string>
+    <string name="quiz_type_story">Story</string>
+    <string name="quiz_type_random_explaination">sadgf#</string>
+    <string name="quiz_type_story_explaination">fsgfsdbs</string>
+>>>>>>> 61a8692fc9dd901ecd64049c47b22f64e525aa2d
 </resources>

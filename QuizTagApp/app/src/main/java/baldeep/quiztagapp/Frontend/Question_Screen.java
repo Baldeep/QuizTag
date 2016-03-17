@@ -8,6 +8,7 @@ import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,7 +66,6 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         qm.attach(this); // Observer
 
         // get all xml objects
-        questionField = (TextView) findViewById(R.id.question_field);
         hints = (TextView) findViewById(R.id.hints_count_text);
         skips = (TextView) findViewById(R.id.skips_count_text);
         coins = (TextView) findViewById(R.id.coins_count_text);
@@ -73,10 +73,16 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         ImageButton hintsButton = (ImageButton) findViewById(R.id.hints_btn);
         ImageButton skipButton = (ImageButton) findViewById(R.id.skips_btn);
 
+        questionField = (TextView) findViewById(R.id.question_field);
+        questionField.setMovementMethod(new ScrollingMovementMethod());
         hint1 = (TextView) findViewById(R.id.hint1);
+        hint1.setMovementMethod(new ScrollingMovementMethod());
         hint2 = (TextView) findViewById(R.id.hint2);
+        hint2.setMovementMethod(new ScrollingMovementMethod());
         hint3 = (TextView) findViewById(R.id.hint3);
+        hint3.setMovementMethod(new ScrollingMovementMethod());
         hint4 = (TextView) findViewById(R.id.hint4);
+        hint4.setMovementMethod(new ScrollingMovementMethod());
 
         // Hints button
         Bundle hintsBundle = new Bundle();

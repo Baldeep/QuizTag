@@ -82,7 +82,12 @@ public class NFC_Reader {
         return qp;
     }
 
-
+    /**
+     * This method just read all the contents of the Tag and returns a String
+     * @param activity
+     * @param tag
+     * @return
+     */
     public String readTag(Activity activity, Tag tag) {
         String text = "";
 

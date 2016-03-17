@@ -22,8 +22,7 @@
             android:background="@android:drawable/btn_default"
             android:textSize="30sp"
             android:id="@+id/play_button"
-            android:layout_weight="0.33"
-            android:onClick="onPlayButtonClick"/>
+            android:layout_weight="0.33"/>
 
         <Button
             android:layout_width="match_parent"
@@ -32,8 +31,7 @@
             android:background="@android:drawable/btn_default"
             android:textSize="30sp"
             android:id="@+id/connect_button"
-            android:layout_weight="0.33"
-            android:onClick="onConnectButtonClick"/>
+            android:layout_weight="0.33"/>
 
         <Button
             android:layout_width="match_parent"
@@ -42,8 +40,7 @@
             android:background="@android:drawable/btn_default"
             android:textSize="30sp"
             android:id="@+id/scan_button"
-            android:layout_weight="0.33"
-            android:onClick="onScanButtonClick"/>
+            android:layout_weight="0.33"/>
     </LinearLayout>
 
 

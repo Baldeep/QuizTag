@@ -6,7 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import baldeep.quiztagapp.Fragments.ConnectDialog;
+<<<<<<< HEAD
 import baldeep.quiztagapp.Frontend.Scan_Screen;
+=======
+import baldeep.quiztagapp.Frontend.Quiz_Tag_Screen;
+>>>>>>> 61a8692fc9dd901ecd64049c47b22f64e525aa2d
 import baldeep.quiztagapp.Frontend.Shop_Menu;
 import baldeep.quiztagapp.backend.PowerUps;
 import baldeep.quiztagapp.backend.QuizMaster;
@@ -37,8 +41,23 @@ public class GameMenuButtonListener implements View.OnClickListener {
             menu.startActivityForResult(questionScreen, arguments.getInt("result"));
 
         } else if(message.equals("quiztag")){
+<<<<<<< HEAD
             Intent quizTag = new Intent(menu, Scan_Screen.class);
             menu.startActivityForResult(quizTag, arguments.getInt("result"));
+=======
+
+            DialogFragment df = new ConnectDialog();
+            Bundle connectArgs = new Bundle();
+            connectArgs.putString("title", "Download Quiz");
+            connectArgs.putString("message",
+                    "To download a new quiz please place phone on QuizTag and press ok");
+            connectArgs.putString("type", "QuizTag");
+            df.setArguments(connectArgs);
+            df.show(menu.getFragmentManager(), "Connect Dialog");
+
+            Intent quizTagScreen = new Intent(menu, Quiz_Tag_Screen.class);
+            menu.startActivityForResult(quizTagScreen, arguments.getInt("result"));
+>>>>>>> 61a8692fc9dd901ecd64049c47b22f64e525aa2d
 
         } else if(message.equals("shop")){
             Intent shopScreen = new Intent(menu, Shop_Menu.class);

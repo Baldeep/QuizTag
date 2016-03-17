@@ -9,47 +9,51 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import baldeep.quiztagapp.Listeners.DialogCreator;
 import baldeep.quiztagapp.R;
-import baldeep.quiztagapp.backend.ExhibitTag;
 import baldeep.quiztagapp.backend.NFC_Reader;
+import baldeep.quiztagapp.backend.QuestionPool;
 
+public class Quiz_Tag_Screen extends AppCompatActivity{
 
-public class Scan_Screen extends AppCompatActivity{
+    TextView nameField;
+    TextView questionNoField;
+    TextView typeField;
+    TextView typeExplaination;
 
-    private DialogCreator dialogCreator = new DialogCreator();
-    private ExhibitTag exhibitTag;
+    DialogCreator dialogCreator;
 
-    private TextView name;
-    private TextView description;
-    private TextView url;
+    String quizAsString;
+    QuestionPool questionPool;
 
     // nfcAdapter and intent filters need to be here
-     private NfcAdapter nfcAdapter;
+    private NfcAdapter nfcAdapter;
     // Intent needs to be declared programmatically otherwise
     // the tag will open this activity if declared in the manifest
     private PendingIntent pendingIntent;
     private IntentFilter intentFileters[];
     private Tag tag;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.scan_screen_activity);
+        setContentView(R.layout.quiz_tag_activity);
 
-        name = (TextView) findViewById(R.id.scan_screen_name_field);
-        description = (TextView) findViewById(R.id.scan_screen_description_field);
-        url = (TextView) findViewById(R.id.scan_screen_url_field);
+        dialogCreator = new DialogCreator();
 
+        nameField = (TextView) findViewById(R.id.quizTag_name_field);
+        questionNoField = (TextView) findViewById(R.id.quizTag_QuestionNo_field);
+        typeField = (TextView) findViewById(R.id.quizTag_quizType_field);
+        typeExplaination = (TextView) findViewById(R.id.quizTag_quiztype_Explaination);
+        typeExplaination.setMovementMethod(new ScrollingMovementMethod());
 
         // Check NFC is enabled
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
@@ -63,7 +67,6 @@ public class Scan_Screen extends AppCompatActivity{
         tagDetected.addCategory(Intent.CATEGORY_DEFAULT);
         intentFileters = new IntentFilter[] { tagDetected };
     }
-
     @Override
     public void onPause(){
         super.onPause();
@@ -83,11 +86,9 @@ public class Scan_Screen extends AppCompatActivity{
         v.cancel();
         if(nfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            //long startTime = System.currentTimeMillis();
-            exhibitTag = new NFC_Reader().readExhibitFromTag(this, tag);
-            /*long endTime = System.currentTimeMillis();
-            long timeTaken = endTime-startTime;
-            Log.d("ReadExhibitName", "Time taken" + timeTaken);*/
+
+            questionPool = new NFC_Reader().readQuestionPoolFromTag(this, tag);
+
             long[] pattern = {0, 200, 100, 200};
             v.vibrate(pattern, -1);
             updateFields();
@@ -95,21 +96,18 @@ public class Scan_Screen extends AppCompatActivity{
         super.onNewIntent(intent);
     }
 
-    /**
-     * This method updates the text fields on this screen
-     */
     private void updateFields(){
 
-        if(exhibitTag != null){
-            String nameString = getResources().getString(R.string.scan_screen_name_field) + exhibitTag.getName() + " " + exhibitTag.getYear();
-            name.setText(nameString);
-
-            description.setMovementMethod(new ScrollingMovementMethod());
-            description.setText(exhibitTag.getDescription());
-
-
-            String urlText = "<a href='" + exhibitTag.getUrl() + "'>" + getResources().getString(R.string.scan_screen_url_text) + "</a>";
-            url.setText(Html.fromHtml(urlText));
+        if(questionPool != null){
+            nameField.setText(questionPool.getQuizName());
+            questionNoField.setText(questionPool.getQuestionPoolSize());
+            if(questionPool.isRandom()){
+                typeField.setText(R.string.quiz_type_random);
+                typeExplaination.setText(R.string.quiz_type_random_explaination);
+            } else {
+                typeField.setText(R.string.quiz_type_story);
+                typeExplaination.setText(R.string.quiz_type_story_explaination);
+            }
         }
     }
 
@@ -123,9 +121,22 @@ public class Scan_Screen extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.toolbar_back_button){
+            Intent goingBack = new Intent();
+            goingBack.putExtra("questionPool", questionPool);
+            setResult(RESULT_OK, goingBack);
+
             this.finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        Intent goingBack = new Intent();
+        goingBack.putExtra("questionPool", questionPool);
+        setResult(RESULT_OK, goingBack);
+        super.onBackPressed();
     }
 }

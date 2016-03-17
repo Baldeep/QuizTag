@@ -2,6 +2,7 @@ package baldeep.quiztagapp.backend;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -17,39 +18,15 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import baldeep.quiztagapp.Frontend.Main_Menu;
 
 public class FileHandler implements Serializable{
-
-    private QuestionPool qp;
-
-    /**
-     * Parses in JSON file into a QuestionPool to be used for the quiz master
-     *
-     * GSON tutorial - http://kylewbanks.com/blog/Tutorial-Android-Parsing-JSON-with-GSON
-     *
-     * File Opening - http://stackoverflow.com/questions/12421814/how-can-i-read-a-text-file-in-android
-     *
-     * @param context
-     */
-    private void readFile(Context context){
-        Gson gson = new Gson();
-
-        AssetManager am = context.getAssets();
-
-        try {
-            InputStream in = am.open("data.txt");
-            InputStreamReader input = new InputStreamReader(in);
-
-            qp = gson.fromJson(input, QuestionPool.class);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(context, "IO Exception", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     /**
      * http://www.androidinterview.com/android-internal-storage-read-and-write-text-file-example/
@@ -102,23 +79,54 @@ public class FileHandler implements Serializable{
     public QuestionPool getQuestionPoolFromFile(Context context){
         // Need to set the hints as GSON doesn't call the constructor
 
-        readFile(context);
+        QuestionPool qp = readQuestionPoolFromFile(context);
+        if(qp!= null) {
+            for (Question q : qp.getQuestionPool())
+                q.resetHints();
 
-        for(Question q : qp.getQuestionPool())
-            q.resetHints();
-
-        System.out.println("Printing questions **********************************************");
-        System.out.println(qp.getQuizName());
-        for(Question q : qp.getQuestionPool()) {
-            System.out.println(q.getQuestion() + ", " + q.getAnswer() + "\n");
-
-            for(String s : q.getHints()){
+            System.out.println("Printing questions **********************************************");
+            System.out.println(qp.getQuizName());
+            for (Question q : qp.getQuestionPool()) {
+                System.out.println(q.getQuestion() + ", " + q.getAnswer() + "\n");
+            /*for(String s : q.getHints()){
                 System.out.println(s);
+            }*/
+                System.out.println("*************************************");
             }
-            System.out.println("*************************************");
+
+            QuestionPool questionPool = new QuestionPool(qp.getQuizName(), qp.getQuestionPool(), qp.isRandom());
+            return questionPool;
+        } else {
+            List<Question> q = new ArrayList<Question>();
+            return new QuestionPool(q);
+        }
+    }
+    /**
+     * Parses in JSON file into a QuestionPool to be used for the quiz master
+     *
+     * GSON tutorial - http://kylewbanks.com/blog/Tutorial-Android-Parsing-JSON-with-GSON
+     *
+     * File Opening - http://stackoverflow.com/questions/12421814/how-can-i-read-a-text-file-in-android
+     *
+     * @param context
+     */
+    private QuestionPool readQuestionPoolFromFile(Context context){
+        Gson gson = new Gson();
+        QuestionPool qp = null;
+
+        AssetManager am = context.getAssets();
+
+        try {
+            InputStream in = am.open("data.txt");
+            InputStreamReader input = new InputStreamReader(in);
+
+            qp = gson.fromJson(input, QuestionPool.class);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "IO Exception", Toast.LENGTH_SHORT).show();
         }
 
-        QuestionPool questionPool = new QuestionPool(qp.getQuizName(), qp.getQuestionPool(), qp.isRandom());
-        return questionPool;
+        return qp;
     }
 }

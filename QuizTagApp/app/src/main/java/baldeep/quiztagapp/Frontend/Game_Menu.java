@@ -84,17 +84,29 @@ public class Game_Menu extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+<<<<<<< HEAD
         if(requestCode == 1) {
             this.powerUps = (PowerUps) data.getSerializableExtra("powerUps");
 
+=======
+        if (requestCode == 1) {
+            this.powerUps = (PowerUps) data.getSerializableExtra("powerUps");
+>>>>>>> 61a8692fc9dd901ecd64049c47b22f64e525aa2d
             Bundle saveGame = new Bundle();
             saveGame.putSerializable("powerUps", powerUps);
             new GameSaver().saveGame(this, saveGame);
             update();
+<<<<<<< HEAD
         } else if(requestCode == 2){
             QuestionPool qp = (QuestionPool) data.getSerializableExtra("questionPool");
             qm.setNewQuiz(qp);
             update();
+=======
+        }
+        if(requestCode == 2) {
+            QuestionPool qp = (QuestionPool) data.getSerializableExtra("questionPool");
+            qm.setNewQuiz(qp);
+>>>>>>> 61a8692fc9dd901ecd64049c47b22f64e525aa2d
         }
     }
 
@@ -135,8 +147,14 @@ public class Game_Menu extends AppCompatActivity {
         startBundle.putSerializable("quizMaster", qm);
         startBundle.putInt("result", 1);
 
+<<<<<<< HEAD
         start_button.setOnClickListener(new GameMenuButtonListener(this, startBundle));
     }
+=======
+        Bundle quizTagBundle = new Bundle();
+        quizTagBundle.putString("message", "quiztag");
+        startBundle.putInt("result", 2);
+>>>>>>> 61a8692fc9dd901ecd64049c47b22f64e525aa2d
 
     /**
      * Set the shop button listeners
