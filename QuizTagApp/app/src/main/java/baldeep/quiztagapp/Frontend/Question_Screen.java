@@ -105,15 +105,11 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         intentFileters = new IntentFilter[] { tagDetected };
     }
 
-    /**
-     * @see AppCompatActivity#onCreateOptionsMenu(Menu)
-     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.question_screen_menu, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
@@ -219,14 +215,7 @@ public class Question_Screen extends AppCompatActivity implements Observer {
             String answerFromTag = new NFC_Reader().readNameFromTag(this, tag);
             long[] pattern = {0, 200, 100, 200};
             v.vibrate(pattern, -1);
-            /*Gson gson = new Gson();
-            ExhibitTag exhibit = new ExhibitTag();
 
-            exhibit = gson.fromJson(tagContents, ExhibitTag.class);
-
-            System.out.println("Name: " + exhibit.getName() +
-                    "Description: " + exhibit.getDescription() +
-                    "url: " + exhibit.getUrl());*/
             if(!answerFromTag.equals("")){
                 checkAnswer(answerFromTag);
             }

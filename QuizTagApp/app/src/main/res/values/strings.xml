@@ -24,4 +24,6 @@
     <string name="buy_skips">Buy Skips</string>
     <string name="scan_screen_name_field">Name: </string>
     <string name="scan_screen_url_text">see more</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
 </resources>

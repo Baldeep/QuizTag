@@ -25,8 +25,8 @@ public class ConnectDialogListener implements DialogInterface.OnClickListener {
     public void onClick(DialogInterface dialog, int which) {
         if(!message.equals("cancel")){
             Toast.makeText(origin, "Connecting to " + message, Toast.LENGTH_SHORT).show();
-            Intent connectActivity = new Intent(origin, NFC_Tag_Writer.class);
-            origin.startActivity(connectActivity);
+            //Intent connectActivity = new Intent(origin, NFC_Tag_Writer.class);
+            //origin.startActivity(connectActivity);
         }
     }
 }

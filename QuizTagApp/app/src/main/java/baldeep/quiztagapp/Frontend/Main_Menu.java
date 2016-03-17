@@ -10,6 +10,10 @@ import baldeep.quiztagapp.Listeners.MainMenuButtonListener;
 import baldeep.quiztagapp.R;
 import baldeep.quiztagapp.backend.FileHandler;
 
+/**
+ * This is the first screen which runs on app launch, it displays the main menu and lets the user go
+ * to the scan screen, the connect to smart case, and the quiz
+ */
 public class Main_Menu extends AppCompatActivity {
 
     private Button play_button;
@@ -40,6 +44,7 @@ public class Main_Menu extends AppCompatActivity {
         scanBundle.putString("message", "scan");
         scan_button.setOnClickListener(new MainMenuButtonListener(this, scanBundle));
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){

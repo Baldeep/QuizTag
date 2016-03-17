@@ -37,9 +37,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Frontend.Game_Menu"
-            android:label="Quiz Menu"
-            android:theme="@style/AppTheme"/>
+        <activity android:name=".Frontend.Game_Menu"/>
 
         <activity android:name=".Frontend.Question_Screen"
             android:label="@string/question_screen_title"
@@ -53,6 +51,8 @@
 
         </activity>
         <activity android:name=".Frontend.Scan_Screen"/>
+
+        <activity android:name=".Frontend.SmartScreen"/>
 
     </application>
 

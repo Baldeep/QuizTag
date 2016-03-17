@@ -18,7 +18,8 @@ import baldeep.quiztagapp.Listeners.GameMenuButtonListener;
 import baldeep.quiztagapp.R;
 
 /**
- * Created by skb12156 on 05/02/2016.
+ * This class implements the game menu of the app, it displays the hints, skips and points to the
+ * user and buttons to the shop, quiz download and game activities.
  */
 public class Game_Menu extends AppCompatActivity {
     private TextView hints;
@@ -83,12 +84,18 @@ public class Game_Menu extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        this.powerUps = (PowerUps) data.getSerializableExtra("powerUps");
+        if(requestCode == 1) {
+            this.powerUps = (PowerUps) data.getSerializableExtra("powerUps");
 
-        Bundle saveGame = new Bundle();
-        saveGame.putSerializable("powerUps", powerUps);
-        new GameSaver().saveGame(this, saveGame);
-        update();
+            Bundle saveGame = new Bundle();
+            saveGame.putSerializable("powerUps", powerUps);
+            new GameSaver().saveGame(this, saveGame);
+            update();
+        } else if(requestCode == 2){
+            QuestionPool qp = (QuestionPool) data.getSerializableExtra("questionPool");
+            qm.setNewQuiz(qp);
+            update();
+        }
     }
 
     /**
@@ -100,30 +107,47 @@ public class Game_Menu extends AppCompatActivity {
         hints.setText(powerUps.getHintsAsString());
         skips.setText(powerUps.getSkipsAsString());
         coins.setText(powerUps.getPointsAsString());
-        setButtonListeners();
+        setButtonListener();
     }
 
     /**
-     * As the power ups may be changed by multiple classes, the listeners for each button need to be
-     * updated also otherwise the powerups will changes will not carry on.
+     * As the power ups and the quiz master may be changed by multiple classes, the listeners for
+     * each button need to be updated also otherwise the powerups will changes will not carry on.
      */
-    private void setButtonListeners(){
+    private void setButtonListener(){
+        Bundle quizTagBundle = new Bundle();
+        quizTagBundle.putString("message", "quiztag");
+        quizTagBundle.putInt("result", 2);
+
+        quiz_tag_button.setOnClickListener(new GameMenuButtonListener(this, quizTagBundle));
+
+        setShopButtonListener();
+        setStartButtonListener();
+    }
+
+    /**
+     * Set the start quiz button listeners
+     */
+    private void setStartButtonListener(){
         Bundle startBundle = new Bundle();
         startBundle.putString("message", "start");
         qm = new QuizMaster(questionPool, powerUps);
         startBundle.putSerializable("quizMaster", qm);
         startBundle.putInt("result", 1);
 
-        Bundle quizTagBundle = new Bundle();
-        quizTagBundle.putString("message", "quiztag");
+        start_button.setOnClickListener(new GameMenuButtonListener(this, startBundle));
+    }
 
+    /**
+     * Set the shop button listeners
+     */
+    private void setShopButtonListener(){
         Bundle shopBundle = new Bundle();
         shopBundle.putString("message", "shop");
         shopBundle.putInt("result", 1);
         shopBundle.putSerializable("powerUps", powerUps);
 
-        start_button.setOnClickListener(new GameMenuButtonListener(this, startBundle));
-        quiz_tag_button.setOnClickListener(new GameMenuButtonListener(this, quizTagBundle));
         shop_button.setOnClickListener(new GameMenuButtonListener(this, shopBundle));
     }
+
 }

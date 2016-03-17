@@ -7,6 +7,7 @@ import android.view.View;
 import baldeep.quiztagapp.Frontend.Game_Menu;
 import baldeep.quiztagapp.Frontend.Main_Menu;
 import baldeep.quiztagapp.Frontend.Scan_Screen;
+import baldeep.quiztagapp.Frontend.SmartScreen;
 
 /**
  * A basic listener for the main menu, on creation it asks for a string which should be either
@@ -28,16 +29,16 @@ public class MainMenuButtonListener implements View.OnClickListener {
         String message = arguments.getString("message");
 
         if(message.equals("play")){
-
             Intent gameScreen = new Intent(menu, Game_Menu.class);
             menu.startActivity(gameScreen);
 
         } else if(message.equals("connect")){
-            new DialogCreator().smartCaseConnectionDialog(menu.getFragmentManager(), new Bundle());
+            Intent smartCase = new Intent(menu, SmartScreen.class);
+            menu.startActivity(smartCase);
 
         } else if(message.equals("scan")){
-            Intent nfcExample = new Intent(menu, Scan_Screen.class);
-            menu.startActivity(nfcExample);
+            Intent scanScreen = new Intent(menu, Scan_Screen.class);
+            menu.startActivity(scanScreen);
         }
     }
 }

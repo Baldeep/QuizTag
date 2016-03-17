@@ -97,6 +97,9 @@ public class Scan_Screen extends AppCompatActivity{
         super.onNewIntent(intent);
     }
 
+    /**
+     * This method updates the text fields on this screen
+     */
     private void updateFields(){
 
         if(exhibitTag != null){
