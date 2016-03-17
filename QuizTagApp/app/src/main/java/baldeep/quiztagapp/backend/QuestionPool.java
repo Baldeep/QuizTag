@@ -24,7 +24,7 @@ public class QuestionPool implements Serializable{
      */
     public QuestionPool(String quizName, List<Question> questionPool, boolean random){
 
-        assert(questionPool.size()>=1);
+        assert(questionPool.size()>0);
 
         this.questionPool = questionPool;
         this.quizName = quizName;
@@ -39,10 +39,10 @@ public class QuestionPool implements Serializable{
      */
     public QuestionPool(List<Question> questionPool){
 
-        assert(questionPool.size()>=1);
+        assert(questionPool.size()>0);
 
         this.questionPool = questionPool;
-        this.quizName = "";
+        this.quizName = "Nameless Quiz";
         questionsAsked = new ArrayList<>();
         random = true;
     }
@@ -52,7 +52,7 @@ public class QuestionPool implements Serializable{
      * @return A randomly selected Question
      */
     public Question askQuestion(){
-        Question q;
+        Question q = null;
 
 
         // make sure it's not empty
@@ -62,10 +62,12 @@ public class QuestionPool implements Serializable{
             questionsAsked.clear();
         }
 
-        if(random) {
-            Collections.shuffle(questionPool);
-        }
-        q = questionPool.get(0);
+        if(!questionPool.isEmpty()) {
+
+            if (random) {
+                Collections.shuffle(questionPool);
+            }
+            q = questionPool.get(0);
 
         /* Redacting the following as a check is made to ensure the list isn't empty at the start
          *of the method, therefore it's simpler to just shuffle the array and return the first
@@ -90,13 +92,20 @@ public class QuestionPool implements Serializable{
         }
         */
 
-        // mark it as asked
-        currentQuestion = q;
-        questionsAsked.add(q);
-        questionPool.remove(q);
-
-
-        return q;
+            // mark it as asked
+            currentQuestion = q;
+            questionsAsked.add(q);
+            for (Question quest : questionsAsked) {
+                System.out.println("Asked: " + quest.getQuestion());
+            }
+            questionPool.remove(q);
+            for (Question quest : questionPool) {
+                System.out.println("In Pool: " + quest.getQuestion());
+            }
+            return q;
+        } else {
+            return new Question();
+        }
     }
 
     /**

@@ -54,6 +54,8 @@
         </activity>
         <activity android:name=".Frontend.Scan_Screen"/>
 
+        <activity android:name=".Frontend.Quiz_Tag_Screen"/>
+
     </application>
 
 </manifest>

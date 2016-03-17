@@ -88,6 +88,8 @@
         android:id="@+id/question_field"
         android:textSize="20sp"
         android:layout_weight="0.5"
+        android:scrollbars="vertical"
+        android:freezesText="true"
         android:layout_marginBottom="2dp"/>
 
     <View
@@ -102,7 +104,8 @@
         android:id="@+id/hint1"
         android:layout_weight="0.1"
         android:backgroundTint="@android:color/transparent"
-        android:background="@android:drawable/btn_default"
+        android:scrollbars="vertical"
+        android:freezesText="true"
         android:visibility="invisible"
         />
 
@@ -112,7 +115,8 @@
         android:id="@+id/hint2"
         android:layout_weight="0.1"
         android:backgroundTint="@android:color/transparent"
-        android:background="@android:drawable/btn_default"
+        android:scrollbars="vertical"
+        android:freezesText="true"
         android:visibility="invisible"
         />
 
@@ -122,7 +126,8 @@
         android:id="@+id/hint3"
         android:layout_weight="0.1"
         android:backgroundTint="@android:color/transparent"
-        android:background="@android:drawable/btn_default"
+        android:scrollbars="vertical"
+        android:freezesText="true"
         android:visibility="invisible"
         />
 
@@ -132,7 +137,8 @@
         android:id="@+id/hint4"
         android:layout_weight="0.1"
         android:backgroundTint="@android:color/transparent"
-        android:background="@android:drawable/btn_default"
+        android:scrollbars="vertical"
+        android:freezesText="true"
         android:visibility="invisible"
         />
 <!--

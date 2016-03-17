@@ -83,12 +83,17 @@ public class Game_Menu extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        this.powerUps = (PowerUps) data.getSerializableExtra("powerUps");
-
-        Bundle saveGame = new Bundle();
-        saveGame.putSerializable("powerUps", powerUps);
-        new GameSaver().saveGame(this, saveGame);
-        update();
+        if (requestCode == 1) {
+            this.powerUps = (PowerUps) data.getSerializableExtra("powerUps");
+            Bundle saveGame = new Bundle();
+            saveGame.putSerializable("powerUps", powerUps);
+            new GameSaver().saveGame(this, saveGame);
+            update();
+        }
+        if(requestCode == 2) {
+            QuestionPool qp = (QuestionPool) data.getSerializableExtra("questionPool");
+            qm.setNewQuiz(qp);
+        }
     }
 
     /**
@@ -116,6 +121,7 @@ public class Game_Menu extends AppCompatActivity {
 
         Bundle quizTagBundle = new Bundle();
         quizTagBundle.putString("message", "quiztag");
+        startBundle.putInt("result", 2);
 
         Bundle shopBundle = new Bundle();
         shopBundle.putString("message", "shop");

@@ -39,6 +39,7 @@
         android:layout_weight="0.05"
         android:text="@string/scan_screen_url_text"
         android:textSize="20sp"
+
         android:freezesText="true"
         android:textAlignment="center"/>
 

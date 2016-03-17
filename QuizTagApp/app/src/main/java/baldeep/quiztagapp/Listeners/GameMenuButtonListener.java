@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import baldeep.quiztagapp.Fragments.ConnectDialog;
+import baldeep.quiztagapp.Frontend.Quiz_Tag_Screen;
 import baldeep.quiztagapp.Frontend.Shop_Menu;
 import baldeep.quiztagapp.backend.PowerUps;
 import baldeep.quiztagapp.backend.QuizMaster;
@@ -47,6 +48,8 @@ public class GameMenuButtonListener implements View.OnClickListener {
             df.setArguments(connectArgs);
             df.show(menu.getFragmentManager(), "Connect Dialog");
 
+            Intent quizTagScreen = new Intent(menu, Quiz_Tag_Screen.class);
+            menu.startActivityForResult(quizTagScreen, arguments.getInt("result"));
 
         } else if(message.equals("shop")){
             Intent shopScreen = new Intent(menu, Shop_Menu.class);

@@ -27,13 +27,39 @@ public class Question implements Serializable{
 		this.question = question;
 		this.answer = answer;
 		this.hintPool = hints;
+
+
+		if(this.question == null){
+			this.question = "Question is null";
+		}
+
+		if(this.answer == null){
+			this.answer = "Answer is null";
+		}
+
+		if(this.hints == null){
+			this.hints = new ArrayList<String>();
+		}
+
 		if(!hintPool.contains(answer)){
 			hintPool.add(answer);
 		}
 		this.hints = findHints();
 
-		// no need to test hints as it can only be null if answer is also null
-		assert ((question != null) && (answer != null));
+	}
+
+	/**
+	 * This class is the default empty question class, this is so that null checks made later on can
+	 * return this empty Question instead of null, hopefully making things easier later on
+	 */
+	public Question(){
+		this.question = "null";
+		this.hints = new ArrayList<String>();
+		for(int i = 0; i < 4; i++){
+			hints.add("null");
+		}
+		this.answer = "null";
+
 	}
 
     /**

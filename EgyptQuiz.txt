@@ -1,0 +1,107 @@
+{
+   "quizName" : "Egypt: Life, Death, and beyond",
+   "random" : false, 
+   "QuestionPool": [
+      {
+         "questionString": "This statue represents the joys of married life",
+         "hints": [ 
+            "Statue of Weret-nefer and Hamu-iti",
+            "Stela to Osiris",
+            "Gilded Beetle",
+            "Statue of Iris holding Horus"
+         ],
+         "answer": "Statue of Weret-nefer and Hamu-iti"
+      },
+      {
+         "questionString": "Beauty comes from withing, but egyptians liked to make sure they looked good on the outside too",
+         "hints": [ 
+            "Mirror",
+            "Burial Mask",
+            "Fan Barer",
+            "Canopic Jars"
+         ],
+         "answer": "Mirror"
+      },
+      {
+         "questionString": "This beautiful woman is merely a servant of the gods",
+         "hints": [ 
+            "Fan Barer",
+            "Statue of Iris holding Horus",
+            "Statue of Anubis",
+            "Statue of Weret-nefer and Hamu-iti"
+         ],
+         "answer": "Fan Barer"
+      },
+      {
+         "questionString": "The end of life is sad, lets hope this mummy doesn't curse you",
+         "hints": [
+            "Coffin and Mummy",
+            "Burial Mask",
+            "Gilded Beetle",
+            "Soul House"
+         ],
+         "answer": "Coffin and Mummy"
+      },
+      {
+         "questionString": "Even when dead it's important to have your bling on",
+         "hints": [
+            "Gilded Beetle",
+            "Burial Mask",
+            "Canopic Jar",
+            "Mirror"
+         ],
+         "answer": Gilded Beetle
+      },
+      {
+         "questionString": "Egyptians believed your soul needed a home after death, thankfully they believed souls were very small",
+         "hints": [ 
+            "Soul House",
+            "Canopic Jars",
+            "Coffin and Mummy",
+            "Mirror"
+         ],
+         "answer": "Soul House"
+      },
+      {
+         "questionString": "While the body went to the afterlife, its organs must go separately in these vessels",
+         "hints": [ 
+            "Canopic Jars",
+            "Sarcophagus",
+            "Burial Mask",
+            "Soul House"
+         ],
+         "answer": "Canopic Jars"
+      },
+      {
+         "questionString": "Mummification was a sacred act, this god overlooked the whole process",
+         "hints": [ 
+            "Statue of Iris and Horus",
+            "Staute of Anubis",
+            "Stela to Osiris",
+            "Burial Mask"
+         ],
+         "answer": "Statue of Anubis"
+      },
+      {
+         "questionString": "While a pharoas body was bandaged into a mummy, his good looks were still shown",
+         "hints": [ 
+            "Burial Mask",
+            "Soul House",
+            "Coffin and Mummy",
+            "Gilded Beetle",
+            "Stela to Osiris",
+         ],
+         "answer": "Burial Mask"
+      },
+      {
+         "questionString": "Once dead, the afterlife lead you to meet and pray to this god",
+         "hints": [ 
+            "Statue of Anubis",
+            "Statue of Iris holding Horus",
+            "Stela to Osiris",
+            "Gilded Beetle"
+         ],
+         "answer": "Kelvingrove Art Gallery and Museum"
+      }
+   ]
+}

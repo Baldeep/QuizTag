@@ -1,5 +1,7 @@
 package baldeep.quiztagapp.backend;
 
+import android.media.session.MediaSession;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +13,13 @@ public class QuizMaster extends Observable implements Serializable, Observer{
 
     private final int POINTS = 20;
     private PowerUps powerUps;
+
     private boolean hintsRevealed;
-
     private int currentQuestionNumber;
-    private QuestionPool qp;
     private Question currentQuestion;
-
     private int wrongChoices = 0;
+
+    private QuestionPool qp;
 
     private List<Observer> observers = new ArrayList<>();
 
@@ -32,7 +34,12 @@ public class QuizMaster extends Observable implements Serializable, Observer{
         this.powerUps = new PowerUps(0, 0, 0);
         currentQuestionNumber = 0;
         this.qp = qp;
-        setNextQuestion();
+        if(qp == null){
+            System.out.println("QUESTION POOL IS NULL");
+            List<Question> q = new ArrayList<>();
+            q.add(new Question());
+            this.qp = new QuestionPool(q);
+        }
         powerUps.attach(this);
     }
 
@@ -47,8 +54,11 @@ public class QuizMaster extends Observable implements Serializable, Observer{
         this.qp = qp;
         if(qp == null){
             System.out.println("QUESTION POOL IS NULL");
-        } else
-            setNextQuestion();
+            List<Question> q = new ArrayList<>();
+            q.add(new Question());
+            this.qp = new QuestionPool(q);
+        }
+
     }
 
     /**
@@ -99,7 +109,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      * This is a little additional feature which revels the hints if the user gets the answer
      * wrong 5 times. This counter is reset when a new question is picked
      */
-    public void wrongAnswer(){
+    private void wrongAnswer(){
         wrongChoices++;
         if(wrongChoices == 4){
             hintsRevealed = true;
@@ -175,6 +185,8 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      */
     public boolean resetQuiz(){
         currentQuestionNumber = 0;
+        hintsRevealed = false;
+        wrongChoices = 0;
         return qp.clearAskedQuestions();
     }
 
@@ -197,6 +209,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
 
     public void setNewQuiz(QuestionPool qp){
         this.qp = qp;
+        resetQuiz();
     }
 
     public void setPowerUps(PowerUps powerUps){
@@ -218,10 +231,10 @@ public class QuizMaster extends Observable implements Serializable, Observer{
         return POINTS;
     }
 
-
-
     @Override
     public void update(Observable observable, Object data) {
         notifyAllObservers();
     }
+
+
 }
