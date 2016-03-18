@@ -50,6 +50,14 @@ public class Game_Menu extends AppCompatActivity {
 
         qm = new QuizMaster(questionPool, powerUps);
 
+        String quizName = saveGameData.getString("quizName");
+        if(quizName != null && quizName.equals(questionPool.getQuizName())){
+            int currentQuestion = saveGameData.getInt("currentQuestion");
+            qm.goToQuestion(currentQuestion);
+        }
+
+
+
         start_button = (Button) findViewById(R.id.start_button);
         quiz_tag_button = (Button) findViewById(R.id.quiz_tag_button);
         shop_button = (Button) findViewById(R.id.shop_button);
@@ -84,29 +92,27 @@ public class Game_Menu extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-<<<<<<< HEAD
-        if(requestCode == 1) {
-            this.powerUps = (PowerUps) data.getSerializableExtra("powerUps");
 
-=======
-        if (requestCode == 1) {
+        if(requestCode == 0){
             this.powerUps = (PowerUps) data.getSerializableExtra("powerUps");
->>>>>>> 61a8692fc9dd901ecd64049c47b22f64e525aa2d
             Bundle saveGame = new Bundle();
             saveGame.putSerializable("powerUps", powerUps);
-            new GameSaver().saveGame(this, saveGame);
+            saveGame.putString("quizName", data.getStringExtra("quizName"));
+            saveGame.putInt("currentQuestion", data.getIntExtra("currentQuestion", 1));
+            new GameSaver().saveQuiz(this, saveGame);
             update();
-<<<<<<< HEAD
-        } else if(requestCode == 2){
-            QuestionPool qp = (QuestionPool) data.getSerializableExtra("questionPool");
-            qm.setNewQuiz(qp);
-            update();
-=======
         }
-        if(requestCode == 2) {
+        else if (requestCode == 1) {
+            this.powerUps = (PowerUps) data.getSerializableExtra("powerUps");
+            Bundle saveGame = new Bundle();
+            saveGame.putSerializable("powerUps", powerUps);
+            new GameSaver().savePowerUps(this, saveGame);
+            update();
+        }
+        else if(requestCode == 2){
             QuestionPool qp = (QuestionPool) data.getSerializableExtra("questionPool");
             qm.setNewQuiz(qp);
->>>>>>> 61a8692fc9dd901ecd64049c47b22f64e525aa2d
+            update();
         }
     }
 
@@ -119,14 +125,14 @@ public class Game_Menu extends AppCompatActivity {
         hints.setText(powerUps.getHintsAsString());
         skips.setText(powerUps.getSkipsAsString());
         coins.setText(powerUps.getPointsAsString());
-        setButtonListener();
+        setButtonListeners();
     }
 
     /**
      * As the power ups and the quiz master may be changed by multiple classes, the listeners for
      * each button need to be updated also otherwise the powerups will changes will not carry on.
      */
-    private void setButtonListener(){
+    private void setButtonListeners(){
         Bundle quizTagBundle = new Bundle();
         quizTagBundle.putString("message", "quiztag");
         quizTagBundle.putInt("result", 2);
@@ -145,16 +151,11 @@ public class Game_Menu extends AppCompatActivity {
         startBundle.putString("message", "start");
         qm = new QuizMaster(questionPool, powerUps);
         startBundle.putSerializable("quizMaster", qm);
-        startBundle.putInt("result", 1);
+        startBundle.putInt("result", 0);
 
-<<<<<<< HEAD
+
         start_button.setOnClickListener(new GameMenuButtonListener(this, startBundle));
     }
-=======
-        Bundle quizTagBundle = new Bundle();
-        quizTagBundle.putString("message", "quiztag");
-        startBundle.putInt("result", 2);
->>>>>>> 61a8692fc9dd901ecd64049c47b22f64e525aa2d
 
     /**
      * Set the shop button listeners

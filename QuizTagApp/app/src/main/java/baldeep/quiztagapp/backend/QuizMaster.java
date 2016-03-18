@@ -190,6 +190,10 @@ public class QuizMaster extends Observable implements Serializable, Observer{
         return qp.clearAskedQuestions();
     }
 
+    /**
+     * Returns the hints available to the current question
+     * @return
+     */
     public List<String> getHints(){
         return currentQuestion.getHints();
     }
@@ -237,4 +241,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
     }
 
 
+    public void goToQuestion(int currentQuestion) {
+        eragfdsj
+    }
 }

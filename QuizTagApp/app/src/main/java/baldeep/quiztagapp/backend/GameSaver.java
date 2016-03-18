@@ -12,7 +12,23 @@ import baldeep.quiztagapp.backend.PowerUps;
  * Created by Baldeep on 06/03/2016.
  */
 public class GameSaver {
-    public void saveGame(Activity activity, Bundle saveGameData){
+    public void saveQuiz(Activity activity, Bundle saveGameData){
+        PowerUps pu = (PowerUps) saveGameData.getSerializable("powerUps");
+        SharedPreferences saveGame = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor saver = saveGame.edit();
+        saver.putString("quizName", saveGameData.getString("quizName"));
+        saver.putString("currentQuestion", saveGameData.getString("currentQuestion"));
+        saver.putInt("skips", pu.getSkips());
+        saver.putInt("hints", pu.getHints());
+        saver.putInt("points", pu.getPoints());
+
+        Log.i("Saving", "Power ups(points: " + pu.getPoints() + ", hints: " + pu.getHints() +
+                ", skips: " + pu.getSkips() + ")");
+
+        saver.commit();
+    }
+
+    public void savePowerUps(Activity activity, Bundle saveGameData){
         PowerUps pu = (PowerUps) saveGameData.getSerializable("powerUps");
         SharedPreferences saveGame = activity.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor saver = saveGame.edit();

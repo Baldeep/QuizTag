@@ -37,13 +37,14 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    String fileName;
+    private String fileName;
 
-    NfcAdapter nfcAdapter;
-    PendingIntent pendingIntent;
-    boolean writeMode;
-    IntentFilter intentFileters[];
-    Tag tag;
+
+    private NfcAdapter nfcAdapter;
+    private PendingIntent pendingIntent;
+    private boolean writeMode;
+    private IntentFilter intentFileters[];
+    private Tag tag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
