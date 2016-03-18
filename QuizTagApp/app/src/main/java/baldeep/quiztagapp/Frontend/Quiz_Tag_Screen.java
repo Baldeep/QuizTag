@@ -12,12 +12,14 @@ import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
 import baldeep.quiztagapp.Listeners.DialogCreator;
+import baldeep.quiztagapp.Listeners.QuizTagButtonListener;
 import baldeep.quiztagapp.R;
 import baldeep.quiztagapp.backend.NFC_Reader;
 import baldeep.quiztagapp.backend.QuestionPool;
@@ -28,6 +30,7 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
     TextView questionNoField;
     TextView typeField;
     TextView typeExplaination;
+    Button download;
 
     DialogCreator dialogCreator;
 
@@ -54,6 +57,8 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
         typeField = (TextView) findViewById(R.id.quizTag_quizType_field);
         typeExplaination = (TextView) findViewById(R.id.quizTag_quiztype_Explaination);
         typeExplaination.setMovementMethod(new ScrollingMovementMethod());
+
+        download = (Button) findViewById(R.id.quizTag_download_btn);
 
         // Check NFC is enabled
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
@@ -108,6 +113,7 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
                 typeField.setText(R.string.quiz_type_story);
                 typeExplaination.setText(R.string.quiz_type_story_explaination);
             }
+            download.setOnClickListener(new QuizTagButtonListener());
         }
     }
 

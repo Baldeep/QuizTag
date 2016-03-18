@@ -105,6 +105,6 @@
         android:layout_weight="0.2"
         android:textSize="30sp"
         android:text="@string/quiz_tag_download_btn_text"
-        android:id="@+id/button" />
+        android:id="@+id/quizTag_download_btn" />
 
 </LinearLayout>

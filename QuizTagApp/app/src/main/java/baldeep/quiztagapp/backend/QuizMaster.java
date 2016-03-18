@@ -241,7 +241,13 @@ public class QuizMaster extends Observable implements Serializable, Observer{
     }
 
 
-    public void goToQuestion(int currentQuestion) {
-        eragfdsj
+    public int goToQuestion(int questionNo) {
+        // check just in case this method was called in random mode
+        if(!qp.isRandom()){
+            while(currentQuestionNumber < questionNo){
+                setNextQuestion();
+            }
+        }
+        return currentQuestionNumber;
     }
 }

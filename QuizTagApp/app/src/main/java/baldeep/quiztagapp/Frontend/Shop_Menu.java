@@ -95,7 +95,7 @@ public class Shop_Menu extends AppCompatActivity {
     public void update() {
         Bundle saveGameData = new Bundle();
         saveGameData.putSerializable("powerUps", powerUps);
-        new GameSaver().saveGame(this, saveGameData);
+        new GameSaver().savePowerUps(this, saveGameData);
 
         hints.setText(powerUps.getHintsAsString());
         skips.setText(powerUps.getSkipsAsString());

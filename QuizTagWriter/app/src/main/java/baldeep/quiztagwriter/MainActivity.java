@@ -110,16 +110,18 @@ public class MainActivity extends AppCompatActivity {
 
                         String line = "";
                         while((line = br.readLine()) != null){
-                            Log.d("Line", line);
+                            //Log.d("Line", line);
                             fileAsString = fileAsString + "\n" + line;
                         }
-                        Log.d("fileAsString", fileAsString);
+                        //Log.d("fileAsString", fileAsString);
                         
                         Gson gson = new Gson();
                         ExhibitObject exhibit = new ExhibitObject();
                         try {
                             exhibit = gson.fromJson(fileAsString, ExhibitObject.class);
                         }catch (JsonSyntaxException e){
+                            // Even though the question pool uses different types etc, this will still
+                            // catch JSon format errors for questionPool files
                             Toast.makeText(MainActivity.this, "Bad JSon format", Toast.LENGTH_SHORT).show();
                             DialogFragment df = new InformationDialog();
                             Bundle info = new Bundle();
@@ -129,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                             df.show(getFragmentManager(), "JSON");
                         }
 
-                        writeTag(fileAsString, exhibit.getName(), tag);
+                        writeTag(fileAsString, tag);
 
                         System.out.println("Name: " + exhibit.getName() +
                         "Description: " + exhibit.getDescription() +
@@ -164,16 +166,16 @@ public class MainActivity extends AppCompatActivity {
         super.onNewIntent(intent);
     }
 
-    private void writeTag(String json, String name, Tag tag){
+    private void writeTag(String json, Tag tag){
         NdefRecord jsonRecord = createRecord(json);
-        NdefRecord nameRecord = createRecord(name);
-        NdefRecord[] records = new NdefRecord[]{jsonRecord, nameRecord};
+        NdefRecord[] records = new NdefRecord[]{jsonRecord};
         NdefMessage message = new NdefMessage(records);
         if(tag!=null) {
             Toast.makeText(this, "Writing", Toast.LENGTH_SHORT).show();
             // Check the tag is in Ndef format
             Ndef ndef = Ndef.get(tag);
             if (ndef != null) {
+                if(message.toByteArray().length < ndef.getMaxSize()){
                 try {
                     ndef.connect(); // establish connection
                     ndef.writeNdefMessage(message);
@@ -187,30 +189,37 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             } else {
-                // If it's not in Ndef Format, format it if possible
-                NdefFormatable formattable = NdefFormatable.get(tag);
-                if (formattable != null) {
-                    try {
-                        formattable.connect();
-                        formattable.format(message);
-                        Toast.makeText(this, "Ndef Format and write successful", Toast.LENGTH_SHORT).show();
-                        formattable.close();
-                    } catch (IOException e) {
-                        Toast.makeText(this, "Failed to write, tag may have moved", Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
-                    } catch (FormatException e) {
-                        Toast.makeText(this, "Tag is of invalid format", Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
+                    // If it's not in Ndef Format, format it if possible
+                    NdefFormatable formattable = NdefFormatable.get(tag);
+
+                    if (formattable != null) {
+                        try {
+                            formattable.connect();
+                            formattable.format(message);
+                            Toast.makeText(this, "Ndef Format and write successful", Toast.LENGTH_SHORT).show();
+                            formattable.close();
+                        } catch (IOException e) {
+                            Toast.makeText(this, "Failed to write, tag may have moved", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        } catch (FormatException e) {
+                            Toast.makeText(this, "Tag is of invalid format", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Toast.makeText(this, "Invalid Tag format", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(this, "Invalid Tag format", Toast.LENGTH_SHORT).show();
                 }
             }
+
         } else {
             Toast.makeText(this, "Tag has moved", Toast.LENGTH_SHORT).show();
 
         }
     }
+
+    /*
+     * https://learn.adafruit.com/adafruit-pn532-rfid-nfc/ndef
+     */
     private NdefRecord createRecord(String text){
         String lang       = "en";
         byte[] textBytes  = text.getBytes();
@@ -224,15 +233,18 @@ public class MainActivity extends AppCompatActivity {
         }
         int    langLength = langBytes.length;
 
+
         byte[] payload    = new byte[1 + langLength + textLength];
 
         // set status byte (see NDEF spec for actual bits)
         payload[0] = (byte) langLength;
 
         // copy langbytes and textbytes into payload
+        // (The array to copy, the position to copy from, the array to copy into, the position to copy into, the number of things to copy)
         System.arraycopy(langBytes, 0, payload, 1,              langLength);
         System.arraycopy(textBytes, 0, payload, 1 + langLength, textLength);
 
+        //(tnf, type, id, payload)
         NdefRecord recordNFC = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,  NdefRecord.RTD_TEXT,  new byte[0], payload);
 
         return recordNFC;
