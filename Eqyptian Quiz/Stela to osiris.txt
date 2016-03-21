@@ -1,0 +1,5 @@
+{
+     "name" : "Stela to Osiris", 
+     "description" : "This stela depicts the royal scribe Senu adoring the god Osiris, ruler of the underworld. Below, Senu's son, the lector priest Pawahy, is depicted twice. Once standing and pouring a libation; once kneeling and reciting the funerary prayer inscribed in front of him. A second stela belonging to Senu is displayed in the same gallery (12.182.39).", 
+     "url" : "http://www.metmuseum.org/art/collection/search/548593"
+}

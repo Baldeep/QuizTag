@@ -1,0 +1,5 @@
+{
+     "name" : "Statue of Iris holding Horus", 
+     "description" : "This statuette of Isis is made of bronze. She was once seated on a throne or seat, now missing. The work consists of two intersecting planes: the mother and the child. The goddess is wearing an unadorned, tight-fitting robe and is holding Horus's head in her right hand, while offering her left breast with the other. The young god seems to be welded to her knees. With his arms against his body, his open palm on his knees, and legs held together, he lacks the natural softness of a child. Indeed, the pose in this high hieratic composition is fairly unrealistic.", 
+     "url" : "http://www.louvre.fr/en/oeuvre-notices/statuette-isis-nursing-horus"
+}

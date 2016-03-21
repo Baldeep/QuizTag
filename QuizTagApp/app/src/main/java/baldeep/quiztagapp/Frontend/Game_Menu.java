@@ -9,9 +9,11 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import baldeep.quiztagapp.Listeners.DialogCreator;
 import baldeep.quiztagapp.backend.FileHandler;
 import baldeep.quiztagapp.backend.GameSaver;
 import baldeep.quiztagapp.backend.PowerUps;
+import baldeep.quiztagapp.backend.Question;
 import baldeep.quiztagapp.backend.QuestionPool;
 import baldeep.quiztagapp.backend.QuizMaster;
 import baldeep.quiztagapp.Listeners.GameMenuButtonListener;
@@ -44,17 +46,22 @@ public class Game_Menu extends AppCompatActivity {
         powerUps = (PowerUps) saveGameData.getSerializable("powerUps");
 
         questionPool = new FileHandler().getQuestionPoolFromFile(this);
-        if(questionPool == null){
+        if(questionPool.getQuestionPool() == null){
            Log.e("Reading QuestioPool", "Reading questionpool resulted in null");
         }
+
 
         qm = new QuizMaster(questionPool, powerUps);
 
         String quizName = saveGameData.getString("quizName");
         if(quizName != null && quizName.equals(questionPool.getQuizName())){
-            int currentQuestion = saveGameData.getInt("currentQuestion");
+            int currentQuestion = saveGameData.getInt("currentQuestionNo");
+            Log.i("Load Quiz", "Question No: " + currentQuestion);
             qm.goToQuestion(currentQuestion);
+        } else {
+            qm.setNextQuestion();
         }
+        Log.i("Game Menu", "starting quiz master from question " + qm.getCurrentQuestionNumber());
 
 
 
@@ -98,7 +105,7 @@ public class Game_Menu extends AppCompatActivity {
             Bundle saveGame = new Bundle();
             saveGame.putSerializable("powerUps", powerUps);
             saveGame.putString("quizName", data.getStringExtra("quizName"));
-            saveGame.putInt("currentQuestion", data.getIntExtra("currentQuestion", 1));
+            saveGame.putInt("currentQuestionNo", data.getIntExtra("currentQuestionNo", 1));
             new GameSaver().saveQuiz(this, saveGame);
             update();
         }
@@ -149,10 +156,8 @@ public class Game_Menu extends AppCompatActivity {
     private void setStartButtonListener(){
         Bundle startBundle = new Bundle();
         startBundle.putString("message", "start");
-        qm = new QuizMaster(questionPool, powerUps);
         startBundle.putSerializable("quizMaster", qm);
         startBundle.putInt("result", 0);
-
 
         start_button.setOnClickListener(new GameMenuButtonListener(this, startBundle));
     }

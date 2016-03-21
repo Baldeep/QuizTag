@@ -1,0 +1,5 @@
+{
+     "name" : "Mirror", 
+     "description" : "Facial appearance was important in Ancient Egypt. Cosmetics were common. They often had religious significance. The polished surface of this Egyptian toiletry mirror makes an effective mirror even after over 2000 years. Mirrors were introduced into the Greek and Roman empires from Egypt. The bronze mirror may have had a wooden or ivory handle.", 
+     "url" : "http://www.sciencemuseum.org.uk/broughttolife/objects/display?id=91663"
+}

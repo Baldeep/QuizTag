@@ -74,4 +74,13 @@ public class DialogCreator {
     }
 
 
+    public void quizFinishedDialog(FragmentManager fragmentManager, Bundle arguments) {
+        DialogFragment df = new ConnectDialog();
+        Bundle connectArgs = new Bundle();
+        connectArgs.putString("title", "Quiz Complete");
+        connectArgs.putString("message",
+                "Congratulations! You have finished the quiz!");
+        df.setArguments(connectArgs);
+        df.show(fragmentManager, "Connect Dialog");
+    }
 }

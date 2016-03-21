@@ -17,7 +17,7 @@
          "hints": [ 
             "Mirror",
             "Burial Mask",
-            "Fan Bearer",
+            "Fan Barer",
             "Canopic Jars"
          ],
          "answer": "Mirror"
@@ -25,12 +25,12 @@
       {
          "questionString": "This beautiful woman is merely a servant of the gods",
          "hints": [ 
-            "Fan Bearer",
+            "Fan Barer",
             "Statue of Iris holding Horus",
             "Statue of Anubis",
             "Statue of Seneb"
          ],
-         "answer": "Fan Bearer",
+         "answer": "Fan Barer"
       },
       {
          "questionString": "The end of life is sad, lets hope this mummy doesn't curse you",
@@ -66,7 +66,7 @@
          "questionString": "While the body went to the afterlife, its organs must go separately in these vessels",
          "hints": [ 
             "Canopic Jars",
-            "Sarcophagus",
+            "Coffin and Mummy",
             "Burial Mask",
             "Soul House"
          ],
@@ -75,7 +75,7 @@
       {
          "questionString": "Mummification was a sacred act, this god overlooked the whole process",
          "hints": [ 
-            "Statue of Iris holding Horus",
+            "Statue of Iris and Horus",
             "Staute of Anubis",
             "Stela to Osiris",
             "Burial Mask"

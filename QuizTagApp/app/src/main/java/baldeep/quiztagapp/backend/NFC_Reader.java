@@ -53,7 +53,7 @@ public class NFC_Reader {
                 Gson gson = new Gson();
                 exhibit = gson.fromJson(text, ExhibitTag.class);
             } catch (JsonParseException e){
-                Toast.makeText(activity, "Tag in wrong format, contact tech support", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Json format error", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -99,10 +99,8 @@ public class NFC_Reader {
                     NdefMessage message = ndef.getNdefMessage();
                     if (message != null) {
                         NdefRecord[] record = message.getRecords();
-
-                        if (record.length > 1) {
-                            text = decodeTag(record[0]);
-                        }
+                        for(NdefRecord r : record)
+                            text = decodeTag(r);
                     } else {
                         Toast.makeText(activity, "Didn't manage to read the tag, try again.", Toast.LENGTH_SHORT).show();
                     }

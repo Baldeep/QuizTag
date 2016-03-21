@@ -53,34 +53,49 @@ public class FileHandler implements Serializable{
 
     }
 
-    public void readFileTest(Context context){
+    private String readFile(Context context){
+        String fileAsString = "";
         try {
             FileInputStream fileIn= context.openFileInput("quiz.txt");
             InputStreamReader InputRead= new InputStreamReader(fileIn);
+            BufferedReader br = new BufferedReader(InputRead);
 
-            char[] inputBuffer= new char[100];
-            String s="";
-            int charRead;
-
-            while ((charRead=InputRead.read(inputBuffer))>0) {
-                // char to string conversion
-                String readstring=String.copyValueOf(inputBuffer,0,charRead);
-                s +=readstring;
+            String line = "";
+            while((line = br.readLine()) != null){
+                fileAsString += line;
             }
+
             InputRead.close();
-            Log.d("READING", s);
-            Toast.makeText(context, s,Toast.LENGTH_SHORT).show();
+            br.close();
+            Log.d("READING", fileAsString);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return fileAsString;
     }
 
+    /**
+     * Parses in JSON file into a QuestionPool to be used for the quiz master
+     *
+     * GSON tutorial - http://kylewbanks.com/blog/Tutorial-Android-Parsing-JSON-with-GSON
+     *
+     * File Opening - http://stackoverflow.com/questions/12421814/how-can-i-read-a-text-file-in-android
+     *
+     * @param context
+     */
     public QuestionPool getQuestionPoolFromFile(Context context){
-        // Need to set the hints as GSON doesn't call the constructor
+        Gson gson = new Gson();
+        QuestionPool qp = null;
 
-        QuestionPool qp = readQuestionPoolFromFile(context);
-        if(qp!= null) {
+        String qpAsString = readFile(context);
+
+        // if qpAsString is an empty strng gson will create a non null empty class object.
+        qp = gson.fromJson(qpAsString, QuestionPool.class);
+
+        if(qp != null) {
+            Log.d("READING QUIZ.TXT", "quiz isn't null");
+            // Gson doesn't use the constructor
             for (Question q : qp.getQuestionPool())
                 q.resetHints();
 
@@ -97,21 +112,18 @@ public class FileHandler implements Serializable{
             QuestionPool questionPool = new QuestionPool(qp.getQuizName(), qp.getQuestionPool(), qp.isRandom());
             return questionPool;
         } else {
-            List<Question> q = new ArrayList<Question>();
-            return new QuestionPool(q);
+            Log.d("READING QUIZ.TXT", "quiz is null, deading data.txt");
+            return readQuestionPoolfromAssets(context);
         }
     }
+
     /**
-     * Parses in JSON file into a QuestionPool to be used for the quiz master
-     *
-     * GSON tutorial - http://kylewbanks.com/blog/Tutorial-Android-Parsing-JSON-with-GSON
-     *
-     * File Opening - http://stackoverflow.com/questions/12421814/how-can-i-read-a-text-file-in-android
-     *
-     * @param context
+     * A sample quiz is stored in the assets, this will be read and produced if there is no saved
+     * quiz file.
      */
-    private QuestionPool readQuestionPoolFromFile(Context context){
+    private QuestionPool readQuestionPoolfromAssets(Context context){
         Gson gson = new Gson();
+
         QuestionPool qp = null;
 
         AssetManager am = context.getAssets();
@@ -122,11 +134,37 @@ public class FileHandler implements Serializable{
 
             qp = gson.fromJson(input, QuestionPool.class);
 
-        } catch (IOException e) {
+            System.out.println("Printing questions **********************************************");
+            System.out.println(qp.getQuizName());
+            for (Question q : qp.getQuestionPool()) {
+                System.out.println(q.getQuestion() + ", " + q.getAnswer() + "\n");
+            /*for(String s : q.getHints()){
+                System.out.println(s);
+            }*/
+                System.out.println("*************************************");
+            }
+         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(context, "IO Exception", Toast.LENGTH_SHORT).show();
         }
 
-        return qp;
+        if(qp!= null){
+            Log.d("READING DATA.TXT", "quiz isn't null");
+            Log.d("QP", qp.getQuizName());
+            Log.d("QP", qp.getQuestionPoolSize() + "");
+            Log.d("QP", qp.isRandom() + "");
+            for (Question q : qp.getQuestionPool())
+                q.resetHints();
+
+            QuestionPool questionPool = new QuestionPool(qp.getQuizName(), qp.getQuestionPool(), qp.isRandom());
+            return questionPool;
+        } else {
+            Log.d("READING DATA.TXT", "quiz is null, returning empty quiz");
+            List<Question> q = new ArrayList<Question>();
+            Question question = new Question();
+            q.add(question);
+            return new QuestionPool(q);
+        }
     }
+
 }

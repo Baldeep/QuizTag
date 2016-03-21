@@ -56,10 +56,12 @@ public class QuestionPool implements Serializable{
 
 
         // make sure it's not empty
-        if(questionPool.isEmpty()) {
+        if(random && questionPool.isEmpty()) {
             System.out.println("Questionpool empty **********");
             questionPool.addAll(questionsAsked);
             questionsAsked.clear();
+        } else if(!random && questionPool.isEmpty()){
+            return null;
         }
 
         if(!questionPool.isEmpty()) {
@@ -95,13 +97,14 @@ public class QuestionPool implements Serializable{
             // mark it as asked
             currentQuestion = q;
             questionsAsked.add(q);
-            for (Question quest : questionsAsked) {
+            questionPool.remove(q);
+            /*for (Question quest : questionsAsked) {
                 System.out.println("Asked: " + quest.getQuestion());
             }
-            questionPool.remove(q);
+
             for (Question quest : questionPool) {
                 System.out.println("In Pool: " + quest.getQuestion());
-            }
+            }*/
             return q;
         } else {
             return new Question();

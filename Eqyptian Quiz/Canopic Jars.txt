@@ -1,0 +1,5 @@
+{
+     "name" : "Canopic Jars", 
+     "description" : "The ancient Egyptians had a strong religious belief that when a person died they would return to an ‘afterlife’ that was almost the same as the life they had when they were alive.  In their belief, the body needed to be preserved so that the person could return. This is why the Egyptians created mummies. The process required that not only the outside of the person’s body be mummified, but also all of the internal organs. Canopic jars were created to contain all of the organs, so that upon entering the afterlife, the person would be complete.", 
+     "url" : "http://www.ancientegypt.co.uk/mummies/story/page7.html"
+}

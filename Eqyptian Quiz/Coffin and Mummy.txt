@@ -1,0 +1,5 @@
+{
+     "name" : "Coffin and Mummy", 
+     "description" : "This coffin belonged to a man named Paankhenamun, whose name translates as “He lives for Amun.” Paankhenamun was the doorkeeper of the temple of the god Amun, a position he inherited from his father. X-rays reveal that he was approximately 5’6” tall and died in middle age.", 
+     "url" : "http://www.artic.edu/aic/collections/artwork/64339"
+}

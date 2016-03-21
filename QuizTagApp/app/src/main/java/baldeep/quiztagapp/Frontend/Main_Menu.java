@@ -24,8 +24,6 @@ public class Main_Menu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        new FileHandler().writeFile(this.getApplicationContext(), "Hello World");
-        new FileHandler().readFileTest(this.getApplicationContext());
         setContentView(R.layout.activity_main_menu);
 
         play_button = (Button) findViewById(R.id.play_button);

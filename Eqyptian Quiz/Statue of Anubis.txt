@@ -1,0 +1,5 @@
+{
+     "name" : "Statue of Anubis", 
+     "description" : "This statue of the seated Anubis was found in the Serapeum in Saqqara . The jackal-headed Anubis is one of immortal gods in the ancient Egyptian mythology whose importance is attributed to his great role in the underworld as the protector of the dead bodies . One of the commonest funeral scenes depict the god bending over the deceased's body and performing the processes of mummifications.", 
+     "url" : "http://egyptopia.com/Statue+of+Anubis+The+Egyptian+Museum_30_382_533_en.html"
+}

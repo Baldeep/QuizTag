@@ -1,0 +1,5 @@
+{
+     "name" : "Fan Barer", 
+     "description" : "This lady in her fine linen dress and beautiful wig was a fan bearer for a god's statue.", 
+     "url" : "https://en.wikipedia.org/wiki/Fan-bearer_on_the_Right_Side_of_the_King"
+}

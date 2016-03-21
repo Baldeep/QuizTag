@@ -1,0 +1,5 @@
+{
+     "name" : "Soul House", 
+     "description" : "Poorer burials had a soul house, a crude model house that provisioned the deceased and housed the ka should the burial be destroyed. They would have courtyards with models of foodstuffs, including cuts of meat and conical and round loaves of bread", 
+     "url" : "http://studentreader.com/ancient-egyptian-funerary-practice-soul-house/"
+}

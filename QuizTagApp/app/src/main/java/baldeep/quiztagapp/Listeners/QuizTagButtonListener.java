@@ -13,12 +13,16 @@ import baldeep.quiztagapp.backend.FileHandler;
  */
 public class QuizTagButtonListener implements View.OnClickListener {
 
+    Activity activity;
+    Bundle arguments;
     public QuizTagButtonListener(Activity activity, Bundle arguments){
-
+        this.activity = activity;
+        this.arguments = arguments;
     }
+
     @Override
     public void onClick(View v) {
         FileHandler fh = new FileHandler();
-        fh.writeFile();
+        fh.writeFile(activity, arguments.getString("string"));
     }
 }

@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                         ExhibitObject exhibit = new ExhibitObject();
                         try {
                             exhibit = gson.fromJson(fileAsString, ExhibitObject.class);
+                            Toast.makeText(MainActivity.this, exhibit.getName(), Toast.LENGTH_SHORT).show();
                         }catch (JsonSyntaxException e){
                             // Even though the question pool uses different types etc, this will still
                             // catch JSon format errors for questionPool files
@@ -133,10 +134,6 @@ public class MainActivity extends AppCompatActivity {
 
                         writeTag(fileAsString, tag);
 
-                        System.out.println("Name: " + exhibit.getName() +
-                        "Description: " + exhibit.getDescription() +
-                        "url: " + exhibit.getUrl());
-
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                         Log.e("FileNotFoundException", "FileNotFoundException");
@@ -144,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                         Log.e("IOException", "IOException");
                     }
-                    Toast.makeText(MainActivity.this, "File Name" + fileName, Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -175,23 +171,26 @@ public class MainActivity extends AppCompatActivity {
             // Check the tag is in Ndef format
             Ndef ndef = Ndef.get(tag);
             if (ndef != null) {
-                if(message.toByteArray().length < ndef.getMaxSize()){
-                try {
-                    ndef.connect(); // establish connection
-                    ndef.writeNdefMessage(message);
-                    Toast.makeText(this, "Ndef Write successful", Toast.LENGTH_SHORT).show();
-                    ndef.close(); //close connection
-                } catch (IOException e) {
-                    Toast.makeText(this, "Failed to write, tag may have moved", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                } catch (FormatException e) {
-                    Toast.makeText(this, "Tag is of invalid format", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
+                if(message.toByteArray().length < ndef.getMaxSize()) {
+                    try {
+                        ndef.connect(); // establish connection
+                        ndef.writeNdefMessage(message);
+                        Toast.makeText(this, "Ndef Write successful", Toast.LENGTH_SHORT).show();
+                        ndef.close(); //close connection
+                    } catch (IOException e) {
+                        Toast.makeText(this, "Failed to write, tag may have moved", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    } catch (FormatException e) {
+                        Toast.makeText(this, "Tag is of invalid format", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(this, "Tag is too small", Toast.LENGTH_SHORT).show();
                 }
             } else {
                     // If it's not in Ndef Format, format it if possible
                     NdefFormatable formattable = NdefFormatable.get(tag);
-
+                    Toast.makeText(this, "NdefFormattable", Toast.LENGTH_SHORT).show();
                     if (formattable != null) {
                         try {
                             formattable.connect();
@@ -208,17 +207,23 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(this, "Invalid Tag format", Toast.LENGTH_SHORT).show();
                     }
-                }
             }
 
         } else {
             Toast.makeText(this, "Tag has moved", Toast.LENGTH_SHORT).show();
-
         }
     }
 
     /*
      * https://learn.adafruit.com/adafruit-pn532-rfid-nfc/ndef
+     *
+     * [ MB ]  [ ME ]  [ CF ]  [ SR ]  [ IL ]  [        TNF         ]
+     * [                         TYPE LENGTH                        ]
+     * [                       PAYLOAD LENGTH                       ]
+     * [                          ID LENGTH                         ]
+     * [                         RECORD TYPE                        ]
+     * [                              ID                            ]
+     * [                           PAYLOAD                          ]
      */
     private NdefRecord createRecord(String text){
         String lang       = "en";
@@ -233,10 +238,10 @@ public class MainActivity extends AppCompatActivity {
         }
         int    langLength = langBytes.length;
 
-
+        // 1 for the type + space for the language  + space for text
         byte[] payload    = new byte[1 + langLength + textLength];
 
-        // set status byte (see NDEF spec for actual bits)
+        // set status byte
         payload[0] = (byte) langLength;
 
         // copy langbytes and textbytes into payload

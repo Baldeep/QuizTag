@@ -1,0 +1,5 @@
+{
+     "name" : "Statue of Seneb", 
+     "description" : "Seneb was a dwarf who served as a high-ranking court official in the Old Kingdom of Ancient Egypt, circa 2520 BC. Despite his diminutive size, Seneb was a person of considerable importance and wealth who owned thousands of cattle, held twenty palace and religious titles and was married to a high-ranking priestess of average size with whom he had three children.", 
+     "url" : "https://en.wikipedia.org/wiki/Seneb"
+}

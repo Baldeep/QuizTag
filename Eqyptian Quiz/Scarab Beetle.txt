@@ -1,0 +1,5 @@
+{
+     "name" : "Scarab Beetle", 
+     "description" : "Many amulets - magic charms - were placed in a mummys wrappings. The outer layer included a winged scarab beetle to give new life and bring good luck.", 
+     "url" : "http://www.historyembalmed.org/ancient-egyptians/egyptian-jewelry.htm"
+}

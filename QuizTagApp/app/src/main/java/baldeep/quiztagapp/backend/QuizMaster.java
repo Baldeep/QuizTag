@@ -34,7 +34,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
         this.powerUps = new PowerUps(0, 0, 0);
         currentQuestionNumber = 0;
         this.qp = qp;
-        if(qp == null){
+        if(this.qp == null){
             System.out.println("QUESTION POOL IS NULL");
             List<Question> q = new ArrayList<>();
             q.add(new Question());
@@ -52,7 +52,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
         this.powerUps = powerUps;
         currentQuestionNumber = 0;
         this.qp = qp;
-        if(qp == null){
+        if(this.qp == null){
             System.out.println("QUESTION POOL IS NULL");
             List<Question> q = new ArrayList<>();
             q.add(new Question());
@@ -66,9 +66,14 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      */
     public void setNextQuestion(){
         currentQuestion = qp.askQuestion();
-        hintsRevealed = false;
-        wrongChoices = 0;
-        currentQuestionNumber++;
+        if(currentQuestion != null) {
+            System.out.println("QuizMaster setNextQuestion: " + currentQuestion.getQuestion());
+            hintsRevealed = false;
+            wrongChoices = 0;
+            currentQuestionNumber++;
+        } else {
+            currentQuestionNumber = 0;
+        }
         notifyAllObservers();
     }
 
@@ -183,11 +188,12 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      * Resets the question counter and clears the questions asked from the QuestionPool
      * @return True if the questions asked have been cleared successfully, false otherwise
      */
-    public boolean resetQuiz(){
+    public void resetQuiz(){
         currentQuestionNumber = 0;
         hintsRevealed = false;
         wrongChoices = 0;
-        return qp.clearAskedQuestions();
+        qp.clearAskedQuestions();
+        notifyAllObservers();
     }
 
     /**
@@ -210,6 +216,9 @@ public class QuizMaster extends Observable implements Serializable, Observer{
         return qp.getQuizName();
     }
 
+    public QuestionPool getQuestionPool(){
+        return qp;
+    }
 
     public void setNewQuiz(QuestionPool qp){
         this.qp = qp;

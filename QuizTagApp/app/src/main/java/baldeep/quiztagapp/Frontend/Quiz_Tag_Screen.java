@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import org.w3c.dom.Text;
 
 import baldeep.quiztagapp.Listeners.DialogCreator;
@@ -113,7 +115,13 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
                 typeField.setText(R.string.quiz_type_story);
                 typeExplaination.setText(R.string.quiz_type_story_explaination);
             }
-            download.setOnClickListener(new QuizTagButtonListener());
+
+            Gson gson = new Gson();
+            String qpAsString = gson.toJson(questionPool);
+            Bundle quizTagBundle = new Bundle();
+            quizTagBundle.putString("string", qpAsString);
+            System.out.println(qpAsString);
+            download.setOnClickListener(new QuizTagButtonListener(this, quizTagBundle));
         }
     }
 

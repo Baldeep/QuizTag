@@ -17,7 +17,7 @@ public class GameSaver {
         SharedPreferences saveGame = activity.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor saver = saveGame.edit();
         saver.putString("quizName", saveGameData.getString("quizName"));
-        saver.putString("currentQuestion", saveGameData.getString("currentQuestion"));
+        saver.putInt("currentQuestionNo", saveGameData.getInt("currentQuestionNo"));
         saver.putInt("skips", pu.getSkips());
         saver.putInt("hints", pu.getHints());
         saver.putInt("points", pu.getPoints());
@@ -47,6 +47,8 @@ public class GameSaver {
         int points = saveGame.getInt("points", 120);
         int hints = saveGame.getInt("hints", 10);
         int skips = saveGame.getInt("skips", 10);
+        String quizName = saveGame.getString("quizName", " ");
+        int currentQuestionNo = saveGame.getInt("currentQuestionNo", 1);
 
         Log.i("Loading", "Power ups(points: " + points + ", hints: " + hints +
                 ", skips: " + skips + ")");
@@ -55,6 +57,8 @@ public class GameSaver {
 
         Bundle saveGameData = new Bundle();
         saveGameData.putSerializable("powerUps", pu);
+        saveGameData.putString("quizName", quizName);
+        saveGameData.putInt("currentQuestionNo", currentQuestionNo);
         return saveGameData;
     }
 }

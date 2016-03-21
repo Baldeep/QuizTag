@@ -1,0 +1,5 @@
+{
+     "name" : "Burial Mask", 
+     "description" : "The Ancient Egyptians were obsessed with the prospect of life after death - the eternal afterlife. The Ancient Egyptians used elaborate masks to great effect. Egyptian masks were generally used as Death Masks and Ritual Masks. The fabulous King Tut Mask was a death mask. Royal death masks or burial masks such as the fabulous death mask of Tutankhamun, the boy King Tut, were made of gold in the image of the deceased. The King Tut mask was used to cover the face of the mummy of the pharaoh and ensure that his spirit would be able to recognize the body.", 
+     "url" : "http://www.historyembalmed.org/tomb-of-king-tut/king-tut-mask.htm"
+}

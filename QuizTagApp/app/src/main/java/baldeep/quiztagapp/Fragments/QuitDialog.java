@@ -14,15 +14,15 @@ public class QuitDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AlertDialog.Builder connectDialog = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder quitDialog = new AlertDialog.Builder(getActivity());
 
-        connectDialog.setTitle("Quit");
-        connectDialog.setMessage("Are you sure you want to exit?");
+        quitDialog.setTitle("Quit");
+        quitDialog.setMessage("Are you sure you want to exit?");
 
-        connectDialog.setPositiveButton("Yes", new QuitDialogListener(this.getActivity(), "yes"));
+        quitDialog.setPositiveButton("Yes", new QuitDialogListener(this.getActivity(), "yes"));
 
-        connectDialog.setNegativeButton("No", new QuitDialogListener(this.getActivity(), "no"));
+        quitDialog.setNegativeButton("No", new QuitDialogListener(this.getActivity(), "no"));
 
-        return connectDialog.create();
+        return quitDialog.create();
     }
 }

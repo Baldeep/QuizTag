@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,6 +65,13 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         qm = (QuizMaster) previousActivity.getSerializableExtra("quizMaster");
 
         qm.attach(this); // Observer
+
+
+        Log.i("Question Screen", "Quiz Name: " + qm.getQuizName());
+        Log.i("Question Screen", "Number of Questions: " + qm.getQuestionPool().getQuestionPoolSize());
+        Log.i("Question Screen", "Question: " + qm.getCurrentQuestionNumber());
+
+
 
         // get all xml objects
         hints = (TextView) findViewById(R.id.hints_count_text);
@@ -123,6 +131,8 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         if(id == R.id.quit_button_dropdown){
             Intent goingBack = new Intent();
             goingBack.putExtra("powerUps", qm.getPowerUps());
+            goingBack.putExtra("quizName", qm.getQuizName());
+            goingBack.putExtra("currentQuestionNo", qm.getCurrentQuestionNumber());
             setResult(RESULT_OK, goingBack);
 
             dialogCreator.quitConfirmationDialog(getFragmentManager(), new Bundle());
@@ -183,8 +193,13 @@ public class Question_Screen extends AppCompatActivity implements Observer {
 
     @Override
     public void update(Observable observable, Object data) {
-        if(qm.getCurrentQuestionNumber() <= 0){
+        if(qm.getCurrentQuestionNumber() == 0){
             setTitle(qm.getQuizName());
+        } else if(qm.getCurrentQuestionNumber() < 0){
+            Bundle endBundle = new Bundle();
+            endBundle.putSerializable("powerUps", qm.getPowerUps());
+            qm.resetQuiz();
+            dialogCreator.quizFinishedDialog(getFragmentManager(), endBundle);
         } else {
             setTitle("Question " + qm.getCurrentQuestionNumber());
         }
@@ -205,6 +220,8 @@ public class Question_Screen extends AppCompatActivity implements Observer {
     public void onBackPressed(){
         Intent goingBack = new Intent();
         goingBack.putExtra("powerUps", qm.getPowerUps());
+        goingBack.putExtra("quizName", qm.getQuizName());
+        goingBack.putExtra("currentQuestionNo", qm.getCurrentQuestionNumber());
         setResult(RESULT_OK, goingBack);
 
         super.onBackPressed();
@@ -219,6 +236,8 @@ public class Question_Screen extends AppCompatActivity implements Observer {
             Toast.makeText(this, "Tag found", Toast.LENGTH_SHORT).show();
 
             String answerFromTag = new NFC_Reader().readNameFromTag(this, tag);
+
+            Toast.makeText(this, answerFromTag, Toast.LENGTH_SHORT).show();
             long[] pattern = {0, 200, 100, 200};
             v.vibrate(pattern, -1);
 
