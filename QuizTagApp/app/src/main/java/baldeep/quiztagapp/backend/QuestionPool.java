@@ -27,7 +27,16 @@ public class QuestionPool implements Serializable{
         assert(questionPool.size()>0);
 
         this.questionPool = questionPool;
+        for(Question q : this.questionPool){
+            if(q == null)
+                this.questionPool.remove(q);
+        }
+
         this.quizName = quizName;
+        if(this.quizName == null){
+            quizName = "Quiz Name Null";
+        }
+
         questionsAsked = new ArrayList<>();
         this.random = random;
     }
@@ -35,13 +44,18 @@ public class QuestionPool implements Serializable{
     /**
      * The question pool holds a list of questions and helps with the question handling tasks,
      * without dealing with any of the power-ups etc. The questions selected will be picked at random
-     * @param questionPool The pool of questions
+     * @param questionPool The pool of questions to store
      */
     public QuestionPool(List<Question> questionPool){
 
         assert(questionPool.size()>0);
 
         this.questionPool = questionPool;
+        for(Question q : this.questionPool){
+            if(q == null)
+                this.questionPool.remove(q);
+        }
+
         this.quizName = "Nameless Quiz";
         questionsAsked = new ArrayList<>();
         random = true;
@@ -49,13 +63,14 @@ public class QuestionPool implements Serializable{
 
     /**
      * This question picks a random question from the question pool and returns it.
-     * @return A randomly selected Question
+     * @return If the quiz is random, it will return a randomly selected question and restart once
+     * all questions have been asked, however if it is a story mode, it will return null once all
+     * questions have been asked. Will also return null for an error.
      */
     public Question askQuestion(){
         Question q = null;
 
-
-        // make sure it's not empty
+        // Deal with the empty array
         if(random && questionPool.isEmpty()) {
             System.out.println("Questionpool empty **********");
             questionPool.addAll(questionsAsked);
@@ -64,6 +79,7 @@ public class QuestionPool implements Serializable{
             return null;
         }
 
+        // Pick out a question
         if(!questionPool.isEmpty()) {
 
             if (random) {
@@ -71,44 +87,12 @@ public class QuestionPool implements Serializable{
             }
             q = questionPool.get(0);
 
-        /* Redacting the following as a check is made to ensure the list isn't empty at the start
-         *of the method, therefore it's simpler to just shuffle the array and return the first
-         * element found
-         */
-        /*
-        System.out.println("Selecting a random question from pool size: " + questionPool.size());
-        if(questionPool.size() == 1){
-            q = questionPool.get(0);
-        } else {
-            // Pick a random question
-            int randomNo = new Random().nextInt(questionPool.size() - 1);
-            System.out.println("Looking for another question " + randomNo + " **************");
-            q = questionPool.get(randomNo);
-
-            // has it been asked before? pick another one!
-            while (questionsAsked.contains(q)) {
-                randomNo = new Random().nextInt(questionPool.size() - 1);
-                System.out.println("Looking for another question " + randomNo + " **************");
-                q = questionPool.get(randomNo);
-            }
-        }
-        */
-
             // mark it as asked
             currentQuestion = q;
             questionsAsked.add(q);
             questionPool.remove(q);
-            /*for (Question quest : questionsAsked) {
-                System.out.println("Asked: " + quest.getQuestion());
-            }
-
-            for (Question quest : questionPool) {
-                System.out.println("In Pool: " + quest.getQuestion());
-            }*/
-            return q;
-        } else {
-            return new Question();
         }
+        return q;
     }
 
     /**
@@ -120,8 +104,25 @@ public class QuestionPool implements Serializable{
         return questionsAsked.isEmpty();
     }
 
+    /**
+     * This method checks the given string against the answer string held for the currently selected
+     * question.
+     * @param answer The string to check
+     * @return Returns true if the string given matches the answer of the currently selected question,
+     * otherwise it will return false.
+     */
     public boolean checkAnswer(String answer){
-        return currentQuestion.checkAnswer(answer);
+        if(currentQuestion != null)
+            return currentQuestion.checkAnswer(answer);
+        return false;
+    }
+
+    /**
+     *
+     * @param currentQuestion
+     */
+    public void setCurrentQuestionNo(Question currentQuestion) {
+        this.currentQuestion = currentQuestion;
     }
 
     public String getQuizName(){
@@ -140,17 +141,7 @@ public class QuestionPool implements Serializable{
         this.questionPool = newQuestions;
     }
 
-    public List<Question> getAskedQuestions(){
-        return questionsAsked;
-    }
 
-    public Question getCurrentQuestion() {
-        return currentQuestion;
-    }
-
-    public void setCurrentQuestion(Question currentQuestion) {
-        this.currentQuestion = currentQuestion;
-    }
 
     public boolean isRandom(){
         return random;

@@ -54,6 +54,7 @@ public class NFC_Reader {
                 exhibit = gson.fromJson(text, ExhibitTag.class);
             } catch (JsonParseException e){
                 Toast.makeText(activity, "Json format error", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
             }
         }
 

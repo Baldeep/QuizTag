@@ -47,9 +47,13 @@ public class Scan_Screen extends AppCompatActivity{
         setContentView(R.layout.scan_screen_activity);
 
         name = (TextView) findViewById(R.id.scan_screen_name_field);
-        description = (TextView) findViewById(R.id.scan_screen_description_field);
-        url = (TextView) findViewById(R.id.scan_screen_url_field);
 
+        description = (TextView) findViewById(R.id.scan_screen_description_field);
+        description.setMovementMethod(new ScrollingMovementMethod());
+
+        url = (TextView) findViewById(R.id.scan_screen_url_field);
+        url.setClickable(true);
+        url.setMovementMethod(LinkMovementMethod.getInstance());
 
         // Check NFC is enabled
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
@@ -104,7 +108,7 @@ public class Scan_Screen extends AppCompatActivity{
             String nameString = getResources().getString(R.string.scan_screen_name_field) + exhibitTag.getName() + " " + exhibitTag.getYear();
             name.setText(nameString);
 
-            description.setMovementMethod(new ScrollingMovementMethod());
+
             description.setText(exhibitTag.getDescription());
 
 

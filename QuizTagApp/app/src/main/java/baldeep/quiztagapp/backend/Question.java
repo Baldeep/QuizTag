@@ -45,21 +45,6 @@ public class Question implements Serializable{
 			hintPool.add(answer);
 		}
 		this.hints = findHints();
-
-	}
-
-	/**
-	 * This class is the default empty question class, this is so that null checks made later on can
-	 * return this empty Question instead of null, hopefully making things easier later on
-	 */
-	public Question(){
-		this.question = "null";
-		this.hints = new ArrayList<String>();
-		for(int i = 0; i < 4; i++){
-			hints.add("null");
-		}
-		this.answer = "null";
-
 	}
 
     /**
