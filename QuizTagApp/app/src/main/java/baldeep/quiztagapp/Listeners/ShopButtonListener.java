@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import baldeep.quiztagapp.Enums.Constants;
+import baldeep.quiztagapp.Constants.Constants;
 import baldeep.quiztagapp.Fragments.InformationDialog;
 import baldeep.quiztagapp.Frontend.Shop_Menu;
 import baldeep.quiztagapp.Backend.PowerUps;

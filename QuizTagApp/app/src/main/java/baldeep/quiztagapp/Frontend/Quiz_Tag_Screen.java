@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import baldeep.quiztagapp.Constants.Constants;
 import baldeep.quiztagapp.Listeners.QuizTagButtonListener;
 import baldeep.quiztagapp.R;
 import baldeep.quiztagapp.Backend.NFC_Reader;
@@ -49,9 +50,14 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
 
         dialogCreator = new DialogCreator();
 
+        // Intialize the GUI
+        // Name of quiz
         nameField = (TextView) findViewById(R.id.quizTag_name_field);
+        // Number of questions
         questionNoField = (TextView) findViewById(R.id.quizTag_QuestionNo_field);
+        // Type of quiz (story or random)
         typeField = (TextView) findViewById(R.id.quizTag_quizType_field);
+        // Explanation of the type (scrolls if the description is too big)
         typeExplaination = (TextView) findViewById(R.id.quizTag_quiztype_Explaination);
         typeExplaination.setMovementMethod(new ScrollingMovementMethod());
 
@@ -69,6 +75,27 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
         tagDetected.addCategory(Intent.CATEGORY_DEFAULT);
         intentFileters = new IntentFilter[] { tagDetected };
     }
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        // Delay vibration until the tag is fully read
+        v.cancel();
+        if(nfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
+            // get the Tag
+            tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            // Read the Questionpool from the tag
+            questionPool = new NFC_Reader().readQuestionPoolFromTag(this, tag);
+            // and  now vibrate
+            long[] pattern = {0, 200, 100, 200};
+            v.vibrate(pattern, -1);
+            // update the details of the fields
+            update();
+        }
+        super.onNewIntent(intent);
+    }
+
     @Override
     public void onPause(){
         super.onPause();
@@ -82,23 +109,8 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
         if(nfcAdapter!=null) // for testing on emulator
             nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFileters, null);
     }
-    @Override
-    protected void onNewIntent(Intent intent) {
-        Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        v.cancel();
-        if(nfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
-            tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
-            questionPool = new NFC_Reader().readQuestionPoolFromTag(this, tag);
-
-            long[] pattern = {0, 200, 100, 200};
-            v.vibrate(pattern, -1);
-            updateFields();
-        }
-        super.onNewIntent(intent);
-    }
-
-    private void updateFields(){
+    private void update(){
 
         if(questionPool != null){
             nameField.setText(questionPool.getQuizName());
@@ -114,7 +126,7 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
             Gson gson = new Gson();
             String qpAsString = gson.toJson(questionPool);
             Bundle quizTagBundle = new Bundle();
-            quizTagBundle.putString("string", qpAsString);
+            quizTagBundle.putString(Constants.MESSAGE, qpAsString);
             System.out.println(qpAsString);
             download.setOnClickListener(new QuizTagButtonListener(this, quizTagBundle));
         }
@@ -131,7 +143,7 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
         int id = item.getItemId();
         if(id == R.id.toolbar_back_button){
             Intent goingBack = new Intent();
-            goingBack.putExtra("questionPool", questionPool);
+            goingBack.putExtra(Constants.QUESTIONPOOL, questionPool);
             setResult(RESULT_OK, goingBack);
 
             this.finish();
@@ -144,7 +156,7 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
     @Override
     public void onBackPressed() {
         Intent goingBack = new Intent();
-        goingBack.putExtra("questionPool", questionPool);
+        goingBack.putExtra(Constants.QUESTIONPOOL, questionPool);
         setResult(RESULT_OK, goingBack);
         super.onBackPressed();
     }

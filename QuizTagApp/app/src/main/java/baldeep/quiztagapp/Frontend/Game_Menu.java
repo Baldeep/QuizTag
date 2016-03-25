@@ -15,7 +15,7 @@ import baldeep.quiztagapp.Backend.GameSaver;
 import baldeep.quiztagapp.Backend.PowerUps;
 import baldeep.quiztagapp.Backend.QuestionPool;
 import baldeep.quiztagapp.Backend.QuizMaster;
-import baldeep.quiztagapp.Enums.Constants;
+import baldeep.quiztagapp.Constants.Constants;
 import baldeep.quiztagapp.Listeners.GameMenuButtonListener;
 import baldeep.quiztagapp.R;
 

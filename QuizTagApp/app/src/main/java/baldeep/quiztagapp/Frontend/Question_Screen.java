@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import baldeep.quiztagapp.Enums.Constants;
+import baldeep.quiztagapp.Constants.Constants;
 import baldeep.quiztagapp.Backend.NFC_Reader;
 import baldeep.quiztagapp.Backend.QuizMaster;
 

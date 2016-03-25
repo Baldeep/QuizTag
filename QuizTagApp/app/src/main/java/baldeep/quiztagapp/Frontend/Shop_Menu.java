@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import baldeep.quiztagapp.Enums.Constants;
+import baldeep.quiztagapp.Constants.Constants;
 import baldeep.quiztagapp.Listeners.ShopButtonListener;
 import baldeep.quiztagapp.R;
 import baldeep.quiztagapp.Backend.GameSaver;

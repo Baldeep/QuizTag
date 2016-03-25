@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import baldeep.quiztagapp.Backend.FileHandler;
+import baldeep.quiztagapp.Constants.Constants;
 
 /**
  * Created by skb12156 on 18/03/2016.
@@ -21,6 +22,6 @@ public class QuizTagButtonListener implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         FileHandler fh = new FileHandler();
-        fh.writeFile(activity, arguments.getString("string"));
+        fh.writeFile(activity, arguments.getString(Constants.MESSAGE));
     }
 }

@@ -6,8 +6,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-import baldeep.quiztagapp.Enums.Constants;
-import baldeep.quiztagapp.Listeners.ConnectDialogListener;
+import baldeep.quiztagapp.Constants.Constants;
 
 /**
  * Created by Baldeep on 28/02/2016.

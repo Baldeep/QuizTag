@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import baldeep.quiztagapp.Enums.Constants;
+import baldeep.quiztagapp.Constants.Constants;
 import baldeep.quiztagapp.Frontend.Game_Menu;
 import baldeep.quiztagapp.Frontend.Main_Menu;
 import baldeep.quiztagapp.Frontend.Scan_Screen;

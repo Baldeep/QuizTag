@@ -1,4 +1,4 @@
-package baldeep.quiztagapp.Enums;
+package baldeep.quiztagapp.Constants;
 
 /**
  * Created by Baldeep on 24/03/2016.
