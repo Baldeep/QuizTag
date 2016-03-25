@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
-import java.io.File;
-
-import baldeep.quiztagapp.backend.FileHandler;
+import baldeep.quiztagapp.Backend.FileHandler;
 
 /**
  * Created by skb12156 on 18/03/2016.

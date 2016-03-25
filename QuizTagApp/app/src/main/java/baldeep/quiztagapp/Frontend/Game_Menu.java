@@ -8,14 +8,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import baldeep.quiztagapp.Listeners.DialogCreator;
-import baldeep.quiztagapp.backend.FileHandler;
-import baldeep.quiztagapp.backend.GameSaver;
-import baldeep.quiztagapp.backend.PowerUps;
-import baldeep.quiztagapp.backend.Question;
-import baldeep.quiztagapp.backend.QuestionPool;
-import baldeep.quiztagapp.backend.QuizMaster;
+import baldeep.quiztagapp.Backend.FileHandler;
+import baldeep.quiztagapp.Backend.GameSaver;
+import baldeep.quiztagapp.Backend.PowerUps;
+import baldeep.quiztagapp.Backend.QuestionPool;
+import baldeep.quiztagapp.Backend.QuizMaster;
+import baldeep.quiztagapp.Enums.Constants;
 import baldeep.quiztagapp.Listeners.GameMenuButtonListener;
 import baldeep.quiztagapp.R;
 
@@ -42,29 +42,30 @@ public class Game_Menu extends AppCompatActivity {
 
         setContentView(R.layout.game_menu_activity);
 
+        // Load the previous game data
         Bundle saveGameData = new GameSaver().loadGame(this);
-        powerUps = (PowerUps) saveGameData.getSerializable("powerUps");
+        powerUps = (PowerUps) saveGameData.getSerializable(Constants.POWERUPS);
 
         questionPool = new FileHandler().getQuestionPoolFromFile(this);
         if(questionPool.getQuestionPool() == null){
-           Log.e("Reading QuestioPool", "Reading questionpool resulted in null");
+            Toast.makeText(this, R.string.no_question_pool_found, Toast.LENGTH_SHORT).show();
         }
 
-
+        // Create the QuizMaster
         qm = new QuizMaster(questionPool, powerUps);
 
-        String quizName = saveGameData.getString("quizName");
+        // Start the QuizMaster to either continue the saved quiz or start anew
+        String quizName = saveGameData.getString(Constants.QUIZNAME);
         if(quizName != null && quizName.equals(questionPool.getQuizName())){
-            int currentQuestion = saveGameData.getInt("currentQuestionNo");
-            Log.i("Load Quiz", "Question No: " + currentQuestion);
+            int currentQuestion = saveGameData.getInt(Constants.CURRENTQUESTIONNO);
+            Log.d("Load Quiz", "Question No: " + currentQuestion);
             qm.goToQuestion(currentQuestion);
         } else {
             qm.setNextQuestion();
         }
-        Log.i("Game Menu", "starting quiz master from question " + qm.getCurrentQuestionNumber());
+        Log.d("Game Menu", "starting quiz master from question " + qm.getCurrentQuestionNumber());
 
-
-
+        // Initialise GUI
         start_button = (Button) findViewById(R.id.start_button);
         quiz_tag_button = (Button) findViewById(R.id.quiz_tag_button);
         shop_button = (Button) findViewById(R.id.shop_button);
@@ -78,16 +79,18 @@ public class Game_Menu extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
+        // Load up Action Bar Menu
         getMenuInflater().inflate(R.menu.back_button_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
+        // Handle Action Bar buttons
         int id = item.getItemId();
         if(id == R.id.toolbar_back_button){
             Intent goingBack = new Intent();
-            goingBack.putExtra("powerUps", powerUps);
+            goingBack.putExtra(Constants.POWERUPS, powerUps);
             setResult(RESULT_OK, goingBack);
             this.finish();
             return true;
@@ -100,24 +103,28 @@ public class Game_Menu extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // Request 0 was sent to Question Screen
         if(requestCode == 0){
-            this.powerUps = (PowerUps) data.getSerializableExtra("powerUps");
+            this.powerUps = (PowerUps) data.getSerializableExtra(Constants.POWERUPS);
             Bundle saveGame = new Bundle();
-            saveGame.putSerializable("powerUps", powerUps);
-            saveGame.putString("quizName", data.getStringExtra("quizName"));
-            saveGame.putInt("currentQuestionNo", data.getIntExtra("currentQuestionNo", 1));
+            saveGame.putSerializable(Constants.POWERUPS, powerUps);
+            saveGame.putString(Constants.QUIZNAME, data.getStringExtra(Constants.QUIZNAME));
+            saveGame.putInt(Constants.CURRENTQUESTIONNO,
+                    data.getIntExtra(Constants.CURRENTQUESTIONNO, 1));
             new GameSaver().saveQuiz(this, saveGame);
             update();
         }
+        // Request 1 was sent to the Points Shop
         else if (requestCode == 1) {
-            this.powerUps = (PowerUps) data.getSerializableExtra("powerUps");
+            this.powerUps = (PowerUps) data.getSerializableExtra(Constants.POWERUPS);
             Bundle saveGame = new Bundle();
-            saveGame.putSerializable("powerUps", powerUps);
+            saveGame.putSerializable(Constants.POWERUPS, powerUps);
             new GameSaver().savePowerUps(this, saveGame);
             update();
         }
+        // Request 2 was sent to the QuizTag screen
         else if(requestCode == 2){
-            QuestionPool qp = (QuestionPool) data.getSerializableExtra("questionPool");
+            QuestionPool qp = (QuestionPool) data.getSerializableExtra(Constants.QUESTIONPOOL);
             qm.setNewQuiz(qp);
             update();
         }
@@ -141,8 +148,8 @@ public class Game_Menu extends AppCompatActivity {
      */
     private void setButtonListeners(){
         Bundle quizTagBundle = new Bundle();
-        quizTagBundle.putString("message", "quiztag");
-        quizTagBundle.putInt("result", 2);
+        quizTagBundle.putString(Constants.MESSAGE, Constants.QUIZTAG);
+        quizTagBundle.putInt(Constants.RESULT, 2);
 
         quiz_tag_button.setOnClickListener(new GameMenuButtonListener(this, quizTagBundle));
 
@@ -155,9 +162,9 @@ public class Game_Menu extends AppCompatActivity {
      */
     private void setStartButtonListener(){
         Bundle startBundle = new Bundle();
-        startBundle.putString("message", "start");
-        startBundle.putSerializable("quizMaster", qm);
-        startBundle.putInt("result", 0);
+        startBundle.putString(Constants.MESSAGE, Constants.PLAY);
+        startBundle.putSerializable(Constants.QUIZMASTER, qm);
+        startBundle.putInt(Constants.RESULT, 0);
 
         start_button.setOnClickListener(new GameMenuButtonListener(this, startBundle));
     }
@@ -167,9 +174,9 @@ public class Game_Menu extends AppCompatActivity {
      */
     private void setShopButtonListener(){
         Bundle shopBundle = new Bundle();
-        shopBundle.putString("message", "shop");
-        shopBundle.putInt("result", 1);
-        shopBundle.putSerializable("powerUps", powerUps);
+        shopBundle.putString(Constants.MESSAGE, Constants.POINTS_SHOP);
+        shopBundle.putInt(Constants.RESULT, 1);
+        shopBundle.putSerializable(Constants.POWERUPS, powerUps);
 
         shop_button.setOnClickListener(new GameMenuButtonListener(this, shopBundle));
     }

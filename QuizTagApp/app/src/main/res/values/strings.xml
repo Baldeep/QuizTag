@@ -35,4 +35,10 @@
         randomly from a pool of questions.\n\nProgres cannot be saved for this quiz</string>
     <string name="quiz_type_story_explaination">A story quiz will lead you through a list of questions
         in order.\n\nProgress is saved for this quiz.</string>
+    <string name="no_question_pool_found">No Quiz Found</string>
+    <string name="question_prenumber_text">Question:</string>
+    <string name="tag_found">Tag Found</string>
+    <string name="points">points</string>
+    <string name="not_enough_points">Not Enough Points</string>
+    <string name="play_more_earn_points">You don\'t have enough points to buy more hints  \\nPlay the game to earn more points!</string>
 </resources>

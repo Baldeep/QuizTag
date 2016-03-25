@@ -1,8 +1,7 @@
-package baldeep.quiztagapp.backend;
+package baldeep.quiztagapp.Backend;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -10,22 +9,15 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-
-import baldeep.quiztagapp.Frontend.Main_Menu;
 
 public class FileHandler implements Serializable{
 

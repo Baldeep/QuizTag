@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import baldeep.quiztagapp.Fragments.InformationDialog;
-import baldeep.quiztagapp.backend.QuizMaster;
+import baldeep.quiztagapp.Backend.QuizMaster;
 
 public class AnsConfirmationDialogListener implements DialogInterface.OnClickListener {
 

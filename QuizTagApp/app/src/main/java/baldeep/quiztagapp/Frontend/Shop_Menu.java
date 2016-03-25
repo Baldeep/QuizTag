@@ -9,10 +9,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import baldeep.quiztagapp.Enums.Constants;
 import baldeep.quiztagapp.Listeners.ShopButtonListener;
 import baldeep.quiztagapp.R;
-import baldeep.quiztagapp.backend.GameSaver;
-import baldeep.quiztagapp.backend.PowerUps;
+import baldeep.quiztagapp.Backend.GameSaver;
+import baldeep.quiztagapp.Backend.PowerUps;
 
 public class Shop_Menu extends AppCompatActivity {
 
@@ -30,52 +31,60 @@ public class Shop_Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shop_menu_activity);
         Intent previousActivity = getIntent();
-        powerUps = (PowerUps) previousActivity.getSerializableExtra("powerUps");
 
-        buy_skips = (LinearLayout) findViewById(R.id.shop_buy_hints_btn);
+        // Get powerups from previous Activity
+        powerUps = (PowerUps) previousActivity.getSerializableExtra(Constants.POWERUPS);
 
-        TextView hint_text = (TextView) findViewById(R.id.shop_button_text);
-        TextView hint_subtext = (TextView) findViewById(R.id.shop_button_subtext);
-        ImageView hint_image = (ImageView) findViewById(R.id.shop_button_image);
+        // Skips button
+        buy_skips = (LinearLayout) findViewById(R.id.shop_buy_skips_btn);
 
-        hint_text.setText("But hints");
-        String hintSubtext = "(" + powerUps.getHintsCost() + " points)";
-        hint_subtext.setText(hintSubtext);
-        hint_image.setImageResource(R.drawable.hint_icon);
-
-        buy_hints = (LinearLayout) findViewById(R.id.shop_buy_skips_btn);
-
-        Bundle hintsBundle = new Bundle();
-        hintsBundle.putString("message", "hints");
-        hintsBundle.putSerializable("powerUps", powerUps);
-
-        Bundle skipsBundle = new Bundle();
-        skipsBundle.putString("message", "skips");
-        skipsBundle.putSerializable("powerUps", powerUps);
-
-        buy_hints.setOnClickListener(new ShopButtonListener(this, hintsBundle));
-        buy_skips.setOnClickListener(new ShopButtonListener(this, skipsBundle));
-
-
+        // Text views for numbers
         hints = (TextView) findViewById(R.id.hints_count_text);
         skips = (TextView) findViewById(R.id.skips_count_text);
         coins = (TextView) findViewById(R.id.coins_count_text);
 
-        update();
+        // Set up buy hints button
+        TextView hint_text = (TextView) findViewById(R.id.shop_button_text);
+        TextView hint_subtext = (TextView) findViewById(R.id.shop_button_subtext);
+        ImageView hint_image = (ImageView) findViewById(R.id.shop_button_image);
+
+        hint_text.setText(R.string.buy_hints);
+        String hintSubtext = "(" + powerUps.getHintsCost() + " " + R.string.points + ")";
+        hint_subtext.setText(hintSubtext);
+        hint_image.setImageResource(R.drawable.hint_icon);
+
+        buy_hints = (LinearLayout) findViewById(R.id.shop_buy_hints_btn);
+
+
+        // Set listeners for the buttons
+        Bundle hintsBundle = new Bundle();
+        hintsBundle.putString(Constants.MESSAGE, Constants.HINTS);
+        hintsBundle.putSerializable(Constants.POWERUPS, powerUps);
+        buy_hints.setOnClickListener(new ShopButtonListener(hintsBundle));
+
+        Bundle skipsBundle = new Bundle();
+        skipsBundle.putString(Constants.MESSAGE, Constants.SKIPS);
+        skipsBundle.putSerializable(Constants.POWERUPS, powerUps);
+        buy_skips.setOnClickListener(new ShopButtonListener(skipsBundle));
+
+
+        update(); // Update method sets the contents of the text views
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
+        // Load up Action Bar Menu
         getMenuInflater().inflate(R.menu.back_button_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
+        // Handle Action Bar buttons
         int id = item.getItemId();
         if(id == R.id.toolbar_back_button){
             Intent goingBack = new Intent();
-            goingBack.putExtra("powerUps", powerUps);
+            goingBack.putExtra(Constants.POWERUPS, powerUps);
             setResult(RESULT_OK, goingBack);
             this.finish();
             return true;
@@ -85,16 +94,29 @@ public class Shop_Menu extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
+        // Return power ups to previous activity for updating
         Intent goingBack = new Intent();
-        goingBack.putExtra("powerUps", powerUps);
+        goingBack.putExtra(Constants.POWERUPS, powerUps);
         setResult(RESULT_OK, goingBack);
 
         super.onBackPressed();
     }
 
-    public void update() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // When a button comes back from it's listener, it will return a result, set that result
+        // here and update.
+        if(requestCode == 1) {
+            this.powerUps = (PowerUps) data.getSerializableExtra(Constants.POWERUPS);
+        }
+        update();
+    }
+
+    protected void update() {
+        // Dave the powerups when they change
         Bundle saveGameData = new Bundle();
-        saveGameData.putSerializable("powerUps", powerUps);
+        saveGameData.putSerializable(Constants.POWERUPS, powerUps);
         new GameSaver().savePowerUps(this, saveGameData);
 
         hints.setText(powerUps.getHintsAsString());
@@ -102,12 +124,6 @@ public class Shop_Menu extends AppCompatActivity {
         coins.setText(powerUps.getPointsAsString());
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        this.powerUps = (PowerUps) data.getSerializableExtra("powerUps");
 
-        update();
-    }
 
 }

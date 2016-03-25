@@ -11,16 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import baldeep.quiztagapp.Listeners.DialogCreator;
 import baldeep.quiztagapp.R;
-import baldeep.quiztagapp.backend.ExhibitTag;
-import baldeep.quiztagapp.backend.NFC_Reader;
+import baldeep.quiztagapp.Backend.ExhibitTag;
+import baldeep.quiztagapp.Backend.NFC_Reader;
 
 
 public class Scan_Screen extends AppCompatActivity{

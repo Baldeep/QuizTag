@@ -1,6 +1,4 @@
-package baldeep.quiztagapp.backend;
-
-import android.media.session.MediaSession;
+package baldeep.quiztagapp.Backend;
 
 import java.io.Serializable;
 import java.util.ArrayList;

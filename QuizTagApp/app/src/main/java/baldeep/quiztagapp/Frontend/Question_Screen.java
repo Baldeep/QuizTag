@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import baldeep.quiztagapp.Listeners.DialogCreator;
-import baldeep.quiztagapp.backend.NFC_Reader;
-import baldeep.quiztagapp.backend.QuizMaster;
+import baldeep.quiztagapp.Enums.Constants;
+import baldeep.quiztagapp.Backend.NFC_Reader;
+import baldeep.quiztagapp.Backend.QuizMaster;
 
 import baldeep.quiztagapp.Listeners.QuestionScreenButtonListener;
 import baldeep.quiztagapp.R;
@@ -60,12 +60,11 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.question_screen_activity);
 
-        // Set up QuizMaster
+        // Get the QuizMaster
         Intent previousActivity = getIntent();
-        qm = (QuizMaster) previousActivity.getSerializableExtra("quizMaster");
+        qm = (QuizMaster) previousActivity.getSerializableExtra(Constants.QUIZMASTER);
 
-        qm.attach(this); // Observer
-
+        qm.attach(this); // Attach this to be an Observer
 
         Log.i("Question Screen", "Quiz Name: " + qm.getQuizName());
         Log.i("Question Screen", "Number of Questions: " + qm.getQuestionPool().getQuestionPoolSize());
@@ -73,7 +72,7 @@ public class Question_Screen extends AppCompatActivity implements Observer {
 
 
 
-        // get all xml objects
+        //  Initialise the GUI objects
         hints = (TextView) findViewById(R.id.hints_count_text);
         skips = (TextView) findViewById(R.id.skips_count_text);
         coins = (TextView) findViewById(R.id.coins_count_text);
@@ -92,18 +91,19 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         hint4 = (TextView) findViewById(R.id.hint4);
         hint4.setMovementMethod(new ScrollingMovementMethod());
 
-        // Hints button
+        // Set up the Hint button listener
         Bundle hintsBundle = new Bundle();
-        hintsBundle.putSerializable("quizMaster", qm);
-        hintsBundle.putString("message", "hint");
+        hintsBundle.putSerializable(Constants.QUIZMASTER, qm);
+        hintsBundle.putString(Constants.MESSAGE, Constants.HINTS);
         hintsButton.setOnClickListener(new QuestionScreenButtonListener(this, hintsBundle));
 
-        // Skip button
+        // Set up the Skip button Listener
         Bundle skipBundle = new Bundle();
-        skipBundle.putSerializable("quizMaster", qm);
-        skipBundle.putString("message", "skip");
+        skipBundle.putSerializable(Constants.QUIZMASTER, qm);
+        skipBundle.putString(Constants.MESSAGE, Constants.SKIPS);
         skipButton.setOnClickListener(new QuestionScreenButtonListener(this, skipBundle));
 
+        // Call the update method to fill the text fields
         update(qm, null);
 
         // Check NFC is enabled
@@ -127,35 +127,68 @@ public class Question_Screen extends AppCompatActivity implements Observer {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
+        // Handle Action Bar buttons
         int id = item.getItemId();
+        // Quit Buttom
         if(id == R.id.quit_button_dropdown){
             Intent goingBack = new Intent();
-            goingBack.putExtra("powerUps", qm.getPowerUps());
-            goingBack.putExtra("quizName", qm.getQuizName());
-            goingBack.putExtra("currentQuestionNo", qm.getCurrentQuestionNumber());
+            goingBack.putExtra(Constants.POWERUPS, qm.getPowerUps());
+            goingBack.putExtra(Constants.QUIZNAME, qm.getQuizName());
+            goingBack.putExtra(Constants.CURRENTQUESTIONNO, qm.getCurrentQuestionNumber());
             setResult(RESULT_OK, goingBack);
 
             dialogCreator.quitConfirmationDialog(getFragmentManager(), new Bundle());
 
             return true;
         }
+        // Buy Hints
         if(id == R.id.buy_hints_dropdown){
             Bundle bundle = new Bundle();
-            bundle.putString("message", "hints");
+            bundle.putString(Constants.MESSAGE, Constants.HINTS);
             if(!qm.buyHints()){
                 dialogCreator.failedBuyDialog(getFragmentManager(), bundle);
             }
         }
-
+        // Buy Skips
         if(id == R.id.buy_skips_dropdown){
 
             Bundle bundle = new Bundle();
-            bundle.putString("message", "skips");
+            bundle.putString(Constants.MESSAGE, Constants.SKIPS);
             if(!qm.buySkips()){
                 dialogCreator.failedBuyDialog(getFragmentManager(), bundle);
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
+
+        // Set the title of the Activity
+        if(qm.getCurrentQuestionNumber() == 0){
+            setTitle(qm.getQuizName());
+        } else if(qm.getCurrentQuestionNumber() < 0){
+            Bundle endBundle = new Bundle();
+            endBundle.putSerializable(Constants.POWERUPS, qm.getPowerUps());
+            qm.resetQuiz();
+            dialogCreator.quizFinishedDialog(getFragmentManager(), endBundle);
+        } else {
+            setTitle(R.string.question_prenumber_text + " " + qm.getCurrentQuestionNumber());
+        }
+
+        // Set the Quesion Field text
+        String question = R.string.question_prenumber_text + " "
+                + qm.getCurrentQuestionNumber() + ": " +
+                qm.getQuestionString();
+        questionField.setText(question);
+
+        // Set the number of power ups
+        hints.setText(qm.getPowerUps().getHintsAsString());
+        skips.setText(qm.getPowerUps().getSkipsAsString());
+        coins.setText(qm.getPowerUps().getPointsAsString());
+
+        // Display the hints
+        displayHints();
     }
 
     /**
@@ -166,6 +199,7 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         List<String> hints = qm.getHints();
 
         if(qm.hintsAvailable()) {
+            // Set hints to fields
             if (hints.size() >= 1) {
                 hint1.setText(hints.get(0));
                 hint1.setVisibility(View.VISIBLE);
@@ -183,6 +217,7 @@ public class Question_Screen extends AppCompatActivity implements Observer {
                 hint4.setVisibility(View.VISIBLE);
             }
         } else {
+            // Display Hints to user
             hint1.setVisibility(View.INVISIBLE);
             hint2.setVisibility(View.INVISIBLE);
             hint3.setVisibility(View.INVISIBLE);
@@ -190,57 +225,40 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         }
     }
 
-
-    @Override
-    public void update(Observable observable, Object data) {
-        if(qm.getCurrentQuestionNumber() == 0){
-            setTitle(qm.getQuizName());
-        } else if(qm.getCurrentQuestionNumber() < 0){
-            Bundle endBundle = new Bundle();
-            endBundle.putSerializable("powerUps", qm.getPowerUps());
-            qm.resetQuiz();
-            dialogCreator.quizFinishedDialog(getFragmentManager(), endBundle);
-        } else {
-            setTitle("Question " + qm.getCurrentQuestionNumber());
-        }
-
-        // use observer pattern for these here
-        String question = "Question " + qm.getCurrentQuestionNumber() + ": " +
-                qm.getQuestionString();
-        questionField.setText(question);
-
-        hints.setText(qm.getPowerUps().getHintsAsString());
-        skips.setText(qm.getPowerUps().getSkipsAsString());
-        coins.setText(qm.getPowerUps().getPointsAsString());
-
-        displayHints();
-    }
-
     @Override
     public void onBackPressed(){
         Intent goingBack = new Intent();
-        goingBack.putExtra("powerUps", qm.getPowerUps());
-        goingBack.putExtra("quizName", qm.getQuizName());
-        goingBack.putExtra("currentQuestionNo", qm.getCurrentQuestionNumber());
+        goingBack.putExtra(Constants.POWERUPS, qm.getPowerUps());
+        goingBack.putExtra(Constants.QUIZNAME, qm.getQuizName());
+        goingBack.putExtra(Constants.CURRENTQUESTIONNO, qm.getCurrentQuestionNumber());
         setResult(RESULT_OK, goingBack);
 
         super.onBackPressed();
     }
 
+    /**
+     * When a tag is read the onNewIntent method is called. Hence this method needs to read the tag
+     * @param intent An intent for this Activity, This method is overriden to handle NFC intents
+     */
     @Override
     protected void onNewIntent(Intent intent) {
         Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        // Delay vibration until the tag is fully read
         v.cancel();
-        if(nfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
+        if(NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            Toast.makeText(this, "Tag found", Toast.LENGTH_SHORT).show();
+            // get the Tag
+            Toast.makeText(this, R.string.tag_found, Toast.LENGTH_SHORT).show();
 
+            // Read the answer from the tag
             String answerFromTag = new NFC_Reader().readNameFromTag(this, tag);
 
+            // now the app can vibrate
             Toast.makeText(this, answerFromTag, Toast.LENGTH_SHORT).show();
             long[] pattern = {0, 200, 100, 200};
             v.vibrate(pattern, -1);
 
+            // Check answer
             if(!answerFromTag.equals("")){
                 checkAnswer(answerFromTag);
             }
@@ -253,27 +271,35 @@ public class Question_Screen extends AppCompatActivity implements Observer {
      * @param answer The answer to be checked for the current question
      */
     private void checkAnswer(String answer){
-        
         // Toast.makeText(this, answer, Toast.LENGTH_SHORT).show();
         Bundle confirmBundle = new Bundle();
-        confirmBundle.putSerializable("quizMaster", qm);
-        confirmBundle.putString("answer", answer);
+        confirmBundle.putSerializable(Constants.QUIZMASTER, qm);
+        confirmBundle.putString(Constants.ANSWER, answer);
         dialogCreator.confirmAnswerDialog(getFragmentManager(), confirmBundle);
 
     }
 
 
+    /**
+     * It is important to pause the nfc adapter when it is paused (when it's busy reading a tag or
+     * doing something else) or exceptions will be thrown crashing the application ...
+     */
     @Override
     public void onPause(){
         super.onPause();
         if(nfcAdapter!=null) // for testing on emulator
         nfcAdapter.disableForegroundDispatch(this);
+
     }
 
+    /**
+     * ... and to restart it once it resumes from being paused
+     */
     @Override
     public void onResume(){
         super.onResume();
         if(nfcAdapter!=null) // for testing on emulator
         nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFileters, null);
+
     }
 }

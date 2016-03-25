@@ -3,7 +3,8 @@ package baldeep.quiztagapp.Listeners;
 import android.os.Bundle;
 import android.view.View;
 
-import baldeep.quiztagapp.backend.QuizMaster;
+import baldeep.quiztagapp.Backend.QuizMaster;
+import baldeep.quiztagapp.Enums.Constants;
 import baldeep.quiztagapp.Frontend.Question_Screen;
 
 public class QuestionScreenButtonListener implements View.OnClickListener {
@@ -19,13 +20,16 @@ public class QuestionScreenButtonListener implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        String message = arguments.getString("message");
-        QuizMaster quizMaster = (QuizMaster) arguments.getSerializable("quizMaster");
+        String message = arguments.getString(Constants.MESSAGE);
+        QuizMaster quizMaster = (QuizMaster) arguments.getSerializable(Constants.QUIZMASTER);
 
-        if(message.equals("hint")){
+        // When hints is pressed, reveal hints
+        if(message.equals(Constants.HINTS)){
             quizMaster.revealHints();
         }
-        if(message.equals("skip")){
+
+        // When skips is pressed, skip the question
+        if(message.equals(Constants.SKIPS)){
             quizMaster.skipQuestion();
         }
 

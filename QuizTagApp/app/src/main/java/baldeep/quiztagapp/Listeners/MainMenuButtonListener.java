@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import baldeep.quiztagapp.Enums.Constants;
 import baldeep.quiztagapp.Frontend.Game_Menu;
 import baldeep.quiztagapp.Frontend.Main_Menu;
 import baldeep.quiztagapp.Frontend.Scan_Screen;
@@ -26,17 +27,17 @@ public class MainMenuButtonListener implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        String message = arguments.getString("message");
+        String message = arguments.getString(Constants.MESSAGE);
 
-        if(message.equals("play")){
+        if(message.equals(Constants.PLAY)){
             Intent gameScreen = new Intent(menu, Game_Menu.class);
             menu.startActivity(gameScreen);
 
-        } else if(message.equals("connect")){
+        } else if(message.equals(Constants.CONNECT)){
             Intent smartCase = new Intent(menu, SmartScreen.class);
             menu.startActivity(smartCase);
 
-        } else if(message.equals("scan")){
+        } else if(message.equals(Constants.SCAN)){
             Intent scanScreen = new Intent(menu, Scan_Screen.class);
             menu.startActivity(scanScreen);
         }

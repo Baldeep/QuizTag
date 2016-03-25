@@ -1,4 +1,4 @@
-package baldeep.quiztagapp.Listeners;
+package baldeep.quiztagapp.Frontend;
 
 import android.app.DialogFragment;
 import android.app.FragmentManager;
@@ -9,7 +9,7 @@ import baldeep.quiztagapp.Fragments.ConnectDialog;
 import baldeep.quiztagapp.Fragments.InformationDialog;
 import baldeep.quiztagapp.Fragments.NFCInfoDialog;
 import baldeep.quiztagapp.Fragments.QuitDialog;
-import baldeep.quiztagapp.backend.QuizMaster;
+import baldeep.quiztagapp.Backend.QuizMaster;
 
 /**
  * This class creates wrapper methods to create pop up dialogs

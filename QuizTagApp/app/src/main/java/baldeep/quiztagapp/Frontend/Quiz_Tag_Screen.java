@@ -8,23 +8,18 @@ import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import org.w3c.dom.Text;
-
-import baldeep.quiztagapp.Listeners.DialogCreator;
 import baldeep.quiztagapp.Listeners.QuizTagButtonListener;
 import baldeep.quiztagapp.R;
-import baldeep.quiztagapp.backend.NFC_Reader;
-import baldeep.quiztagapp.backend.QuestionPool;
+import baldeep.quiztagapp.Backend.NFC_Reader;
+import baldeep.quiztagapp.Backend.QuestionPool;
 
 public class Quiz_Tag_Screen extends AppCompatActivity{
 

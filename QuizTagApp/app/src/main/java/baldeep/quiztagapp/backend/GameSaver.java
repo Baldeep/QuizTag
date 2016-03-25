@@ -1,12 +1,10 @@
-package baldeep.quiztagapp.backend;
+package baldeep.quiztagapp.Backend;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-
-import baldeep.quiztagapp.backend.PowerUps;
 
 /**
  * Created by Baldeep on 06/03/2016.

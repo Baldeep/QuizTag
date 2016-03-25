@@ -1,4 +1,4 @@
-package baldeep.quiztagapp.backend;
+package baldeep.quiztagapp.Backend;
 
 /**
  * Created by Baldeep on 08/03/2016.

@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import baldeep.quiztagapp.Enums.Constants;
 import baldeep.quiztagapp.Listeners.ConnectDialogListener;
 
 /**
@@ -20,8 +21,8 @@ public class InformationDialog extends DialogFragment {
 
         AlertDialog.Builder infoDialog = new AlertDialog.Builder(getActivity());
 
-        infoDialog.setTitle((String) getArguments().get("title"));
-        infoDialog.setMessage((String) getArguments().get("message"));
+        infoDialog.setTitle((String) getArguments().get(Constants.TITLE));
+        infoDialog.setMessage((String) getArguments().get(Constants.MESSAGE));
 
         //answerDialog.setCancelable(false);
 

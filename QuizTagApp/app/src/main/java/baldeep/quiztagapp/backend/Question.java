@@ -1,4 +1,4 @@
-package baldeep.quiztagapp.backend;
+package baldeep.quiztagapp.Backend;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -38,7 +38,7 @@ public class Question implements Serializable{
 		}
 
 		if(this.hints == null){
-			this.hints = new ArrayList<String>();
+			this.hints = new ArrayList<>();
 		}
 
 		if(!hintPool.contains(answer)){
@@ -86,7 +86,7 @@ public class Question implements Serializable{
     /**
      * Only four hints will be returned at any one time, this method shuffles the hint pool and
      * finds a new set of hints from the hint pool.
-     * @return
+     * @return returns an array of hints taken from the hintpool of a size specified by NUMBER_OF_HINTS
      */
 	public List<String> resetHints(){
 		hints = findHints();
