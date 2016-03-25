@@ -1,4 +1,4 @@
-package baldeep.quiztagapp.Backend;
+package baldeep.quiztagapp.backend;
 
 import android.app.Activity;
 import android.nfc.FormatException;

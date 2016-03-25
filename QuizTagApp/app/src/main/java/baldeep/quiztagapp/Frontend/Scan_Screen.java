@@ -16,8 +16,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import baldeep.quiztagapp.R;
-import baldeep.quiztagapp.Backend.ExhibitTag;
-import baldeep.quiztagapp.Backend.NFC_Reader;
+import baldeep.quiztagapp.backend.ExhibitTag;
+import baldeep.quiztagapp.backend.NFC_Reader;
 
 
 public class Scan_Screen extends AppCompatActivity{

@@ -22,8 +22,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 import baldeep.quiztagapp.Constants.Constants;
-import baldeep.quiztagapp.Backend.NFC_Reader;
-import baldeep.quiztagapp.Backend.QuizMaster;
+import baldeep.quiztagapp.backend.NFC_Reader;
+import baldeep.quiztagapp.backend.QuizMaster;
 
 import baldeep.quiztagapp.Listeners.QuestionScreenButtonListener;
 import baldeep.quiztagapp.R;
@@ -95,13 +95,13 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         Bundle hintsBundle = new Bundle();
         hintsBundle.putSerializable(Constants.QUIZMASTER, qm);
         hintsBundle.putString(Constants.MESSAGE, Constants.HINTS);
-        hintsButton.setOnClickListener(new QuestionScreenButtonListener(this, hintsBundle));
+        hintsButton.setOnClickListener(new QuestionScreenButtonListener(hintsBundle));
 
         // Set up the Skip button Listener
         Bundle skipBundle = new Bundle();
         skipBundle.putSerializable(Constants.QUIZMASTER, qm);
         skipBundle.putString(Constants.MESSAGE, Constants.SKIPS);
-        skipButton.setOnClickListener(new QuestionScreenButtonListener(this, skipBundle));
+        skipButton.setOnClickListener(new QuestionScreenButtonListener(skipBundle));
 
         // Call the update method to fill the text fields
         update(qm, null);
@@ -146,7 +146,7 @@ public class Question_Screen extends AppCompatActivity implements Observer {
             Bundle bundle = new Bundle();
             bundle.putString(Constants.MESSAGE, Constants.HINTS);
             if(!qm.buyHints()){
-                dialogCreator.failedBuyDialog(getFragmentManager(), bundle);
+                dialogCreator.failedBuyDialog(this, bundle);
             }
         }
         // Buy Skips
@@ -155,7 +155,7 @@ public class Question_Screen extends AppCompatActivity implements Observer {
             Bundle bundle = new Bundle();
             bundle.putString(Constants.MESSAGE, Constants.SKIPS);
             if(!qm.buySkips()){
-                dialogCreator.failedBuyDialog(getFragmentManager(), bundle);
+                dialogCreator.failedBuyDialog(this, bundle);
             }
         }
         return super.onOptionsItemSelected(item);
@@ -173,11 +173,11 @@ public class Question_Screen extends AppCompatActivity implements Observer {
             qm.resetQuiz();
             dialogCreator.quizFinishedDialog(getFragmentManager(), endBundle);
         } else {
-            setTitle(R.string.question_prenumber_text + " " + qm.getCurrentQuestionNumber());
+            setTitle(getResources().getString(R.string.question_prenumber_text) + " " + qm.getCurrentQuestionNumber());
         }
 
         // Set the Quesion Field text
-        String question = R.string.question_prenumber_text + " "
+        String question = getResources().getString(R.string.question_prenumber_text) + " "
                 + qm.getCurrentQuestionNumber() + ": " +
                 qm.getQuestionString();
         questionField.setText(question);
@@ -248,7 +248,7 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         if(NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             // get the Tag
-            Toast.makeText(this, R.string.tag_found, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.tag_found), Toast.LENGTH_SHORT).show();
 
             // Read the answer from the tag
             String answerFromTag = new NFC_Reader().readNameFromTag(this, tag);
@@ -275,7 +275,7 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         Bundle confirmBundle = new Bundle();
         confirmBundle.putSerializable(Constants.QUIZMASTER, qm);
         confirmBundle.putString(Constants.ANSWER, answer);
-        dialogCreator.confirmAnswerDialog(getFragmentManager(), confirmBundle);
+        dialogCreator.confirmAnswerDialog(this, confirmBundle);
 
     }
 

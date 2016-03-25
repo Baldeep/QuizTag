@@ -3,18 +3,16 @@ package baldeep.quiztagapp.Listeners;
 import android.os.Bundle;
 import android.view.View;
 
-import baldeep.quiztagapp.Backend.QuizMaster;
+import baldeep.quiztagapp.backend.QuizMaster;
 import baldeep.quiztagapp.Constants.Constants;
 import baldeep.quiztagapp.Frontend.Question_Screen;
 
-public class QuestionScreenButtonListener implements View.OnClickListener {
+public class QuestionScreenButtonListener extends Question_Screen implements View.OnClickListener {
 
-    private Question_Screen screen;
     private Bundle arguments;
 
-    public QuestionScreenButtonListener(Question_Screen screen, Bundle arguments){
+    public QuestionScreenButtonListener(Bundle arguments){
         this.arguments = arguments;
-        this.screen = screen;
     }
 
 

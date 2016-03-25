@@ -28,15 +28,15 @@ public class Main_Menu extends AppCompatActivity {
 
         Bundle playBundle = new Bundle();
         playBundle.putString(Constants.MESSAGE, Constants.PLAY);
-        play_button.setOnClickListener(new MainMenuButtonListener(this, playBundle));
+        play_button.setOnClickListener(new MainMenuButtonListener(playBundle));
 
         Bundle connectBundle = new Bundle();
         connectBundle.putString(Constants.MESSAGE, Constants.CONNECT);
-        connect_button.setOnClickListener(new MainMenuButtonListener(this, connectBundle));
+        connect_button.setOnClickListener(new MainMenuButtonListener(connectBundle));
 
         Bundle scanBundle = new Bundle();
         scanBundle.putString(Constants.MESSAGE, Constants.SCAN);
-        scan_button.setOnClickListener(new MainMenuButtonListener(this, scanBundle));
+        scan_button.setOnClickListener(new MainMenuButtonListener(scanBundle));
     }
 
 

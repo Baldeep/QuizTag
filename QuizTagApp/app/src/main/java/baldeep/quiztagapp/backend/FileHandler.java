@@ -1,4 +1,4 @@
-package baldeep.quiztagapp.Backend;
+package baldeep.quiztagapp.backend;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -16,8 +16,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+
+import baldeep.quiztagapp.Exceptions.NullObjectException;
 
 public class FileHandler implements Serializable{
 
@@ -117,7 +117,58 @@ public class FileHandler implements Serializable{
      * A sample quiz is stored in the assets, this will be read and produced if there is no saved
      * quiz file.
      */
-    private QuestionPool readQuestionPoolfromAssets(Context context){
+    public QuestionPool readQuestionPoolfromAssets(Context context) throws NullObjectException {
+        Gson gson = new Gson();
+
+        QuestionPool questionPool = null;
+
+        AssetManager am = context.getAssets();
+
+        try {
+            InputStream in = am.open("data.txt");
+            InputStreamReader input = new InputStreamReader(in);
+
+            QuestionPool qp = gson.fromJson(input, QuestionPool.class);
+
+            if(qp!= null) {
+                questionPool = new QuestionPool(qp.getQuizName(), qp.getQuestionPool(), qp.isRandom());
+                Log.d("READING DATA.TXT", "quiz isn't null");
+                Log.d("QP", questionPool.getQuizName());
+                Log.d("QP", questionPool.getQuestionPoolSize() + "");
+                Log.d("QP", questionPool.isRandom() + "");
+                for (Question q : qp.getQuestionPool())
+                    q.resetHints();
+
+                questionPool = new QuestionPool(qp.getQuizName(), qp.getQuestionPool(), qp.isRandom());
+            }
+
+            System.out.println("Printing questions **********************************************");
+            System.out.println(qp.getQuizName());
+            for (Question q : qp.getQuestionPool()) {
+                System.out.println(q.getQuestion() + ", " + q.getAnswer() + "\n");
+            /*for(String s : q.getHints()){
+                System.out.println(s);
+            }*/
+                System.out.println("*************************************");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "IO Exception", Toast.LENGTH_SHORT).show();
+        }
+
+        if(questionPool!= null){
+            return questionPool;
+        } else {
+            Log.d("READING DATA.TXT", "quiz is null, returning empty quiz");
+            throw new NullObjectException("Couldn't load from assets");
+        }
+    }
+
+    /**
+     * A sample quiz is stored in the assets, this will be read and produced if there is no saved
+     * quiz file.
+     */
+    public QuestionPool readQuestionPoolfromAssetss(Context context) throws NullObjectException {
         Gson gson = new Gson();
 
         QuestionPool qp = null;
@@ -156,10 +207,7 @@ public class FileHandler implements Serializable{
             return questionPool;
         } else {
             Log.d("READING DATA.TXT", "quiz is null, returning empty quiz");
-            List<Question> q = new ArrayList<Question>();
-            Question question = new Question();
-            q.add(question);
-            return new QuestionPool(q);
+            throw new NullObjectException("Couldn't load from assets");
         }
     }
 

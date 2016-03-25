@@ -21,9 +21,12 @@ public interface Constants {
     String QUIZNAME = "QuizName";
     String CURRENTQUESTIONNO = "currentQuestionNo";
     String RESULT = "result";
-    String HINTS = "hint";
-    String SKIPS = "skip";
+    String HINTS = "hints";
+    String SKIPS = "skips";
+    String POINTS = "points";
     String ANSWER = "answer";
 
-    int HINTS_ARRAY_SIZE = 4;
+    String YES = "yes";
+    String NO = "no";
+
 }

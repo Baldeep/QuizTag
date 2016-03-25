@@ -1,4 +1,4 @@
-package baldeep.quiztagapp.Backend;
+package baldeep.quiztagapp.backend;
 
 
 import java.io.Serializable;

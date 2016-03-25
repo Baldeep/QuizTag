@@ -1,50 +1,55 @@
 package baldeep.quiztagapp.Frontend;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 
+import baldeep.quiztagapp.Constants.Constants;
 import baldeep.quiztagapp.Fragments.AnswerConfirmationDialog;
 import baldeep.quiztagapp.Fragments.ConnectDialog;
+import baldeep.quiztagapp.Fragments.ErrorDialog;
 import baldeep.quiztagapp.Fragments.InformationDialog;
 import baldeep.quiztagapp.Fragments.NFCInfoDialog;
 import baldeep.quiztagapp.Fragments.QuitDialog;
-import baldeep.quiztagapp.Backend.QuizMaster;
+import baldeep.quiztagapp.backend.QuizMaster;
+import baldeep.quiztagapp.R;
 
 /**
  * This class creates wrapper methods to create pop up dialogs
  */
 public class DialogCreator {
 
-    public void failedBuyDialog(FragmentManager fragmentManager, Bundle arguments){
-        String type = arguments.getString("message");
+    public void failedBuyDialog(Activity activity, Bundle arguments){
+        String type = arguments.getString(Constants.MESSAGE);
         DialogFragment noPoint = new InformationDialog();
         Bundle noPointBundle = new Bundle();
-        noPointBundle.putString("title", "Not enough points");
-        noPointBundle.putString("message", "You don't have enough points to buy more " + type +
+        noPointBundle.putString(Constants.TITLE, "Not enough points");
+        noPointBundle.putString(Constants.MESSAGE, "You don't have enough points to buy more " + type +
                 "\nPlay the game to earn more points!");
         noPoint.setArguments(noPointBundle);
-        noPoint.show(fragmentManager, "No Point");
+        noPoint.show(activity.getFragmentManager(), "No Point");
     }
 
-    public void confirmAnswerDialog(FragmentManager fragmentManager, Bundle arguments){
-        QuizMaster quizMaster = (QuizMaster) arguments.getSerializable("quizMaster");
-        String answer = arguments.getString("answer");
+    public void confirmAnswerDialog(Activity activity, Bundle arguments){
+        QuizMaster quizMaster = (QuizMaster) arguments.getSerializable(Constants.QUIZMASTER);
+        String answer = arguments.getString(Constants.ANSWER);
 
         Bundle confirmBundle = new Bundle();
-        confirmBundle.putSerializable("quizMaster", quizMaster);
-        confirmBundle.putString("answer", answer);
+        confirmBundle.putSerializable(Constants.MESSAGE, quizMaster);
+        confirmBundle.putString(Constants.ANSWER, answer);
 
-        String title = "Question " + quizMaster.getCurrentQuestionNumber();
-        confirmBundle.putString("title", title);
+        String title = activity.getResources().getString(R.string.question_prenumber_text) + " " +
+                quizMaster.getCurrentQuestionNumber();
+        confirmBundle.putString(Constants.TITLE, title);
 
-        String text = "You have selected:\n\n\t\t\t" + answer
-                + "\n\nIs this your final answer?";
-        confirmBundle.putString("message", text);
+        String text = activity.getResources().getString(R.string.confirm_answer1) + answer
+                + activity.getResources().getString(R.string.confirm_answer2);
+        confirmBundle.putString(Constants.MESSAGE, text);
 
         DialogFragment df = new AnswerConfirmationDialog();
         df.setArguments(confirmBundle);
-        df.show(fragmentManager, "Confirm Dialog");
+        df.show(activity.getFragmentManager(), Constants.ANSWER);
     }
 
     public void quitConfirmationDialog(FragmentManager fragmentManager, Bundle arguments){
@@ -82,5 +87,14 @@ public class DialogCreator {
                 "Congratulations! You have finished the quiz!");
         df.setArguments(connectArgs);
         df.show(fragmentManager, "Connect Dialog");
+    }
+
+    public void errorDialog(FragmentManager fragmentManager, Bundle arguments) {
+        DialogFragment df = new ErrorDialog();
+        Bundle connectArgs = new Bundle();
+        connectArgs.putString(Constants.TITLE, arguments.getString(Constants.TITLE));
+        connectArgs.putString(Constants.MESSAGE, arguments.getString(Constants.MESSAGE));
+        df.setArguments(connectArgs);
+        df.show(fragmentManager, Constants.TITLE);
     }
 }

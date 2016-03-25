@@ -8,7 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
-import baldeep.quiztagapp.Backend.PowerUps;
+import baldeep.quiztagapp.backend.PowerUps;
 
 /**
  * Created by Baldeep on 19/03/2016.

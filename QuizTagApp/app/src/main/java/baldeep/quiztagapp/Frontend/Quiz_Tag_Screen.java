@@ -19,8 +19,8 @@ import com.google.gson.Gson;
 import baldeep.quiztagapp.Constants.Constants;
 import baldeep.quiztagapp.Listeners.QuizTagButtonListener;
 import baldeep.quiztagapp.R;
-import baldeep.quiztagapp.Backend.NFC_Reader;
-import baldeep.quiztagapp.Backend.QuestionPool;
+import baldeep.quiztagapp.backend.NFC_Reader;
+import baldeep.quiztagapp.backend.QuestionPool;
 
 public class Quiz_Tag_Screen extends AppCompatActivity{
 
@@ -48,6 +48,7 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quiz_tag_activity);
 
+        questionPool = null;
         dialogCreator = new DialogCreator();
 
         // Intialize the GUI
@@ -91,6 +92,9 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
             long[] pattern = {0, 200, 100, 200};
             v.vibrate(pattern, -1);
             // update the details of the fields
+            if(questionPool.getQuestionPool() == null){
+                questionPool = null;
+            }
             update();
         }
         super.onNewIntent(intent);
@@ -116,11 +120,11 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
             nameField.setText(questionPool.getQuizName());
             questionNoField.setText(questionPool.getQuestionPoolSize());
             if(questionPool.isRandom()){
-                typeField.setText(R.string.quiz_type_random);
-                typeExplaination.setText(R.string.quiz_type_random_explaination);
+                typeField.setText(getResources().getString(R.string.quiz_type_random));
+                typeExplaination.setText(getResources().getString(R.string.quiz_type_random_explaination));
             } else {
-                typeField.setText(R.string.quiz_type_story);
-                typeExplaination.setText(R.string.quiz_type_story_explaination);
+                typeField.setText(getResources().getString(R.string.quiz_type_story));
+                typeExplaination.setText(getResources().getString(R.string.quiz_type_story_explaination));
             }
 
             Gson gson = new Gson();
@@ -128,7 +132,7 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
             Bundle quizTagBundle = new Bundle();
             quizTagBundle.putString(Constants.MESSAGE, qpAsString);
             System.out.println(qpAsString);
-            download.setOnClickListener(new QuizTagButtonListener(this, quizTagBundle));
+            download.setOnClickListener(new QuizTagButtonListener(quizTagBundle));
         }
     }
 

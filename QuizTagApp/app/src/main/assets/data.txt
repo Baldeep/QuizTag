@@ -1,7 +1,7 @@
 {
    "quizName" : "Sample Quiz", 
    "random" : false,
-   "QuestionPool": [
+   "QuestionList": [
       {
          "questionString": "What colour is the sky on a rainy day?",
          "hints": [ 

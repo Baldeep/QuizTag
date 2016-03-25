@@ -14,13 +14,11 @@ import baldeep.quiztagapp.Frontend.SmartScreen;
  * A basic listener for the main menu, on creation it asks for a string which should be either
  * play, scan, or connect as this is what's used to change the view
  */
-public class MainMenuButtonListener implements View.OnClickListener {
+public class MainMenuButtonListener extends Main_Menu implements View.OnClickListener {
 
     private Bundle arguments;
-    private Main_Menu menu;
 
-    public MainMenuButtonListener(Main_Menu menu, Bundle arguments){
-        this.menu = menu;
+    public MainMenuButtonListener(Bundle arguments){
         this.arguments = arguments;
     }
 
@@ -30,16 +28,16 @@ public class MainMenuButtonListener implements View.OnClickListener {
         String message = arguments.getString(Constants.MESSAGE);
 
         if(message.equals(Constants.PLAY)){
-            Intent gameScreen = new Intent(menu, Game_Menu.class);
-            menu.startActivity(gameScreen);
+            Intent gameScreen = new Intent(getApplicationContext(), Game_Menu.class);
+            startActivity(gameScreen);
 
         } else if(message.equals(Constants.CONNECT)){
-            Intent smartCase = new Intent(menu, SmartScreen.class);
-            menu.startActivity(smartCase);
+            Intent smartCase = new Intent(this.getApplicationContext(), SmartScreen.class);
+            startActivity(smartCase);
 
         } else if(message.equals(Constants.SCAN)){
-            Intent scanScreen = new Intent(menu, Scan_Screen.class);
-            menu.startActivity(scanScreen);
+            Intent scanScreen = new Intent(this.getApplicationContext(), Scan_Screen.class);
+            startActivity(scanScreen);
         }
     }
 }

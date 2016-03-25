@@ -1,10 +1,12 @@
-package baldeep.quiztagapp.Backend;
+package baldeep.quiztagapp.backend;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+
+import baldeep.quiztagapp.Exceptions.NullObjectException;
 
 
 public class QuizMaster extends Observable implements Serializable, Observer{
@@ -13,8 +15,6 @@ public class QuizMaster extends Observable implements Serializable, Observer{
     private PowerUps powerUps;
 
     private boolean hintsRevealed;
-    private int currentQuestionNumber;
-    private Question currentQuestion;
     private int wrongChoices = 0;
 
     private QuestionPool qp;
@@ -28,16 +28,13 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      * methods defined in that class to incorporate the use of power ups.
      * @param qp The name QuizPool for the QuizMaster to Control
      */
-    public QuizMaster(QuestionPool qp){
-        this.powerUps = new PowerUps(0, 0, 0);
-        currentQuestionNumber = 0;
-        this.qp = qp;
-        if(this.qp == null){
-            System.out.println("QUESTION POOL IS NULL");
-            List<Question> q = new ArrayList<>();
-            q.add(new Question());
-            this.qp = new QuestionPool(q);
+    public QuizMaster(QuestionPool qp) throws NullObjectException{
+
+        if(qp == null){
+            throw new NullObjectException("QuestionPool is null");
         }
+        this.powerUps = new PowerUps(0, 0, 0);
+        this.qp = qp;
         powerUps.attach(this);
     }
 
@@ -46,31 +43,26 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      * methods defined in that class to incorporate the use of power ups.
      * @param qp The name QuizPool for the QuizMaster to Control
      */
-    public QuizMaster(QuestionPool qp, PowerUps powerUps){
-        this.powerUps = powerUps;
-        currentQuestionNumber = 0;
-        this.qp = qp;
-        if(this.qp == null){
-            System.out.println("QUESTION POOL IS NULL");
-            List<Question> q = new ArrayList<>();
-            q.add(new Question());
-            this.qp = new QuestionPool(q);
+    public QuizMaster(QuestionPool qp, PowerUps powerUps) throws NullObjectException{
+        if(qp == null){
+            throw new NullObjectException("QuizMaster: QuestionPool is null");
+        }
+        if(powerUps == null){
+            throw new NullObjectException("QuizMaster: PowerUps is null");
         }
 
+        this.powerUps = powerUps;
+        this.qp = qp;
     }
 
     /**
      * This method picks a new question from the QuestionPool and increments the question number
      */
     public void setNextQuestion(){
-        currentQuestion = qp.askQuestion();
-        if(currentQuestion != null) {
-            System.out.println("QuizMaster setNextQuestion: " + currentQuestion.getQuestion());
+        if(qp.askQuestion() != null) {
+            System.out.println("QuizMaster setNextQuestion: " + qp.getCurrentQuestion().getQuestion());
             hintsRevealed = false;
             wrongChoices = 0;
-            currentQuestionNumber++;
-        } else {
-            currentQuestionNumber = 0;
         }
         notifyAllObservers();
     }
@@ -80,7 +72,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      * @return Returns the number of the current question
      */
     public int getCurrentQuestionNumber(){
-        return currentQuestionNumber;
+        return qp.getCurrentQuestionNumber();
     }
 
     /**
@@ -88,7 +80,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      * @return Returns the question from the currently selected question
      */
     public String getQuestionString(){
-        return currentQuestion.getQuestion();
+        return qp.getCurrentQuestion().getQuestion();
     }
 
     /**
@@ -187,7 +179,6 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      * @return True if the questions asked have been cleared successfully, false otherwise
      */
     public void resetQuiz(){
-        currentQuestionNumber = 0;
         hintsRevealed = false;
         wrongChoices = 0;
         qp.clearAskedQuestions();
@@ -196,15 +187,12 @@ public class QuizMaster extends Observable implements Serializable, Observer{
 
     /**
      * Returns the hints available to the current question
-     * @return
+     * @return An array holding the hints available for the current question
      */
     public List<String> getHints(){
-        return currentQuestion.getHints();
+        return qp.getCurrentQuestion().getHints();
     }
 
-    public String getAnswer(){
-        return currentQuestion.getAnswer();
-    }
 
     public PowerUps getPowerUps(){
         return powerUps;
@@ -250,11 +238,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
 
     public int goToQuestion(int questionNo) {
         // check just in case this method was called in random mode
-        if(!qp.isRandom()){
-            while(currentQuestionNumber < questionNo){
-                setNextQuestion();
-            }
-        }
-        return currentQuestionNumber;
+        qp.goToQuestion(questionNo);
+        return qp.getCurrentQuestionNumber();
     }
 }

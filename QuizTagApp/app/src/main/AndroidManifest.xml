@@ -19,7 +19,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".Frontend.Main_Menu" android:label="MooTag"
+        <activity android:name=".Frontend.Main_Menu" android:label="@string/app_name"
             android:launchMode="singleTask">
 
             <intent-filter>
@@ -37,25 +37,29 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Frontend.Game_Menu"/>
+        <activity android:name=".Frontend.Game_Menu"
+            android:label="@string/game_menu_title"/>
 
         <activity android:name=".Frontend.Question_Screen"
             android:label="@string/question_screen_title"
             />
 
         <activity android:name=".Frontend.Shop_Menu"
-            android:label="Shop Screen"/>
+            android:label="@string/shop_menu_title"/>
 
         <activity android:name=".Frontend.NFC_Tag_Writer"
             android:label="NFC Stuff">
 
         </activity>
-        <activity android:name=".Frontend.Scan_Screen"/>
+        <activity android:name=".Frontend.Scan_Screen"
+            android:label="@string/scan_screen_title"/>
 
 
-        <activity android:name=".Frontend.SmartScreen"/>
+        <activity android:name=".Frontend.SmartScreen"
+            android:label="@string/smartcase_title"/>
 
-        <activity android:name=".Frontend.Quiz_Tag_Screen"/>
+        <activity android:name=".Frontend.Quiz_Tag_Screen"
+            android:label="@string/quiz_tag_title"/>
 
 
     </application>

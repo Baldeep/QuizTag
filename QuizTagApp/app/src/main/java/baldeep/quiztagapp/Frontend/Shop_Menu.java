@@ -12,8 +12,8 @@ import android.widget.TextView;
 import baldeep.quiztagapp.Constants.Constants;
 import baldeep.quiztagapp.Listeners.ShopButtonListener;
 import baldeep.quiztagapp.R;
-import baldeep.quiztagapp.Backend.GameSaver;
-import baldeep.quiztagapp.Backend.PowerUps;
+import baldeep.quiztagapp.backend.GameSaver;
+import baldeep.quiztagapp.backend.PowerUps;
 
 public class Shop_Menu extends AppCompatActivity {
 
@@ -48,8 +48,8 @@ public class Shop_Menu extends AppCompatActivity {
         TextView hint_subtext = (TextView) findViewById(R.id.shop_button_subtext);
         ImageView hint_image = (ImageView) findViewById(R.id.shop_button_image);
 
-        hint_text.setText(R.string.buy_hints);
-        String hintSubtext = "(" + powerUps.getHintsCost() + " " + R.string.points + ")";
+        hint_text.setText(getResources().getString(R.string.buy_hints));
+        String hintSubtext = "(" + powerUps.getHintsCost() + " " + getResources().getString(R.string.points) + ")";
         hint_subtext.setText(hintSubtext);
         hint_image.setImageResource(R.drawable.hint_icon);
 

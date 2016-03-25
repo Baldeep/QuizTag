@@ -5,8 +5,9 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 
+import baldeep.quiztagapp.Constants.Constants;
 import baldeep.quiztagapp.Listeners.AnsConfirmationDialogListener;
-import baldeep.quiztagapp.Backend.QuizMaster;
+import baldeep.quiztagapp.backend.QuizMaster;
 
 public class AnswerConfirmationDialog extends DialogFragment {
 
@@ -14,8 +15,8 @@ public class AnswerConfirmationDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String title = getArguments().getString("title");
-        String message = getArguments().getString("message");
+        String title = getArguments().getString(Constants.TITLE);
+        String message = getArguments().getString(Constants.MESSAGE);
 
         AlertDialog.Builder confirmDialog = new AlertDialog.Builder(getActivity());
 
@@ -23,18 +24,18 @@ public class AnswerConfirmationDialog extends DialogFragment {
         confirmDialog.setMessage(message);
 
         Bundle confirmBundle = new Bundle();
-        QuizMaster qm = (QuizMaster) getArguments().getSerializable("quizMaster");
-        confirmBundle.putSerializable("quizMaster", qm);
-        String answer = getArguments().getString("answer");
-        confirmBundle.putString("answer", answer);
-        confirmBundle.putString("message", "yes");
+        QuizMaster qm = (QuizMaster) getArguments().getSerializable(Constants.QUIZMASTER);
+        confirmBundle.putSerializable(Constants.QUIZMASTER, qm);
+        String answer = getArguments().getString(Constants.ANSWER);
+        confirmBundle.putString(Constants.ANSWER, answer);
+        confirmBundle.putString(Constants.ANSWER, Constants.YES);
 
-        confirmDialog.setPositiveButton("Yes", new AnsConfirmationDialogListener(this.getActivity(), confirmBundle));
+        confirmDialog.setPositiveButton(Constants.YES, new AnsConfirmationDialogListener(this.getActivity(), confirmBundle));
 
         Bundle noBundle = new Bundle();
-        noBundle.putString("message", "no");
+        noBundle.putString(Constants.MESSAGE, Constants.NO);
 
-        confirmDialog.setNegativeButton("No", new AnsConfirmationDialogListener(this.getActivity(), noBundle));
+        confirmDialog.setNegativeButton(Constants.NO, new AnsConfirmationDialogListener(this.getActivity(), noBundle));
 
         return confirmDialog.create();
     }

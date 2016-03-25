@@ -8,7 +8,7 @@ import android.view.View;
 import baldeep.quiztagapp.Constants.Constants;
 import baldeep.quiztagapp.Fragments.InformationDialog;
 import baldeep.quiztagapp.Frontend.Shop_Menu;
-import baldeep.quiztagapp.Backend.PowerUps;
+import baldeep.quiztagapp.backend.PowerUps;
 import baldeep.quiztagapp.R;
 
 

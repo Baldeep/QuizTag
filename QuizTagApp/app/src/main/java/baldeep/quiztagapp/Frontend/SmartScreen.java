@@ -31,7 +31,7 @@ public class SmartScreen extends AppCompatActivity {
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(SmartScreen.this, "", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SmartScreen.this, "Next", Toast.LENGTH_SHORT).show();
             }
         });
     }

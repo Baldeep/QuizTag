@@ -1,4 +1,4 @@
-package baldeep.quiztagapp.Backend;
+package baldeep.quiztagapp.backend;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -15,6 +15,8 @@ public class Question implements Serializable{
     @SerializedName("hintlist")
 	private List<String> hints;
 	private String answer;
+
+	private int hintArraySize;
 
     /**
      * This class acts as a Data Structure which provides all the data required to be held by a
@@ -44,7 +46,12 @@ public class Question implements Serializable{
 		if(!hintPool.contains(answer)){
 			hintPool.add(answer);
 		}
-		this.hints = findHints();
+
+
+        hintArraySize = 4;
+
+
+        this.hints = findHints();
 	}
 
     /**
@@ -57,17 +64,37 @@ public class Question implements Serializable{
 		return choice!=null && choice.equals(answer);
 	}
 
+    /**
+     * Getter for the question field
+     * @return A string containing the question held
+     */
 	public String getQuestion(){
 		return question;
 	}
 
+    /**
+     * Getter fot the answer field
+     * @return A string containing the answer field
+     */
 	public String getAnswer(){
 		return answer;
 	}
 
+    /**
+     * Getter for the hints
+     * @return An array of a maximum default size of 4 or one set by the setHintsArraySize() method
+     */
 	public List<String> getHints(){
 		return hints;
 	}
+
+    /**
+     * Changed the max size of the array which stores the number of hints. If the number of hints
+     * available is less than the max size, then no extra hints will be shown.
+     */
+    public void setHintsArraySize(int newMaxSize) {
+        this.hintArraySize = newMaxSize;
+    }
 
     /**
      * Changes the pool of hints available for the question
@@ -85,14 +112,22 @@ public class Question implements Serializable{
 
     /**
      * Only four hints will be returned at any one time, this method shuffles the hint pool and
-     * finds a new set of hints from the hint pool.
-     * @return returns an array of hints taken from the hintpool of a size specified by NUMBER_OF_HINTS
+     * finds a new set of hints from the hint pool than the ones selected at the creation of the
+     * question.
+     * @return returns an array of hints taken from the hintpool of a default size of 4 unless
+     * specified by the Constants.HINTS_ARRAY_SIZE integer.
      */
 	public List<String> resetHints(){
 		hints = findHints();
 		return hints;
 	}
 
+    /**
+     * This method selects a number of hints specified by the maxArraySize variable. If the number
+     * of questions available is less than the max number, it will return all available hints.
+     * To change the number of hints returned call then Question#setHintsArraySize()
+     * @return A list of strings, taken from the hint pool
+     */
 	private List<String> findHints(){
 		List<String> newHints = new ArrayList<>();
 
@@ -102,13 +137,13 @@ public class Question implements Serializable{
 
 		Collections.shuffle(hintPool);
 
-		if(hintPool.size() <= 4){
+		if(hintPool.size() <= hintArraySize){
 			return hintPool;
 		} else {
 			newHints.add(answer);
 
 			int i = 0;
-			while(i < hintPool.size() && newHints.size() < 4){
+			while(i < hintPool.size() && newHints.size() < hintArraySize){
 				if(!newHints.contains(hintPool.get(i))){
 					newHints.add(hintPool.get(i));
 				} else if(Collections.frequency(hintPool, hintPool.get(i)) > 1)
