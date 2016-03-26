@@ -30,6 +30,7 @@ public class AnsConfirmationDialogListener implements DialogInterface.OnClickLis
             /** From here in Question Screen -- **/
             QuizMaster quizMaster = (QuizMaster) arguments.getSerializable(Constants.QUIZMASTER);
             String answer = arguments.getString(Constants.ANSWER);
+            Log.d("AnsConfDialogList", answer);
             Boolean correct = quizMaster.checkAnswer(answer);
 
             Bundle checked = new Bundle();

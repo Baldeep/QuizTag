@@ -1,5 +1,6 @@
 package baldeep.quiztagapp.Listeners;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,12 +14,13 @@ import baldeep.quiztagapp.Frontend.Game_Menu;
 import baldeep.quiztagapp.Frontend.Question_Screen;
 
 
-public class GameMenuButtonListener extends Game_Menu implements View.OnClickListener {
+public class GameMenuButtonListener implements View.OnClickListener {
 
     private Bundle arguments;
-
-    public GameMenuButtonListener(Bundle arguments){
+    private Activity activity;
+    public GameMenuButtonListener(Activity activity, Bundle arguments){
         this.arguments = arguments;
+        this.activity = activity;
     }
 
 
@@ -28,22 +30,22 @@ public class GameMenuButtonListener extends Game_Menu implements View.OnClickLis
 
         if(message.equals(Constants.PLAY)){
             // When Start Quiz is pressed, start the Question Screen
-            Intent questionScreen = new Intent(this.getApplicationContext(), Question_Screen.class);
+            Intent questionScreen = new Intent(activity, Question_Screen.class);
             questionScreen.putExtra(Constants.QUIZMASTER,
                     (QuizMaster) arguments.getSerializable(Constants.QUIZMASTER));
-            startActivityForResult(questionScreen, arguments.getInt(Constants.RESULT));
+            activity.startActivityForResult(questionScreen, arguments.getInt(Constants.RESULT));
 
         } else if(message.equals(Constants.QUIZTAG)){
             // When QuizTag is pressed, start the QuizTag screen
-            Intent quizTagScreen = new Intent(this.getApplicationContext(), Quiz_Tag_Screen.class);
-            startActivityForResult(quizTagScreen, arguments.getInt(Constants.RESULT));
+            Intent quizTagScreen = new Intent(activity, Quiz_Tag_Screen.class);
+            activity.startActivityForResult(quizTagScreen, arguments.getInt(Constants.RESULT));
 
         } else if(message.equals(Constants.POINTS_SHOP)){
             // When Points Shop is pressed, start the Points Shop screen
-            Intent shopScreen = new Intent(this.getApplicationContext(), Shop_Menu.class);
+            Intent shopScreen = new Intent(activity, Shop_Menu.class);
             shopScreen.putExtra(Constants.POWERUPS,
                     (PowerUps) arguments.getSerializable(Constants.POWERUPS));
-            startActivityForResult(shopScreen, arguments.getInt(Constants.RESULT));
+            activity.startActivityForResult(shopScreen, arguments.getInt(Constants.RESULT));
 
         }
     }

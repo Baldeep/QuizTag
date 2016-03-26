@@ -73,6 +73,11 @@ public class PowerUps extends Observable implements Serializable{
         observers.add(o);
     }
 
+    public void unattach(Observer o) {
+        observers.remove(o);
+    }
+
+
     private void notifyAllObservers(){
         for(Observer o : observers)
             o.update(this, null);

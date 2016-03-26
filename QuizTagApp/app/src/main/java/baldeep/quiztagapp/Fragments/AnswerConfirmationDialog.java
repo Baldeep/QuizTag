@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.util.Log;
 
 import baldeep.quiztagapp.Constants.Constants;
 import baldeep.quiztagapp.Listeners.AnsConfirmationDialogListener;
@@ -27,8 +28,9 @@ public class AnswerConfirmationDialog extends DialogFragment {
         QuizMaster qm = (QuizMaster) getArguments().getSerializable(Constants.QUIZMASTER);
         confirmBundle.putSerializable(Constants.QUIZMASTER, qm);
         String answer = getArguments().getString(Constants.ANSWER);
+        Log.d("AnsConfDialog", answer);
         confirmBundle.putString(Constants.ANSWER, answer);
-        confirmBundle.putString(Constants.ANSWER, Constants.YES);
+        confirmBundle.putString(Constants.MESSAGE, Constants.YES);
 
         confirmDialog.setPositiveButton(Constants.YES, new AnsConfirmationDialogListener(this.getActivity(), confirmBundle));
 

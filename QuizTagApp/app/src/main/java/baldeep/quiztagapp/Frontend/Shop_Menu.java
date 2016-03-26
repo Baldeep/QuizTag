@@ -60,13 +60,12 @@ public class Shop_Menu extends AppCompatActivity {
         Bundle hintsBundle = new Bundle();
         hintsBundle.putString(Constants.MESSAGE, Constants.HINTS);
         hintsBundle.putSerializable(Constants.POWERUPS, powerUps);
-        buy_hints.setOnClickListener(new ShopButtonListener(hintsBundle));
+        buy_hints.setOnClickListener(new ShopButtonListener(this, hintsBundle));
 
         Bundle skipsBundle = new Bundle();
         skipsBundle.putString(Constants.MESSAGE, Constants.SKIPS);
         skipsBundle.putSerializable(Constants.POWERUPS, powerUps);
-        buy_skips.setOnClickListener(new ShopButtonListener(skipsBundle));
-
+        buy_skips.setOnClickListener(new ShopButtonListener(this, skipsBundle));
 
         update(); // Update method sets the contents of the text views
     }
@@ -109,11 +108,12 @@ public class Shop_Menu extends AppCompatActivity {
         // here and update.
         if(requestCode == 1) {
             this.powerUps = (PowerUps) data.getSerializableExtra(Constants.POWERUPS);
+            update();
         }
-        update();
+
     }
 
-    protected void update() {
+    public void update() {
         // Dave the powerups when they change
         Bundle saveGameData = new Bundle();
         saveGameData.putSerializable(Constants.POWERUPS, powerUps);

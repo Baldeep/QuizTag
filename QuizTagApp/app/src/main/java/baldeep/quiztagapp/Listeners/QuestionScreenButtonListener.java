@@ -7,7 +7,7 @@ import baldeep.quiztagapp.backend.QuizMaster;
 import baldeep.quiztagapp.Constants.Constants;
 import baldeep.quiztagapp.Frontend.Question_Screen;
 
-public class QuestionScreenButtonListener extends Question_Screen implements View.OnClickListener {
+public class QuestionScreenButtonListener implements View.OnClickListener {
 
     private Bundle arguments;
 

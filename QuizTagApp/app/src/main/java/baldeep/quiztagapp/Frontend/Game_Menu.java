@@ -157,7 +157,7 @@ public class Game_Menu extends AppCompatActivity {
         quizTagBundle.putString(Constants.MESSAGE, Constants.QUIZTAG);
         quizTagBundle.putInt(Constants.RESULT, 2);
 
-        quiz_tag_button.setOnClickListener(new GameMenuButtonListener(quizTagBundle));
+        quiz_tag_button.setOnClickListener(new GameMenuButtonListener(this, quizTagBundle));
 
         setShopButtonListener();
         setStartButtonListener();
@@ -172,7 +172,7 @@ public class Game_Menu extends AppCompatActivity {
         startBundle.putSerializable(Constants.QUIZMASTER, qm);
         startBundle.putInt(Constants.RESULT, 0);
 
-        start_button.setOnClickListener(new GameMenuButtonListener(startBundle));
+        start_button.setOnClickListener(new GameMenuButtonListener(this, startBundle));
     }
 
     /**
@@ -184,7 +184,7 @@ public class Game_Menu extends AppCompatActivity {
         shopBundle.putInt(Constants.RESULT, 1);
         shopBundle.putSerializable(Constants.POWERUPS, qm.getPowerUps());
 
-        shop_button.setOnClickListener(new GameMenuButtonListener(shopBundle));
+        shop_button.setOnClickListener(new GameMenuButtonListener(this, shopBundle));
     }
 
 }

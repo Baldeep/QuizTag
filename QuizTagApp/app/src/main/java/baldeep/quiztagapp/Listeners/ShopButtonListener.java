@@ -1,5 +1,6 @@
 package baldeep.quiztagapp.Listeners;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,12 +13,14 @@ import baldeep.quiztagapp.backend.PowerUps;
 import baldeep.quiztagapp.R;
 
 
-public class ShopButtonListener extends Shop_Menu implements View.OnClickListener {
+public class ShopButtonListener implements View.OnClickListener {
 
     Bundle arguments;
+    Activity activity;
 
-    public ShopButtonListener(Bundle hintsBundle) {
+    public ShopButtonListener(Activity activity, Bundle hintsBundle) {
         this.arguments = hintsBundle;
+        this.activity = activity;
     }
 
     @Override
@@ -25,36 +28,41 @@ public class ShopButtonListener extends Shop_Menu implements View.OnClickListene
         String message = arguments.getString(Constants.MESSAGE);
         PowerUps pu = (PowerUps) arguments.getSerializable(Constants.POWERUPS);
 
+
         Intent update = new Intent();
         update.putExtra(Constants.POWERUPS, pu);
 
         if(message.equals(Constants.HINTS)){
             // If it's a hints button
-            if(pu.getPoints() > pu.getHintsCost()){
+            if(pu.getPoints() >= pu.getHintsCost()){
                 //
                 pu.setPoints(pu.getPoints() - pu.getHintsCost());
                 pu.setHints(pu.getHints() + 1);
-                update();
+                //update();
             } else {
                 DialogFragment noPoint = new InformationDialog();
                 Bundle noPointBundle = new Bundle();
-                noPointBundle.putString(Constants.TITLE, String.valueOf(R.string.not_enough_points));
-                noPointBundle.putString(Constants.MESSAGE, String.valueOf(R.string.play_more_earn_points));
+                noPointBundle.putString(Constants.TITLE,
+                        activity.getResources().getString(R.string.not_enough_points));
+                noPointBundle.putString(Constants.MESSAGE,
+                        activity.getResources().getString(R.string.play_more_earn_points));
                 noPoint.setArguments(noPointBundle);
-                noPoint.show(getFragmentManager(), Constants.HINTS);
+                noPoint.show(activity.getFragmentManager(), Constants.HINTS);
             }
         } else if(message.equals(Constants.SKIPS)){
-            if(pu.getPoints() > pu.getSkipsCost()){
-                pu.setPoints(pu.getPoints()-pu.getSkipsCost());
+            if(pu.getPoints() >= pu.getSkipsCost()){
+                pu.setPoints(pu.getPoints() - pu.getSkipsCost());
                 pu.setSkips(pu.getSkips() + 1);
-                update();
+                //update();
             } else {
                 DialogFragment noPoint = new InformationDialog();
                 Bundle noPointBundle = new Bundle();
-                noPointBundle.putString(Constants.TITLE, String.valueOf(R.string.not_enough_points));
-                noPointBundle.putString(Constants.MESSAGE, String.valueOf(R.string.play_more_earn_points));
+                noPointBundle.putString(Constants.TITLE,
+                        activity.getResources().getString(R.string.not_enough_points));
+                noPointBundle.putString(Constants.MESSAGE,
+                        activity.getResources().getString(R.string.play_more_earn_points));
                 noPoint.setArguments(noPointBundle);
-                noPoint.show(getFragmentManager(), Constants.SKIPS);
+                noPoint.show(activity.getFragmentManager(), Constants.SKIPS);
             }
         }
     }

@@ -259,8 +259,9 @@ public class Question_Screen extends AppCompatActivity implements Observer {
             v.vibrate(pattern, -1);
 
             // Check answer
-            if(!answerFromTag.equals("")){
+            if(!answerFromTag.equals(null) && !answerFromTag.equals("")){
                 checkAnswer(answerFromTag);
+
             }
         }
         super.onNewIntent(intent);

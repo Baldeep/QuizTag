@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import baldeep.quiztagapp.Constants.Constants;
 import baldeep.quiztagapp.Fragments.AnswerConfirmationDialog;
@@ -34,19 +35,19 @@ public class DialogCreator {
     public void confirmAnswerDialog(Activity activity, Bundle arguments){
         QuizMaster quizMaster = (QuizMaster) arguments.getSerializable(Constants.QUIZMASTER);
         String answer = arguments.getString(Constants.ANSWER);
-
-        Bundle confirmBundle = new Bundle();
-        confirmBundle.putSerializable(Constants.MESSAGE, quizMaster);
-        confirmBundle.putString(Constants.ANSWER, answer);
-
+        Log.d("DialogCreator", answer);
         String title = activity.getResources().getString(R.string.question_prenumber_text) + " " +
                 quizMaster.getCurrentQuestionNumber();
-        confirmBundle.putString(Constants.TITLE, title);
 
         String text = activity.getResources().getString(R.string.confirm_answer1) + answer
                 + activity.getResources().getString(R.string.confirm_answer2);
-        confirmBundle.putString(Constants.MESSAGE, text);
 
+
+        Bundle confirmBundle = new Bundle();
+        confirmBundle.putSerializable(Constants.QUIZMASTER, quizMaster);
+        confirmBundle.putString(Constants.ANSWER, answer);
+        confirmBundle.putString(Constants.TITLE, title);
+        confirmBundle.putString(Constants.MESSAGE, text);
         DialogFragment df = new AnswerConfirmationDialog();
         df.setArguments(confirmBundle);
         df.show(activity.getFragmentManager(), Constants.ANSWER);

@@ -11,16 +11,19 @@ import baldeep.quiztagapp.Constants.Constants;
 /**
  * Created by skb12156 on 18/03/2016.
  */
-public class QuizTagButtonListener extends Quiz_Tag_Screen implements View.OnClickListener {
+public class QuizTagButtonListener implements View.OnClickListener {
 
     Bundle arguments;
-    public QuizTagButtonListener(Bundle arguments){
+    Activity activity;
+
+    public QuizTagButtonListener(Activity activity, Bundle arguments){
         this.arguments = arguments;
+        this.activity = activity;
     }
 
     @Override
     public void onClick(View v) {
         FileHandler fh = new FileHandler();
-        fh.writeFile(this, arguments.getString(Constants.MESSAGE));
+        fh.writeFile(activity, arguments.getString(Constants.MESSAGE));
     }
 }

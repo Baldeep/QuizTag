@@ -132,7 +132,7 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
             Bundle quizTagBundle = new Bundle();
             quizTagBundle.putString(Constants.MESSAGE, qpAsString);
             System.out.println(qpAsString);
-            download.setOnClickListener(new QuizTagButtonListener(quizTagBundle));
+            download.setOnClickListener(new QuizTagButtonListener(this, quizTagBundle));
         }
     }
 
