@@ -38,7 +38,7 @@ public class ShopButtonListener implements View.OnClickListener {
                 //
                 pu.setPoints(pu.getPoints() - pu.getHintsCost());
                 pu.setHints(pu.getHints() + 1);
-                //update();
+
             } else {
                 DialogFragment noPoint = new InformationDialog();
                 Bundle noPointBundle = new Bundle();

@@ -33,14 +33,16 @@
     <string name="quiz_type_story">Story</string>
     <string name="quiz_type_random_explaination">A random quiz means that it will select questions
         randomly from a pool of questions.\n\nProgres cannot be saved for this quiz</string>
-    <string name="quiz_type_story_explaination">A story quiz will lead you through a list of questions
-        in order.\n\nProgress is saved for this quiz.</string>
+    <string name="quiz_type_story_explaination">A story quiz will lead you through questions in a
+        specific order. The answers to the next questions will be close by!
+        \n\nProgress will be saved for this quiz.</string>
     <string name="no_question_pool_found">No Quiz Found</string>
     <string name="question_prenumber_text">Question:</string>
     <string name="tag_found">Tag Found</string>
     <string name="points">points</string>
     <string name="not_enough_points">Not Enough Points</string>
-    <string name="play_more_earn_points">You don\'t have enough points to buy more hints\nPlay the game to earn more points!</string>
+    <string name="play_more_earn_points">You don\'t have enough points to buy more hints
+        \nPlay the game to earn more points!</string>
     <string name="null_object_error">Error occured when starting Game Menu</string>
     <string name="null_object_error_title">Null Object Error</string>
     <string name="confirm_answer1">You have selected:\n\n\t\t\t</string>
@@ -55,4 +57,8 @@
     <string name="scan_screen_title">Scan</string>
     <string name="smartcase_title">SmartCase</string>
     <string name="quiz_tag_title">Quiz Tag</string>
+    <string name="quiz_complete">Quiz Complete</string>
+    <string name="quiz_complete_congrats">Congratulations! You have finished the quiz!
+        \nFind a QuizTag to play another quiz, or play this again!</string>
+    <string name="quit">Quit</string>
 </resources>

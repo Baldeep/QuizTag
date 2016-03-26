@@ -9,6 +9,7 @@ import android.util.Log;
 import baldeep.quiztagapp.Constants.Constants;
 import baldeep.quiztagapp.Fragments.AnswerConfirmationDialog;
 import baldeep.quiztagapp.Fragments.ConnectDialog;
+import baldeep.quiztagapp.Fragments.EndGameDialog;
 import baldeep.quiztagapp.Fragments.ErrorDialog;
 import baldeep.quiztagapp.Fragments.InformationDialog;
 import baldeep.quiztagapp.Fragments.NFCInfoDialog;
@@ -80,14 +81,17 @@ public class DialogCreator {
     }
 
 
-    public void quizFinishedDialog(FragmentManager fragmentManager, Bundle arguments) {
-        DialogFragment df = new ConnectDialog();
-        Bundle connectArgs = new Bundle();
-        connectArgs.putString("title", "Quiz Complete");
-        connectArgs.putString("message",
-                "Congratulations! You have finished the quiz!");
-        df.setArguments(connectArgs);
-        df.show(fragmentManager, "Connect Dialog");
+    public void quizFinishedDialog(Activity activity, Bundle arguments) {
+        DialogFragment df = new EndGameDialog();
+        Bundle gameEndArgs = new Bundle();
+        gameEndArgs.putString(Constants.TITLE,
+                activity.getResources().getString(R.string.quiz_complete));
+        gameEndArgs.putString(Constants.MESSAGE,
+                activity.getResources().getString(R.string.quiz_complete_congrats));
+        gameEndArgs.putSerializable(Constants.POWERUPS, arguments.getSerializable(Constants.POWERUPS));
+        gameEndArgs.putSerializable(Constants.QUIZMASTER, arguments.getSerializable(Constants.QUIZMASTER));
+        df.setArguments(gameEndArgs);
+        df.show(activity.getFragmentManager(), Constants.QUIZMASTER);
     }
 
     public void errorDialog(FragmentManager fragmentManager, Bundle arguments) {

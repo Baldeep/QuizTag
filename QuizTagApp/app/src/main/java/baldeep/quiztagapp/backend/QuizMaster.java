@@ -12,12 +12,12 @@ import baldeep.quiztagapp.Exceptions.NullObjectException;
 public class QuizMaster extends Observable implements Serializable, Observer{
 
     private final int POINTS = 20;
+
     private PowerUps powerUps;
+    private QuestionPool qp;
 
     private boolean hintsRevealed;
     private int wrongChoices = 0;
-
-    private QuestionPool qp;
 
     private List<Observer> observers = new ArrayList<>();
 
@@ -146,7 +146,9 @@ public class QuizMaster extends Observable implements Serializable, Observer{
     public int revealHints(){
         if (powerUps.getHints() > 0) {
             hintsRevealed = true;
-            powerUps.setSkips(powerUps.getHints() - 1);
+            //powerUps.setHints(powerUps.getHints() - 1);
+            powerUps.setSkips(10);
+            powerUps.setPoints(200);
             notifyAllObservers();
         }
         return powerUps.getSkips();
@@ -193,14 +195,24 @@ public class QuizMaster extends Observable implements Serializable, Observer{
         return qp.getCurrentQuestion().getHints();
     }
 
-
+    /**
+     * Gets the PowerUps currently held by the QuizMaster. The QuizMaster doesn't provide additional
+     * methods to set or get the powerups, while that would be safer, hints and skips may need to be
+     * set outwith the QuizMaster
+     * @return The current PowerUps class held by the quizmaster
+     */
     public PowerUps getPowerUps(){
         return powerUps;
     }
 
+    /**
+     * Returns the name of the quiz held by the QuizMaster
+     * @return A string holding the name of the quiz currently being played
+     */
     public String getQuizName(){
         return qp.getQuizName();
     }
+
 
     public QuestionPool getQuestionPool(){
         return qp;
@@ -226,6 +238,10 @@ public class QuizMaster extends Observable implements Serializable, Observer{
         }
     }
 
+    /**
+     * Returns the number of points earned each time a question is answered correctly
+     * @return The number of points earned by a correct answer
+     */
     public int getPointsPerQuestion(){
         return POINTS;
     }
@@ -236,9 +252,23 @@ public class QuizMaster extends Observable implements Serializable, Observer{
     }
 
 
+    /**
+     * Starts the quiz at a specified question number
+     * @param questionNo the number to start the quiz from
+     * @return An integer representing the new question number. If everything the quiz jumps to the
+     * question number correctly, then it should return the same number as was input
+     */
     public int goToQuestion(int questionNo) {
         // check just in case this method was called in random mode
         qp.goToQuestion(questionNo);
         return qp.getCurrentQuestionNumber();
+    }
+
+    /**
+     * Returns a boolean value representing whether the questionpool plays a random quiz or not
+     * @return True if the quiz held is random, false if it's a story quiz
+     */
+    public boolean isRandomQuiz(){
+        return qp.isRandom();
     }
 }

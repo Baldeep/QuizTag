@@ -71,7 +71,6 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         Log.i("Question Screen", "Question: " + qm.getCurrentQuestionNumber());
 
 
-
         //  Initialise the GUI objects
         hints = (TextView) findViewById(R.id.hints_count_text);
         skips = (TextView) findViewById(R.id.skips_count_text);
@@ -133,8 +132,13 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         if(id == R.id.quit_button_dropdown){
             Intent goingBack = new Intent();
             goingBack.putExtra(Constants.POWERUPS, qm.getPowerUps());
-            goingBack.putExtra(Constants.QUIZNAME, qm.getQuizName());
-            goingBack.putExtra(Constants.CURRENTQUESTIONNO, qm.getCurrentQuestionNumber());
+            if(qm.isRandomQuiz()) {
+                goingBack.putExtra(Constants.QUIZNAME, qm.getQuizName());
+                goingBack.putExtra(Constants.CURRENTQUESTIONNO, qm.getCurrentQuestionNumber());
+            } else {
+                goingBack.putExtra(Constants.QUIZNAME, "");
+                goingBack.putExtra(Constants.CURRENTQUESTIONNO, qm.getCurrentQuestionNumber());
+            }
             setResult(RESULT_OK, goingBack);
 
             dialogCreator.quitConfirmationDialog(getFragmentManager(), new Bundle());
@@ -165,30 +169,38 @@ public class Question_Screen extends AppCompatActivity implements Observer {
     public void update(Observable observable, Object data) {
 
         // Set the title of the Activity
+        /*
+         * Merging the first two statements (currentQuestionNo == 0 and currentQuestionNo < 0 )
+         * together causes the dialog box to finish the app without sending back result for the
+         * Game Menu, while as it is it works fine...
+         */
         if(qm.getCurrentQuestionNumber() == 0){
             setTitle(qm.getQuizName());
         } else if(qm.getCurrentQuestionNumber() < 0){
+            setTitle(qm.getQuizName());
             Bundle endBundle = new Bundle();
             endBundle.putSerializable(Constants.POWERUPS, qm.getPowerUps());
+            endBundle.putString(Constants.QUIZNAME, qm.getQuizName());
+            endBundle.putInt(Constants.CURRENTQUESTIONNO, qm.getCurrentQuestionNumber());
             qm.resetQuiz();
-            dialogCreator.quizFinishedDialog(getFragmentManager(), endBundle);
+            dialogCreator.quizFinishedDialog(this, endBundle);
         } else {
             setTitle(getResources().getString(R.string.question_prenumber_text) + " " + qm.getCurrentQuestionNumber());
+
+            // Set the Quesion Field text
+            String question = getResources().getString(R.string.question_prenumber_text) + " "
+                    + qm.getCurrentQuestionNumber() + ": " +
+                    qm.getQuestionString();
+            questionField.setText(question);
+
+            // Set the number of power ups
+            hints.setText(qm.getPowerUps().getHintsAsString());
+            skips.setText(qm.getPowerUps().getSkipsAsString());
+            coins.setText(qm.getPowerUps().getPointsAsString());
+
+            // Display the hints
+            displayHints();
         }
-
-        // Set the Quesion Field text
-        String question = getResources().getString(R.string.question_prenumber_text) + " "
-                + qm.getCurrentQuestionNumber() + ": " +
-                qm.getQuestionString();
-        questionField.setText(question);
-
-        // Set the number of power ups
-        hints.setText(qm.getPowerUps().getHintsAsString());
-        skips.setText(qm.getPowerUps().getSkipsAsString());
-        coins.setText(qm.getPowerUps().getPointsAsString());
-
-        // Display the hints
-        displayHints();
     }
 
     /**

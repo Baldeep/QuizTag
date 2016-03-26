@@ -29,4 +29,5 @@ public interface Constants {
     String YES = "yes";
     String NO = "no";
 
+    String QUIT = "quit";
 }

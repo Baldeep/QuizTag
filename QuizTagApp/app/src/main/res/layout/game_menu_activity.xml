@@ -93,7 +93,7 @@
         android:background="@android:drawable/btn_default"
         android:textSize="30sp"
         android:id="@+id/quiz_tag_button"
-        android:layout_weight="0.33"/>
+        android:layout_weight="0.3"/>
 
     <Button
         android:layout_width="match_parent"

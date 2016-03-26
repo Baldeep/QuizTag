@@ -76,18 +76,22 @@ public class QuestionPool implements Serializable{
         Question q = null;
 
         // Deal with the empty array
-        if(random && questionPool.isEmpty()) {
+        if(questionPool.isEmpty()) {
+            currentQuestionNo = -1;
+            return null;
+        }
+       /* if(random && questionPool.isEmpty()) {
             System.out.println("Questionpool empty **********");
             questionPool.addAll(questionsAsked);
             questionsAsked.clear();
             currentQuestionNo++;
         } else if(!random && questionPool.isEmpty()){
-            currentQuestionNo = 0;
+            currentQuestionNo = -1;
             return null;
-        }
+        }*/
 
         // Pick out a question
-        if(!questionPool.isEmpty()) {
+         else if(!questionPool.isEmpty()) {
 
             if (random) {
                 Collections.shuffle(questionPool);

@@ -3,6 +3,7 @@ package baldeep.quiztagapp.Frontend;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -108,12 +109,13 @@ public class Shop_Menu extends AppCompatActivity {
         // here and update.
         if(requestCode == 1) {
             this.powerUps = (PowerUps) data.getSerializableExtra(Constants.POWERUPS);
+            Log.e("Shop_result", "points " + powerUps.getPoints() + ", hints " + powerUps.getHints() + ", skips " + powerUps.getSkips());
             update();
         }
 
     }
 
-    public void update() {
+    private void update() {
         // Dave the powerups when they change
         Bundle saveGameData = new Bundle();
         saveGameData.putSerializable(Constants.POWERUPS, powerUps);

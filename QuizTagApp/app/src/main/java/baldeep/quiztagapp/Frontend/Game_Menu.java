@@ -51,9 +51,14 @@ public class Game_Menu extends AppCompatActivity {
 
             // Start the QuizMaster to either continue the saved quiz or start anew
             String quizName = saveGameData.getString(Constants.QUIZNAME);
+            // If it's the same quiz name then load up the data for it
             if(quizName != null && quizName.equals(qm.getQuestionPool().getQuizName())){
                 int currentQuestion = saveGameData.getInt(Constants.CURRENTQUESTIONNO);
                 Log.d("Load Quiz", "Question No: " + currentQuestion);
+                // if the number saved was less than 1, then the quiz had ended on a previous game,
+                if(currentQuestion <= 0){
+                    currentQuestion = 1; // restart quiz
+                }
                 qm.goToQuestion(currentQuestion);
             } else {
                 qm.setNextQuestion();
