@@ -24,6 +24,6 @@ public class QuizTagButtonListener implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         FileHandler fh = new FileHandler();
-        fh.writeFile(activity, arguments.getString(Constants.MESSAGE));
+        fh.writeFile(activity, Constants.QUIZFILE, arguments.getString(Constants.MESSAGE));
     }
 }

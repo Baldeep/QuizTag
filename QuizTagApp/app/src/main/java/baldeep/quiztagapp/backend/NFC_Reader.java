@@ -68,7 +68,7 @@ public class NFC_Reader {
         QuestionPool qp = null;
 
         String text = readTag(activity, tag);
-        System.out.println(text);
+        System.out.println("READING TAG: " + text);
 
         if(!text.equals("") && !text.equals(null)){
             try {
@@ -82,9 +82,16 @@ public class NFC_Reader {
         if(qp==null){
             Log.e("QP_NFC_READ", "qp is null");
         } else {
-            Log.w("QP_NFC_READ", "no questions: " + qp.getQuestionPoolSize());
-            for (Question q : qp.getQuestionPool())
-                q.resetHints();
+            QuestionPool questionPool = new QuestionPool(qp.getQuizName(), qp.getQuestionPool(), qp.isRandom());
+            return questionPool;
+            /*if(qp.getQuizName() == null)
+                Log.w("QP_NFC_READ", qp.getQuizName());
+            Log.w("QP_NFC_READ", "" + qp.isRandom());
+            if(qp.getQuestionPool() != null) {
+                Log.w("QP_NFC_READ", "num questions: " + qp.getQuestionPoolSize());
+            } else {
+                Log.e("QP_NFC_READ", "QuestionPool is not null, but no questions were found");
+            }*/
         }
         return qp;
     }

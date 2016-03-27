@@ -130,17 +130,13 @@ public class Question implements Serializable{
 
 		Collections.shuffle(hintPool);
 
-        System.out.println("Question, find hints. hintpool size " + hintPool.size() + ", max size: " + hintArraySize);
 		if(hintPool.size() <= hintArraySize){
-            System.out.println("Question, find hints. hintpool right size " + hintPool.size());
             return hintPool;
 		} else {
 			newHints.add(answer);
 
 			int i = 0;
-            System.out.println("findHints, setting new hints, i:" + i + ", newHints: " + newHints.size());
 			while(i < hintPool.size() && newHints.size() < hintArraySize){
-                System.out.println("findHints, setting new hints, i:" + i + ", newHints: " + newHints.size());
 				if(!newHints.contains(hintPool.get(i))){
 					newHints.add(hintPool.get(i));
 				} else if(Collections.frequency(hintPool, hintPool.get(i)) > 1) {
@@ -149,7 +145,6 @@ public class Question implements Serializable{
 				i++;
 			}
 
-            System.out.println("Question, find hints. newHints size" + newHints.size());
 			Collections.shuffle(newHints);
 			return newHints;
 		}

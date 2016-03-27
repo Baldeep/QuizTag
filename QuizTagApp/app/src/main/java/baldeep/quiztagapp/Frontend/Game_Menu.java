@@ -74,8 +74,6 @@ public class Game_Menu extends AppCompatActivity {
         }*/
 
 
-        Log.d("Game Menu", "starting quiz master from question " + qm.getCurrentQuestionNumber());
-
         // Initialise GUI
         start_button = (Button) findViewById(R.id.start_button);
         quiz_tag_button = (Button) findViewById(R.id.quiz_tag_button);
@@ -146,6 +144,7 @@ public class Game_Menu extends AppCompatActivity {
             if(qp!= null) {
                 qm.setNewQuiz(qp);
             }
+            loadGame(); // load the new quiz in
             update();
         }
     }
@@ -168,7 +167,8 @@ public class Game_Menu extends AppCompatActivity {
 
         try {
             PowerUps powerUps = (PowerUps) saveGameData.getSerializable(Constants.POWERUPS);
-            QuestionPool questionPool = new FileHandler().readQuestionPoolfromAssets(this);
+            //QuestionPool questionPool = new FileHandler().readQuestionPoolfromAssets(this);
+            QuestionPool questionPool = new FileHandler().readQuestionPoolFromFile(this);
             qm = new QuizMaster(questionPool, powerUps);
 
             // Start the QuizMaster to either continue the saved quiz or start anew
@@ -185,7 +185,7 @@ public class Game_Menu extends AppCompatActivity {
             } else {
                 qm.setNextQuestion();
             }
-
+            Log.d("Game Menu", "starting quiz master from question " + qm.getCurrentQuestionNumber());
         } catch(NullObjectException e){
             e.printStackTrace();
             Bundle errorBundle = new Bundle();

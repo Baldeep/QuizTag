@@ -16,9 +16,9 @@ import baldeep.quiztagapp.R;
 public class ShopButtonListener implements View.OnClickListener {
 
     Bundle arguments;
-    Activity activity;
+    Shop_Menu activity;
 
-    public ShopButtonListener(Activity activity, Bundle hintsBundle) {
+    public ShopButtonListener(Shop_Menu activity, Bundle hintsBundle) {
         this.arguments = hintsBundle;
         this.activity = activity;
     }
@@ -28,16 +28,12 @@ public class ShopButtonListener implements View.OnClickListener {
         String message = arguments.getString(Constants.MESSAGE);
         PowerUps pu = (PowerUps) arguments.getSerializable(Constants.POWERUPS);
 
-
-        Intent update = new Intent();
-        update.putExtra(Constants.POWERUPS, pu);
-
         if(message.equals(Constants.HINTS)){
             // If it's a hints button
             if(pu.getPoints() >= pu.getHintsCost()){
                 pu.setPoints(pu.getPoints() - pu.getHintsCost());
                 pu.setHints(pu.getHints() + 1);
-
+                activity.update();
             } else {
                 DialogFragment noPoint = new InformationDialog();
                 Bundle noPointBundle = new Bundle();
@@ -52,7 +48,7 @@ public class ShopButtonListener implements View.OnClickListener {
             if(pu.getPoints() >= pu.getSkipsCost()){
                 pu.setPoints(pu.getPoints() - pu.getSkipsCost());
                 pu.setSkips(pu.getSkips() + 1);
-                //update();
+                activity.update();
             } else {
                 DialogFragment noPoint = new InformationDialog();
                 Bundle noPointBundle = new Bundle();

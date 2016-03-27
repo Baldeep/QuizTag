@@ -1,5 +1,6 @@
 package baldeep.quiztagapp.Frontend;
 
+import android.app.DialogFragment;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 
 import baldeep.quiztagapp.Constants.Constants;
+import baldeep.quiztagapp.Fragments.LoadingDialog;
 import baldeep.quiztagapp.Listeners.QuizTagButtonListener;
 import baldeep.quiztagapp.R;
 import baldeep.quiztagapp.backend.NFC_Reader;
@@ -82,8 +85,10 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
     protected void onNewIntent(Intent intent) {
         Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         // Delay vibration until the tag is fully read
+        DialogFragment loading = new LoadingDialog();
         v.cancel();
         if(nfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
+            loading.show(getFragmentManager(), "Loading");
             // get the Tag
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             // Read the Questionpool from the tag
@@ -91,9 +96,10 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
             // and  now vibrate
             long[] pattern = {0, 200, 100, 200};
             v.vibrate(pattern, -1);
+            loading.dismiss();
             // update the details of the fields
-            if(questionPool.getQuestionPool() == null){
-                questionPool = null;
+            if(questionPool == null){
+                Log.e("QuizTagScreen", "QuestionPool is null");
             }
             update();
         }
@@ -118,7 +124,7 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
 
         if(questionPool != null){
             nameField.setText(questionPool.getQuizName());
-            questionNoField.setText(questionPool.getQuestionPoolSize());
+            questionNoField.setText(questionPool.getQuestionPoolSize() + "");
             if(questionPool.isRandom()){
                 typeField.setText(getResources().getString(R.string.quiz_type_random));
                 typeExplaination.setText(getResources().getString(R.string.quiz_type_random_explaination));

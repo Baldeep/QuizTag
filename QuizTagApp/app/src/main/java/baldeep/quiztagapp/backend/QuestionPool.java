@@ -11,9 +11,9 @@ import java.util.List;
 public class QuestionPool implements Serializable{
 
     private String quizName;
-    @SerializedName("QuestionList")
+    @SerializedName("QuestionPool")
     private List<Question> questionPool;
-    private List<Question> questionsAsked;
+    private List<Question> questionsAsked = new ArrayList<>();;
     private Question currentQuestion;
     private int currentQuestionNo;
     private boolean random;
@@ -206,7 +206,7 @@ public class QuestionPool implements Serializable{
      * to ask, and questions which have already been asked
      */
     public int getQuestionPoolSize(){
-        return questionPool.size() + questionsAsked.size();
+        return questionPool.size();// + questionsAsked.size();
     }
 
     /**

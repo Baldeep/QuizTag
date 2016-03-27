@@ -31,4 +31,5 @@ public interface Constants {
 
     String QUIT = "quit";
     int HINTSARRAYSIZE = 4;
+    String QUIZFILE = "quiz.txt";
 }

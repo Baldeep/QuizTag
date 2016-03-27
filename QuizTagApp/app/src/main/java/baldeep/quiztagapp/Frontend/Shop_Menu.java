@@ -102,20 +102,7 @@ public class Shop_Menu extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // When a button comes back from it's listener, it will return a result, set that result
-        // here and update.
-        if(requestCode == 1) {
-            this.powerUps = (PowerUps) data.getSerializableExtra(Constants.POWERUPS);
-            Log.e("Shop_result", "points " + powerUps.getPoints() + ", hints " + powerUps.getHints() + ", skips " + powerUps.getSkips());
-            update();
-        }
-
-    }
-
-    private void update() {
+    public void update() {
         // Dave the powerups when they change
         Bundle saveGameData = new Bundle();
         saveGameData.putSerializable(Constants.POWERUPS, powerUps);
