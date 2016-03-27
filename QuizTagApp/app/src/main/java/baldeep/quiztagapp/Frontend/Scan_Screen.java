@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -60,9 +61,17 @@ public class Scan_Screen extends AppCompatActivity{
 
         // Set the intent filter
         pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
-        tagDetected.addCategory(Intent.CATEGORY_DEFAULT);
-        intentFileters = new IntentFilter[] { tagDetected };
+        IntentFilter ndefDetected = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
+        ndefDetected.addCategory(Intent.CATEGORY_DEFAULT);
+
+        try {
+            ndefDetected.addDataType("application/baldeep.quiztagapp.exhibit");
+        } catch (IntentFilter.MalformedMimeTypeException e) {
+            Log.w("SCANSCREEN", "malformed mime type");
+            e.printStackTrace();
+        }
+
+        intentFileters = new IntentFilter[] { ndefDetected };
     }
 
     @Override
@@ -82,7 +91,7 @@ public class Scan_Screen extends AppCompatActivity{
     protected void onNewIntent(Intent intent) {
         Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         v.cancel();
-        if(nfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
+        if(nfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())){
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             //long startTime = System.currentTimeMillis();
             exhibitTag = new NFC_Reader().readExhibitFromTag(this, tag);

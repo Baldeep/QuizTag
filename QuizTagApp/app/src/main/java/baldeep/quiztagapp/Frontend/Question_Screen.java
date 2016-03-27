@@ -113,9 +113,17 @@ public class Question_Screen extends AppCompatActivity implements Observer {
 
         // Set the intent filter
         pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
-        tagDetected.addCategory(Intent.CATEGORY_DEFAULT);
-        intentFileters = new IntentFilter[] { tagDetected };
+        IntentFilter ndefDetected = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
+        ndefDetected.addCategory(Intent.CATEGORY_DEFAULT);
+
+        try {
+            ndefDetected.addDataType("application/baldeep.quiztagapp.exhibit");
+        } catch (IntentFilter.MalformedMimeTypeException e) {
+            Log.w("QUESTIONSCREEN", "malformed mime type");
+            e.printStackTrace();
+        }
+
+        intentFileters = new IntentFilter[] { ndefDetected };
     }
 
     @Override
@@ -267,9 +275,8 @@ public class Question_Screen extends AppCompatActivity implements Observer {
     @Override
     protected void onNewIntent(Intent intent) {
         Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        // Delay vibration until the tag is fully read
-        v.cancel();
-        if(NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
+
+        if(NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())){
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             // get the Tag
             Toast.makeText(this, getResources().getString(R.string.tag_found), Toast.LENGTH_SHORT).show();
@@ -277,15 +284,15 @@ public class Question_Screen extends AppCompatActivity implements Observer {
             // Read the answer from the tag
             String answerFromTag = new NFC_Reader().readNameFromTag(this, tag);
 
-            // now the app can vibrate
-            Toast.makeText(this, answerFromTag, Toast.LENGTH_SHORT).show();
-            long[] pattern = {0, 200, 100, 200};
-            v.vibrate(pattern, -1);
-
-            // Check answer
+            // If the answer was read properly, check it
             if(!answerFromTag.equals(null) && !answerFromTag.equals("")){
+                // now the app can vibrate
+                Toast.makeText(this, answerFromTag, Toast.LENGTH_SHORT).show();
+                long[] pattern = {0, 200, 100, 200};
+                v.vibrate(pattern, -1);
                 checkAnswer(answerFromTag);
-
+            } else {
+                Toast.makeText(this, "answerFromTag: " + answerFromTag, Toast.LENGTH_SHORT).show();
             }
         }
         super.onNewIntent(intent);

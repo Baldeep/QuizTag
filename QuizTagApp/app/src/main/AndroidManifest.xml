@@ -28,6 +28,7 @@
 
             </intent-filter>
 
+            <!--
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
 
@@ -35,17 +36,19 @@
 
                 <data android:mimeType="application/[pagage name]" />
             </intent-filter>
+            -->
         </activity>
 
         <activity android:name=".Frontend.Game_Menu"
-            android:label="@string/game_menu_title"/>
+            android:label="@string/game_menu_title">
+        </activity>
 
         <activity android:name=".Frontend.Question_Screen"
-            android:label="@string/question_screen_title"
-            />
-
+            android:label="@string/question_screen_title"/>
         <activity android:name=".Frontend.Shop_Menu"
-            android:label="@string/shop_menu_title"/>
+            android:label="@string/shop_menu_title">
+        </activity>
+
 
         <activity android:name=".Frontend.NFC_Tag_Writer"
             android:label="NFC Stuff">
@@ -59,7 +62,9 @@
             android:label="@string/smartcase_title"/>
 
         <activity android:name=".Frontend.Quiz_Tag_Screen"
-            android:label="@string/quiz_tag_title"/>
+            android:label="@string/quiz_tag_title">
+
+            </activity>
 
 
     </application>

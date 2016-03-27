@@ -75,9 +75,16 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
 
         // Set the intent filter
         pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
-        tagDetected.addCategory(Intent.CATEGORY_DEFAULT);
-        intentFileters = new IntentFilter[] { tagDetected };
+        IntentFilter ndefDetected = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
+        ndefDetected.addCategory(Intent.CATEGORY_DEFAULT);
+
+        try {
+            ndefDetected.addDataType("application/baldeep.quiztagapp.quiz");
+        } catch (IntentFilter.MalformedMimeTypeException e) {
+            Log.w("QUIZTAG", "malformed mime type");
+            e.printStackTrace();
+        }
+        intentFileters = new IntentFilter[] { ndefDetected };
     }
 
 
@@ -87,10 +94,11 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
         // Delay vibration until the tag is fully read
         DialogFragment loading = new LoadingDialog();
         v.cancel();
-        if(nfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
+        if(nfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())){
             loading.show(getFragmentManager(), "Loading");
             // get the Tag
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+
             // Read the Questionpool from the tag
             questionPool = new NFC_Reader().readQuestionPoolFromTag(this, tag);
             // and  now vibrate
@@ -100,8 +108,9 @@ public class Quiz_Tag_Screen extends AppCompatActivity{
             // update the details of the fields
             if(questionPool == null){
                 Log.e("QuizTagScreen", "QuestionPool is null");
+            } else {
+                update(); // only update if a valid questionpool was read
             }
-            update();
         }
         super.onNewIntent(intent);
     }

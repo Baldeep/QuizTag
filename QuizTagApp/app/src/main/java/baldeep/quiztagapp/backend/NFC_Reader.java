@@ -113,8 +113,7 @@ public class NFC_Reader {
                     NdefMessage message = ndef.getNdefMessage();
                     if (message != null) {
                         NdefRecord[] record = message.getRecords();
-                        for(NdefRecord r : record)
-                            text = decodeTag(r);
+                            text = decodeTag(record[0]);
                     } else {
                         Toast.makeText(activity, "Didn't manage to read the tag, try again.", Toast.LENGTH_SHORT).show();
                     }
@@ -156,7 +155,8 @@ public class NFC_Reader {
         // Get the Language Code
         int languageCodeLength = payload[0] & 0063;
 
-        String text;
+        String text = payload.toString();
+        System.out.print(text);
         try {
             text = new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, textEncoding);
         } catch (UnsupportedEncodingException e) {

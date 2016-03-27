@@ -10,9 +10,9 @@ public class ExhibitObject {
     private String url;
 
     public ExhibitObject(){
-        this.name = "";
-        this.description = "";
-        this.url = "";
+        this.name = null;
+        this.description = null;
+        this.url = null;
     }
 
     public ExhibitObject(String name, String description, String url){

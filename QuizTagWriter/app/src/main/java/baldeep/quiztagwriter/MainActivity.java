@@ -46,8 +46,11 @@ public class MainActivity extends AppCompatActivity {
     private IntentFilter intentFileters[];
     private Tag tag;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -117,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
                         
                         Gson gson = new Gson();
                         ExhibitObject exhibit = new ExhibitObject();
+
                         try {
                             exhibit = gson.fromJson(fileAsString, ExhibitObject.class);
                             Toast.makeText(MainActivity.this, exhibit.getName(), Toast.LENGTH_SHORT).show();
@@ -132,7 +136,20 @@ public class MainActivity extends AppCompatActivity {
                             df.show(getFragmentManager(), "JSON");
                         }
 
-                        writeTag(fileAsString, tag);
+
+                        String type = null;
+                        final String mimeType = "application/baldeep.quiztagapp.";
+                        if(exhibit.getDescription() == null){
+                            Toast.makeText(MainActivity.this, "Exhibit null", Toast.LENGTH_SHORT).show();
+                            type = mimeType + "quiz";
+                        } else {
+                            type = mimeType + "exhibit";
+                        }
+
+                        Log.i("WRITEBTN", type);
+                        writeTag(fileAsString, tag, type);
+
+                        //writeTag(fileAsString, tag);
 
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
@@ -162,9 +179,10 @@ public class MainActivity extends AppCompatActivity {
         super.onNewIntent(intent);
     }
 
-    private void writeTag(String json, Tag tag){
-        NdefRecord jsonRecord = createRecord(json);
-        NdefRecord[] records = new NdefRecord[]{jsonRecord};
+    private void writeTag(String json, Tag tag, String type){
+        NdefRecord jsonRecord = createRecord(json, type);
+        NdefRecord applicationRecord = NdefRecord.createApplicationRecord("baldeep.quiztagapp");
+        NdefRecord[] records = new NdefRecord[]{jsonRecord};//, applicationRecord};
         NdefMessage message = new NdefMessage(records);
         if(tag!=null) {
             Toast.makeText(this, "Writing", Toast.LENGTH_SHORT).show();
@@ -225,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
      * [                              ID                            ]
      * [                           PAYLOAD                          ]
      */
-    private NdefRecord createRecord(String text){
+    private NdefRecord createRecord(String text, String type){
         String lang       = "en";
         byte[] textBytes  = text.getBytes();
         int    textLength = textBytes.length;
@@ -249,8 +267,14 @@ public class MainActivity extends AppCompatActivity {
         System.arraycopy(langBytes, 0, payload, 1,              langLength);
         System.arraycopy(textBytes, 0, payload, 1 + langLength, textLength);
 
-        //(tnf, type, id, payload)
-        NdefRecord recordNFC = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,  NdefRecord.RTD_TEXT,  new byte[0], payload);
+        NdefRecord recordNFC;
+        if(type == null) {
+            //(tnf, type, id, payload)
+            recordNFC = new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, new byte[0], payload);
+        } else { // make custom record
+            Log.i("MAKING RECORD", type);
+            recordNFC = new NdefRecord(NdefRecord.TNF_MIME_MEDIA, type.getBytes(), new byte[0], payload);
+        }
 
         return recordNFC;
     }

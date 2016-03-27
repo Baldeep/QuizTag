@@ -2,6 +2,7 @@ package baldeep.quiztagapp.Frontend;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -37,6 +38,8 @@ public class Main_Menu extends AppCompatActivity {
         Bundle scanBundle = new Bundle();
         scanBundle.putString(Constants.MESSAGE, Constants.SCAN);
         scan_button.setOnClickListener(new MainMenuButtonListener(this, scanBundle));
+
+        Log.e("PACKAGE", getPackageName());
     }
 
 
