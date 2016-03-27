@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import baldeep.quiztagapp.Constants.Constants;
 import baldeep.quiztagapp.Frontend.Game_Menu;
-import baldeep.quiztagapp.Frontend.Main_Menu;
 import baldeep.quiztagapp.Frontend.Scan_Screen;
-import baldeep.quiztagapp.Frontend.SmartScreen;
+import baldeep.quiztagapp.Frontend.Smart_Case_Screen;
 
 /**
  * A basic listener for the main menu, on creation it asks for a string which should be either
@@ -35,7 +35,7 @@ public class MainMenuButtonListener implements View.OnClickListener {
             activity.startActivity(gameScreen);
 
         } else if(message.equals(Constants.CONNECT)){
-            Intent smartCase = new Intent(activity, SmartScreen.class);
+            Intent smartCase = new Intent(activity, Smart_Case_Screen.class);
             activity.startActivity(smartCase);
 
         } else if(message.equals(Constants.SCAN)){

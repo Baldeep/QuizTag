@@ -35,7 +35,6 @@ public class ShopButtonListener implements View.OnClickListener {
         if(message.equals(Constants.HINTS)){
             // If it's a hints button
             if(pu.getPoints() >= pu.getHintsCost()){
-                //
                 pu.setPoints(pu.getPoints() - pu.getHintsCost());
                 pu.setHints(pu.getHints() + 1);
 

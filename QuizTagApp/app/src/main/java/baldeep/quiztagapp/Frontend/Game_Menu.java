@@ -41,7 +41,8 @@ public class Game_Menu extends AppCompatActivity {
 
         setContentView(R.layout.game_menu_activity);
 
-        // Load the previous game data
+        loadGame();
+/*        // Load the previous game data
         Bundle saveGameData = new GameSaver().loadGame(this);
 
         try {
@@ -64,14 +65,13 @@ public class Game_Menu extends AppCompatActivity {
                 qm.setNextQuestion();
             }
 
-
         } catch(NullObjectException e){
             e.printStackTrace();
             Bundle errorBundle = new Bundle();
             errorBundle.putString(Constants.TITLE, getResources().getString(R.string.null_object_error_title));
             errorBundle.putString(Constants.MESSAGE, getResources().getString(R.string.null_object_error));
             new DialogCreator().errorDialog(getFragmentManager(), errorBundle);
-        }
+        }*/
 
 
         Log.d("Game Menu", "starting quiz master from question " + qm.getCurrentQuestionNumber());
@@ -116,18 +116,25 @@ public class Game_Menu extends AppCompatActivity {
 
         // Request 0 was sent to Question Screen
         if(requestCode == 0){
-            qm.setPowerUps((PowerUps) data.getSerializableExtra(Constants.POWERUPS));
+            PowerUps pu = (PowerUps) data.getSerializableExtra(Constants.POWERUPS);
+            if(pu != null){
+                qm.setPowerUps(pu);
+            }
             Bundle saveGame = new Bundle();
             saveGame.putSerializable(Constants.POWERUPS, qm.getPowerUps());
             saveGame.putString(Constants.QUIZNAME, data.getStringExtra(Constants.QUIZNAME));
             saveGame.putInt(Constants.CURRENTQUESTIONNO,
                     data.getIntExtra(Constants.CURRENTQUESTIONNO, 1));
             new GameSaver().saveQuiz(this, saveGame);
+            loadGame(); // reload game with new values
             update();
         }
         // Request 1 was sent to the Points Shop
         else if (requestCode == 1) {
-            qm.setPowerUps((PowerUps) data.getSerializableExtra(Constants.POWERUPS));
+            PowerUps pu = (PowerUps) data.getSerializableExtra(Constants.POWERUPS);
+            if(pu != null){
+                qm.setPowerUps(pu);
+            }
             Bundle saveGame = new Bundle();
             saveGame.putSerializable(Constants.POWERUPS, qm.getPowerUps());
             new GameSaver().savePowerUps(this, saveGame);
@@ -136,7 +143,9 @@ public class Game_Menu extends AppCompatActivity {
         // Request 2 was sent to the QuizTag screen
         else if(requestCode == 2){
             QuestionPool qp = (QuestionPool) data.getSerializableExtra(Constants.QUESTIONPOOL);
-            qm.setNewQuiz(qp);
+            if(qp!= null) {
+                qm.setNewQuiz(qp);
+            }
             update();
         }
     }
@@ -151,6 +160,39 @@ public class Game_Menu extends AppCompatActivity {
         skips.setText(qm.getPowerUps().getSkipsAsString());
         coins.setText(qm.getPowerUps().getPointsAsString());
         setButtonListeners();
+    }
+
+    private void loadGame(){
+        // Load the previous game data
+        Bundle saveGameData = new GameSaver().loadGame(this);
+
+        try {
+            PowerUps powerUps = (PowerUps) saveGameData.getSerializable(Constants.POWERUPS);
+            QuestionPool questionPool = new FileHandler().readQuestionPoolfromAssets(this);
+            qm = new QuizMaster(questionPool, powerUps);
+
+            // Start the QuizMaster to either continue the saved quiz or start anew
+            String quizName = saveGameData.getString(Constants.QUIZNAME);
+            // If it's the same quiz name then load up the data for it
+            if(quizName != null && quizName.equals(qm.getQuestionPool().getQuizName())){
+                int currentQuestion = saveGameData.getInt(Constants.CURRENTQUESTIONNO);
+                Log.d("Load Quiz", "Question No: " + currentQuestion);
+                // if the number saved was less than 1, then the quiz had ended on a previous game,
+                if(currentQuestion <= 0){
+                    currentQuestion = 1; // restart quiz
+                }
+                qm.goToQuestion(currentQuestion);
+            } else {
+                qm.setNextQuestion();
+            }
+
+        } catch(NullObjectException e){
+            e.printStackTrace();
+            Bundle errorBundle = new Bundle();
+            errorBundle.putString(Constants.TITLE, getResources().getString(R.string.null_object_error_title));
+            errorBundle.putString(Constants.MESSAGE, getResources().getString(R.string.null_object_error));
+            new DialogCreator().errorDialog(getFragmentManager(), errorBundle);
+        }
     }
 
     /**

@@ -55,7 +55,7 @@
             android:label="@string/scan_screen_title"/>
 
 
-        <activity android:name=".Frontend.SmartScreen"
+        <activity android:name=".Frontend.Smart_Case_Screen"
             android:label="@string/smartcase_title"/>
 
         <activity android:name=".Frontend.Quiz_Tag_Screen"

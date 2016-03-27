@@ -6,6 +6,7 @@ import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -67,6 +68,7 @@ public class NFC_Reader {
         QuestionPool qp = null;
 
         String text = readTag(activity, tag);
+        System.out.println(text);
 
         if(!text.equals("") && !text.equals(null)){
             try {
@@ -77,9 +79,13 @@ public class NFC_Reader {
             }
         }
 
-        for(Question q : qp.getQuestionPool())
-            q.resetHints();
-
+        if(qp==null){
+            Log.e("QP_NFC_READ", "qp is null");
+        } else {
+            Log.w("QP_NFC_READ", "no questions: " + qp.getQuestionPoolSize());
+            for (Question q : qp.getQuestionPool())
+                q.resetHints();
+        }
         return qp;
     }
 

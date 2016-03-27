@@ -30,4 +30,5 @@ public interface Constants {
     String NO = "no";
 
     String QUIT = "quit";
+    int HINTSARRAYSIZE = 4;
 }

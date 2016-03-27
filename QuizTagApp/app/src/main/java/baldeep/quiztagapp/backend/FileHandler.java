@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
 
+import baldeep.quiztagapp.Constants.Constants;
 import baldeep.quiztagapp.Exceptions.NullObjectException;
 
 public class FileHandler implements Serializable{
@@ -136,8 +137,10 @@ public class FileHandler implements Serializable{
                 Log.d("QP", questionPool.getQuizName());
                 Log.d("QP", questionPool.getQuestionPoolSize() + "");
                 Log.d("QP", questionPool.isRandom() + "");
-                for (Question q : qp.getQuestionPool())
+                for (Question q : qp.getQuestionPool()) {
+                    q.setHintsArraySize(Constants.HINTSARRAYSIZE);
                     q.resetHints();
+                }
 
                 questionPool = new QuestionPool(qp.getQuizName(), qp.getQuestionPool(), qp.isRandom());
             }

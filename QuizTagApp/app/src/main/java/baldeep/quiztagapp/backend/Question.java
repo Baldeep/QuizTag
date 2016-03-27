@@ -16,19 +16,19 @@ public class Question implements Serializable{
 	private List<String> hints;
 	private String answer;
 
-	private int hintArraySize;
+	private int hintArraySize = 4;
 
     /**
      * This class acts as a Data Structure which provides all the data required to be held by a
      * question in the quiz.
      * @param question The question being asked. Cannot be null.
-     * @param hints The list of available hints for the above question
+     * @param hintPool The list of available hints for the above question
      * @param answer The answer to the question. Cannot be null.
      */
-	public Question(String question, List<String> hints, String answer){
+	public Question(String question, List<String> hintPool, String answer){
 		this.question = question;
 		this.answer = answer;
-		this.hintPool = hints;
+		this.hintPool = hintPool;
 
 
 		if(this.question == null){
@@ -39,17 +39,10 @@ public class Question implements Serializable{
 			this.answer = "Answer is null";
 		}
 
-		if(this.hints == null){
-			this.hints = new ArrayList<>();
+		if(this.hintPool == null){
+            System.out.println("Question, hint pool is null");
+			this.hintPool = new ArrayList<>();
 		}
-
-		if(!hintPool.contains(answer)){
-			hintPool.add(answer);
-		}
-
-
-        hintArraySize = 4;
-
 
         this.hints = findHints();
 	}
@@ -137,20 +130,26 @@ public class Question implements Serializable{
 
 		Collections.shuffle(hintPool);
 
+        System.out.println("Question, find hints. hintpool size " + hintPool.size() + ", max size: " + hintArraySize);
 		if(hintPool.size() <= hintArraySize){
-			return hintPool;
+            System.out.println("Question, find hints. hintpool right size " + hintPool.size());
+            return hintPool;
 		} else {
 			newHints.add(answer);
 
 			int i = 0;
+            System.out.println("findHints, setting new hints, i:" + i + ", newHints: " + newHints.size());
 			while(i < hintPool.size() && newHints.size() < hintArraySize){
+                System.out.println("findHints, setting new hints, i:" + i + ", newHints: " + newHints.size());
 				if(!newHints.contains(hintPool.get(i))){
 					newHints.add(hintPool.get(i));
-				} else if(Collections.frequency(hintPool, hintPool.get(i)) > 1)
-					newHints.add(hintPool.get(i));
+				} else if(Collections.frequency(hintPool, hintPool.get(i)) > 1) {
+                    newHints.add(hintPool.get(i));
+                }
 				i++;
 			}
 
+            System.out.println("Question, find hints. newHints size" + newHints.size());
 			Collections.shuffle(newHints);
 			return newHints;
 		}

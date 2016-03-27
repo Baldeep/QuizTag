@@ -1,37 +1,43 @@
 package baldeep.quiztagapp.Frontend;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import baldeep.quiztagapp.R;
 
 
-public class SmartScreen extends AppCompatActivity {
+public class Smart_Case_Screen extends AppCompatActivity {
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-        
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.smart_case_activity);
+
         Button back_btn = (Button) findViewById(R.id.smart_case_back_btn);
         Button next_btn = (Button) findViewById(R.id.smart_case_next_btn);
 
+        final TextView titleText = (TextView) findViewById(R.id.smart_case_title_text);
         TextView text = (TextView) findViewById(R.id.smart_case_text);
         
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(SmartScreen.this, "Back", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Smart_Case_Screen.this, "Back", Toast.LENGTH_SHORT).show();
+                titleText.setText(getResources().getString(R.string.back) + " was pressed");
             }
         });
         
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(SmartScreen.this, "Next", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Smart_Case_Screen.this, "Next", Toast.LENGTH_SHORT).show();
+                titleText.setText(getResources().getString(R.string.next) + " was pressed");
             }
         });
     }
