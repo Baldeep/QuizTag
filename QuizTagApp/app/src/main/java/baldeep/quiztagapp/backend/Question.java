@@ -128,9 +128,8 @@ public class Question implements Serializable{
             hintPool.add(answer);
         }
 
-		Collections.shuffle(hintPool);
-
 		if(hintPool.size() <= hintArraySize){
+            Collections.shuffle(hintPool);
             return hintPool;
 		} else {
 			newHints.add(answer);
@@ -165,26 +164,26 @@ public class Question implements Serializable{
 			}
 
 			// Check the strings, i.e. the question and the answer
-			// A differently worded question will not return true
 			if (!q.getQuestion().equals(question)){
-				return false;
+				return false; // A differently worded question will not return true
 			}
-
-			// making this separate for to have less branches for unit tests
 			if(!q.getAnswer().equals(answer)){
 				return false;
 			}
 
-			// Check hints arrays are the same size
-
-			if(hints.size() != q.getHints().size()){
+			// Check hints arrays are the same
+			if(hintPool.size() != q.getHints().size()){
 				return false;
 			}
 			// Check the same answers are in each array
-			for (int i = 0; i < hints.size(); ++i) {
-				if (!q.getHints().contains(hints.get(i))||!hints.contains(q.getHints().get(i))) {
+			for (int i = 0; i < hintPool.size(); ++i) {
+				if (!q.getHints().contains(hintPool.get(i))
+                        ||!hintPool.contains(q.getHints().get(i))) {
 					return false;
-				}
+				} else if(Collections.frequency(hintPool, hintPool.get(i))
+                        != Collections.frequency(q.getHints(), hintPool.get(i))){
+                    return false;
+                }
 			}
 
 			// all tests passed, return true
@@ -196,6 +195,6 @@ public class Question implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return (1993 * (42 + getQuestion().length()) + 7 * getAnswer().length());
+		return (1993 * (42 + getQuestion().length()) + ((7 + hintPool.size()) * getAnswer().length()));
 	}
 }

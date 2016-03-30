@@ -14,7 +14,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
     private final int POINTS = 20;
 
     private PowerUps powerUps;
-    private QuestionPool qp;
+    private QuestionPool questionPool;
 
     private boolean hintsRevealed;
     private int wrongChoices = 0;
@@ -34,7 +34,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
             throw new NullObjectException("QuestionPool is null");
         }
         this.powerUps = new PowerUps(0, 0, 0);
-        this.qp = qp;
+        this.questionPool = qp;
         powerUps.attach(this);
     }
 
@@ -52,15 +52,15 @@ public class QuizMaster extends Observable implements Serializable, Observer{
         }
 
         this.powerUps = powerUps;
-        this.qp = qp;
+        this.questionPool = qp;
     }
 
     /**
      * This method picks a new question from the QuestionPool and increments the question number
      */
     public void setNextQuestion(){
-        if(qp.askQuestion() != null) {
-            System.out.println("QuizMaster setNextQuestion: " + qp.getCurrentQuestion().getQuestion());
+        if(questionPool.askQuestion() != null) {
+            System.out.println("QuizMaster setNextQuestion: " + questionPool.getCurrentQuestion().getQuestion());
             hintsRevealed = false;
             wrongChoices = 0;
         }
@@ -72,7 +72,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      * @return Returns the number of the current question
      */
     public int getCurrentQuestionNumber(){
-        return qp.getCurrentQuestionNumber();
+        return questionPool.getCurrentQuestionNumber();
     }
 
     /**
@@ -80,7 +80,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      * @return Returns the question from the currently selected question
      */
     public String getQuestionString(){
-        return qp.getCurrentQuestion().getQuestion();
+        return questionPool.getCurrentQuestion().getQuestion();
     }
 
     /**
@@ -90,7 +90,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      * @return Returns
      */
     public boolean checkAnswer(String answer){
-        if(qp.checkAnswer(answer)) {
+        if(questionPool.checkAnswer(answer)) {
             powerUps.setPoints(powerUps.getPoints() + POINTS);
             notifyAllObservers();
             return true;
@@ -183,7 +183,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
     public void resetQuiz(){
         hintsRevealed = false;
         wrongChoices = 0;
-        qp.clearAskedQuestions();
+        questionPool.clearAskedQuestions();
         notifyAllObservers();
     }
 
@@ -192,7 +192,7 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      * @return An array holding the hints available for the current question
      */
     public List<String> getHints(){
-        return qp.getCurrentQuestion().getHints();
+        return questionPool.getCurrentQuestion().getHints();
     }
 
     /**
@@ -210,16 +210,16 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      * @return A string holding the name of the quiz currently being played
      */
     public String getQuizName(){
-        return qp.getQuizName();
+        return questionPool.getQuizName();
     }
 
 
     public QuestionPool getQuestionPool(){
-        return qp;
+        return questionPool;
     }
 
     public void setNewQuiz(QuestionPool qp){
-        this.qp = qp;
+        this.questionPool = qp;
         resetQuiz();
     }
 
@@ -260,8 +260,8 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      */
     public int goToQuestion(int questionNo) {
         // check just in case this method was called in random mode
-        qp.goToQuestion(questionNo);
-        return qp.getCurrentQuestionNumber();
+        questionPool.goToQuestion(questionNo);
+        return questionPool.getCurrentQuestionNumber();
     }
 
     /**
@@ -269,6 +269,6 @@ public class QuizMaster extends Observable implements Serializable, Observer{
      * @return True if the quiz held is random, false if it's a story quiz
      */
     public boolean isRandomQuiz(){
-        return qp.isRandom();
+        return questionPool.isRandom();
     }
 }

@@ -62,4 +62,5 @@
         \nFind a QuizTag to play another quiz, or play this again!</string>
     <string name="quit">Quit</string>
     <string name="final_question">Final Question</string>
+    <string name="quiz_downloaded">Quiz Downloaded! Now play it!</string>
 </resources>
