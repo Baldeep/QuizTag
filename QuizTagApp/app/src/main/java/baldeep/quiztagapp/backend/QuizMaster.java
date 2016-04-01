@@ -146,9 +146,8 @@ public class QuizMaster extends Observable implements Serializable, Observer{
     public int revealHints(){
         if (powerUps.getHints() > 0) {
             hintsRevealed = true;
-            //powerUps.setHints(powerUps.getHints() - 1);
-            powerUps.setSkips(10);
-            powerUps.setPoints(200);
+            powerUps.setHints(powerUps.getHints() - 1);
+
             notifyAllObservers();
         }
         return powerUps.getSkips();

@@ -33,9 +33,8 @@ public class FileHandler implements Serializable {
     public void writeFile(Context context, String fileName, String text) {
 
         try {
-            FileOutputStream fileout = context.openFileOutput(fileName, Context.MODE_PRIVATE);
 
-            Log.d("WRITE ADDRESS", context.getFilesDir().getAbsolutePath());
+            FileOutputStream fileout = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
             outputWriter.write(text);
             outputWriter.close();
@@ -124,42 +123,6 @@ public class FileHandler implements Serializable {
         }
     }
 
-
-    /*public QuestionPool getQuestionPoolFromFiles(Context context) {
-        Gson gson = new Gson();
-        QuestionPool qp = null;
-
-        String qpAsString = readFile(context);
-
-        // if qpAsString is an empty strng gson will create a non null empty class object.
-        try {
-            qp = gson.fromJson(qpAsString, QuestionPool.class);
-
-            if (qp != null) {
-                Log.d("READING QUIZ.TXT", "quiz isn't null");
-                // Gson doesn't use the constructor
-                for (Question q : qp.getQuestionPool())
-                    q.resetHints();
-
-                System.out.println("Printing questions **********************************************");
-                System.out.println(qp.getQuizName());
-                for (Question q : qp.getQuestionPool()) {
-                    System.out.println(q.getQuestion() + ", " + q.getAnswer() + "\n");
-            *//*for(String s : q.getHints()){
-                System.out.println(s);
-            }*//*
-                    System.out.println("*************************************");
-                }
-
-                QuestionPool questionPool = new QuestionPool(qp.getQuizName(), qp.getQuestionPool(), qp.isRandom());
-                return questionPool;
-            }
-        } catch (JsonParseException e) {
-            Toast.makeText(context, "File JSon format error", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-        return qp;
-    }*/
 
     /**
      * A sample quiz is stored in the assets, this will be read and produced if there is no saved
