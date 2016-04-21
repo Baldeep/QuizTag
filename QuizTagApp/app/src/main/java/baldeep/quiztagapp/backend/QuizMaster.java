@@ -270,4 +270,11 @@ public class QuizMaster extends Observable implements Serializable, Observer{
     public boolean isRandomQuiz(){
         return questionPool.isRandom();
     }
+
+    public void cheat() {
+        powerUps.setHints(10);
+        powerUps.setSkips(10);
+        powerUps.setPoints(150);
+        notifyAllObservers();
+    }
 }

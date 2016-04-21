@@ -31,6 +31,10 @@ public class QuestionScreenButtonListener implements View.OnClickListener {
             quizMaster.skipQuestion();
         }
 
+        if(message.equals(Constants.POINTS)){
+            quizMaster.cheat();
+        }
+
     }
 
 

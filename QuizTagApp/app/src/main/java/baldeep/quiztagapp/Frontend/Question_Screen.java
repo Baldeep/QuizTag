@@ -102,6 +102,13 @@ public class Question_Screen extends AppCompatActivity implements Observer {
         skipBundle.putString(Constants.MESSAGE, Constants.SKIPS);
         skipButton.setOnClickListener(new QuestionScreenButtonListener(skipBundle));
 
+        // Set up the cheat button Listener
+        ImageButton cheatButton = (ImageButton) findViewById(R.id.question_coins_btn);
+        Bundle pointsBundle = new Bundle();
+        pointsBundle.putSerializable(Constants.QUIZMASTER, qm);
+        pointsBundle.putString(Constants.MESSAGE, Constants.POINTS);
+        cheatButton.setOnClickListener(new QuestionScreenButtonListener(pointsBundle));
+
         // Call the update method to fill the text fields
         update(qm, null);
 

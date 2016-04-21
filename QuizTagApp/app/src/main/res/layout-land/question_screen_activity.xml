@@ -133,7 +133,7 @@
             android:layout_weight="1"
             android:backgroundTint="@android:color/transparent"
             android:text="@string/coins_text"
-            android:id="@+id/coins_btn"
+            android:id="@+id/question_coins_btn"
             android:src="@drawable/coins_icon"
             android:scaleType="centerCrop"
             android:layout_gravity="center"

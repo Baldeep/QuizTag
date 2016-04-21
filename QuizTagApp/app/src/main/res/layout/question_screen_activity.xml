@@ -40,7 +40,7 @@
             android:layout_weight="0.33"
             android:backgroundTint="@android:color/transparent"
             android:text="@string/coins_text"
-            android:id="@+id/coins_btn"
+            android:id="@+id/question_coins_btn"
             android:src="@drawable/coins_icon"
             android:scaleType="fitCenter"
             android:contentDescription="@string/coin_icon_description" />

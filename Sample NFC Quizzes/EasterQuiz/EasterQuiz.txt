@@ -1,0 +1,76 @@
+{
+   "quizName" : "Easter egg hunt",
+   "random" : true, 
+   "QuestionPool": [
+      {
+         "questionString": "This little bunny left an egg under a very tall figure",
+         "hints": [ 
+            "Under the tree",
+            "On the tree",
+            "On the fence",
+            "In the shed"
+         ],
+         "answer": "Under the tree"
+      },
+      {
+         "questionString": "This little bunny left an egg to confuse the birds",
+         "hints": [ 
+            "On the tree",
+            "Under the roses",
+            "On the fence",
+            "On the table"
+         ],
+         "answer": "On the tree"
+      },
+      {
+         "questionString": "This little bunny left an egg to confuse the bees",
+         "hints": [ 
+            "Under the roses",
+            "Under the tree",
+            "In the hedge",
+            "On the tree"
+         ],
+         "answer": "Under the roses"
+      },
+      {
+         "questionString": "This little bunny left an egg for the hedgehogs",
+         "hints": [
+            "In the hedge",
+            "On the tree",
+            "On the fence",
+            "In the shed"
+         ],
+         "answer": "In the hedge"
+      },
+      {
+         "questionString": "This little bunny left an egg with all the tools",
+         "hints": [
+            "In the shed",
+            "on the tree",
+            "On the fence",
+            "In the shed"
+         ],
+         "answer": "In the shed"
+      },
+      {
+         "questionString": "This little bunny left an egg way, way back",
+         "hints": [ 
+            "On the fence",
+            "Behind the garage",
+            "In the shed",
+            "In the hedge"
+         ],
+         "answer": "On the fence"
+      },
+      {
+         "questionString": "This little bunny forgot something after tea",
+         "hints": [ 
+            "On the table",
+            "In the hedge",
+            "On the tree",
+            "In the hedge"
+         ],
+         "answer": "On the table"
+      }
+   ]
+}
